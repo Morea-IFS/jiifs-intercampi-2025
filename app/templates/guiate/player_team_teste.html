@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <title>JIIFS ADMIN</title>
+</head>
+<body>
+    <main>
+        <div class="all">
+            <div class="all-block" style="width: 100vw;">
+                <div class="block1">
+                    <div class="title" style="display: flex; flex-direction: column; color: white;">
+                        <h1>SELECIONE OS SEUS ATLETAS</h1>
+                        <p style="color: #1be900;">{{avise}}.</p>
+                    </div>
+                    <section class="block-inputs" style="flex-direction: column; justify-content: center; align-items: center;" >
+                        <h2 class="sub-title" style="color: #007eec;">CADASTRO COM PLANILHA</h2>
+                        <form class="block-inputs" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="block-inputs-form" style="width: 40vw;">
+                                <label for="spreadsheet" id="label-spreadsheet" class="custom-file-button">Selecione uma planilha</label>
+                                <input type="file" name="spreadsheet" id="spreadsheet" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="trocarTextoLabelspreadsheetv()">
+                                <input class="input-confirm" type="submit" value="Confirmar" style="cursor: pointer;">
+                            </div>
+                        </form>
+                    </section>
+                    <br><br>
+                    <span style="background-color: white; width: 45vw; height: 3px;"></span>
+                    <br><br>
+                    <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="block-inputs-form">
+                            <h2 class="sub-title" style="color: #007eec;">CADASTRO MANUAL</h2>
+                            <div>
+                                <label for="name">Nome do jogador</label>
+                                <input type="text" autocomplete="on" autocorrect="on" id="name" name="name" placeholder="Nome do jogador*"
+                                    required>
+                                <label for="registration">Matrícula</label>
+                                <input type="text" autocomplete="on" autocorrect="on" id="registration" name="registration"
+                                    placeholder="Matrícula*" required>
+                                <label for="campus">Campus</label>
+                                <input type="text" autocomplete="on" autocorrect="on" id="campus" name="campus"
+                                    placeholder="Campus*" required>
+                                <label for="date" >Data de nascimento</label>
+                                <input type="date" autocomplete="on" autocorrect="on" name="date" id="date"
+                                        placeholder="Data de nascimento*" required>
+                                <label for="sexos">Sexo</label>
+                                <select id="sexos" name="sexo">
+                                    <option selected disabled value="None">Selecione o sexo</option>
+                                    <option value="0">Masculino</option>
+                                    <option value="1">Feminino</option>
+                                </select>
+                                <label for="fotos" id="label-foto" class="custom-file-button">Adicione uma imagem</label>
+                                <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
+                                {% if messages %}
+                                {% for m in messages %}
+                                <p style="color: red;">{{m}}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div>
+                                <input class="input-confirm" type="submit" value="Confirmar"></input>
+                            </div>
+                        </div>
+                    </form>
+                    <br><br>
+                    <span style="background-color: white; width: 45vw; height: 3px;"></span>
+                    <br><br>
+                    <div style="display: flex; width: auto; height: auto; flex-direction: row; gap: 10px; margin-bottom: 5vw;">
+                        <form id="function_validate_form_delete" class="block-inputs" method="post">
+                            {% csrf_token %}
+                            <div class="block-inputs-form">
+                                <input class="input-delete" type="submit" value="Cancelar" name="Cancelar" />
+                                
+                            </div>
+                        </form>
+                        <a href="{% url 'guiate_players_list' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">
+                            <div class="block-inputs-form">
+                                <input class="input-delete" style="background-color: green;" type="submit" value="Finalizar" name="Finalizar" />
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

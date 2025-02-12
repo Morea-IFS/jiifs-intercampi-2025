@@ -13,10 +13,8 @@ urlpatterns = [
     path('logout', views.sair, name='logout'),
     path('morea', views.index, name = "Home"),
     path('manage/player', views.player_manage, name = "player_manage"),
-    path('register/player', views.player_register, name = "player_register"),
     path('edit/player/<int:id>', views.player_edit, name = "player_edit"),
     path('manage/team', views.team_manage, name = "team_manage"),
-    path('register/team', views.team_register, name = "team_register"),
     path('edit/team/<int:id>', views.team_edit, name = "team_edit"),
     path('manage/player/team/<int:id>', views.team_players_manage, name = "team_players_manage"),
     path('manage/match', views.matches_manage, name = "matches_manage"),
@@ -39,7 +37,17 @@ urlpatterns = [
     path('timer/<int:id>', views.timer_page, name = "timer"),
     path('termos-de-uso/', views.termos_uso, name='termos_uso'),
     path('erro404', views.page_in_erro404),
-    path('manage', views.manage, name="manage")
+
+    path('manage', views.manage, name="manage"),
+    path('register_team', views.register_team, name="guiate_register_team"),
+    path('register_new_sport/<str:team_name>/', views.register_new_sport, name="guiate_register_new_sport"),
+    path('players/<str:team_name>/<str:team_sexo>/<str:sport_name>', views.players_team, name="guiate_players_team"),
+    path('players/<int:id>/', views.guiate_escolha, name="guiate_escolha"),
+    path('players/<str:team_name>/list/<str:team_sexo>/<str:sport_name>/', views.players_list, name="guiate_players_list"),
+
+
+    path('generator/badge', views.generator_badge, name="badge"),
+    path('generator/certificate', views.generator_certificate, name="certificate"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

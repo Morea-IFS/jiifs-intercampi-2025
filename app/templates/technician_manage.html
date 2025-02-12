@@ -6,20 +6,12 @@
 {% endblock head %}
 
 {% block navbar %}
+
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 
 {% endblock navbar %}
@@ -39,8 +31,12 @@
         <div class="title">
             <h1>GERENCIAMENTO DOS TÉCNICOS</h1>
         </div>
+        <button class="side-bar-buttons-items2">
+            <a href="{% url 'technician_register' %}">CADASTRO DE TÉCNICOS</a>
+        </button>
+        <br><br>
         <div class="all-manage">
-            <input type="search" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os técnicos" />
+            <input type="search"class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os técnicos" />
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
@@ -48,6 +44,7 @@
                         <th>SIAPE</th>
                         <th>SEXO</th>
                         <th>FOTO</th>
+                        <th>EDITAR</th>
                         <th>DELETAR</th>
                     </tr>
                     {% for technician in technician %}
@@ -58,6 +55,11 @@
                         <td>{{technician.siape}}</td>
                         <td>{% if technician.sexo == 0 %} Masculino {% elif technician.sexo == 1 %} Feminino {% else %} ---- {% endif %}</td>
                         <td>{% if technician.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>
+                            <a href="{% url 'technician_edit' technician.id %}">
+                                <img src="{% static 'images/icon-edit.svg' %}">
+                            </a>
+                        </td>
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
@@ -75,11 +77,14 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM TÉCNICO CADASTRADO!</h2>
+                        <h2>NÃO HÁ NENHUM TÉCNICO CADASTRADO <br> <span style="font-size: 20px;">Os técnicos tem acesso ao sistema!</span></h2>
                     </div>
                     {% endfor %}
                 </table>
             </section>
+            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
         </div>
     </div>
 </div>

@@ -124,7 +124,7 @@
                         <select name="finally_start_match" required>
                             <option selected disabled value="None">Selecione a proxima equipe</option>
                             {% for i in matches %}
-                            <option value="{{i.id}}">{{i.id}} - {{i.sport}}- {% for a in team_match_all %} {% if a.match.id == i.id %} {{a.team.name}} - {% endif %}{% empty %} - {% endfor %} {{i.get_sexo_display}}</option>
+                            <option value="{{i.id}}">{{i.id}} - {{i.get_sport_display}}- {% for a in team_match_all %} {% if a.match.id == i.id %} {{a.team.name}} - {% endif %}{% empty %} - {% endfor %} {{i.get_sexo_display}}</option>
                             {% endfor %}
                         </select>
                     </div>

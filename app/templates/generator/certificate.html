@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>JIIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+<a href="{% url 'Home' %}">
+    <button class="side-bar-buttons-items">HOME</button>
+</a>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
+</a>
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block center-top">
+    
+    <section style="margin-bottom: 20px;">
+        <div class="title">
+            <h1>GERAR CERTIFICADO</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form">
+                <div>
+                    <select id="team-certificates" name="team-certificate" required style="min-width: 40vw;">
+                        <option selected disabled>Selecione o time</option required>
+                            <optgroup label="Gerais">
+                                <option value="all_player">Todos os atletas</option>
+                            </optgroup>
+                            <optgroup label="Esportes">
+                            {% for value, name in sport %}
+                            <option value="{{name}}">{{name}}</option>
+                            {% endfor %}
+                            </optgroup>
+                            <optgroup label="Times">
+                            {% for i in team_sport %}
+                            <option value="{{i.id}}">{{i.team.name}} - {{i.get_sport_display}}</option>
+                            {% endfor %}
+                            </optgroup>
+                    </select>
+                </div>
+                <div>
+                    <input class="input-confirm" type="submit" value="Confirmar"></input>
+                </div>
+            </div>
+        </form>
+        <br><br>
+        <section class="all-table">
+            <table id="search-table" style="min-width: 40vw;">
+                <tr class="hidden">
+                    <th>NOME</th>
+                    <th>FILE</th>
+                    <th><form method="POST" action="">{% csrf_token %}<button name="certificate_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form</th>
+                </tr>
+                {% for i in certificate %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>
+                        <a href="{{ i.file.url }}" download="{{ i.file.name }}">
+                          <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                        </a>
+                      </td>
+                    <td><form method="POST" action="">{% csrf_token %}<button name="certificate_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                </tr>
+                {% empty %}
+                <style>
+                    .hidden {
+                        display: none;
+                    }
+                </style>
+                {% endfor %}
+            </table>
+            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
+        </section>
+    </section>
+    
+
+</div>
+{% endblock content %}

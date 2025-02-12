@@ -10,17 +10,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -28,7 +19,7 @@
 <section class="side-bar-register">
     <h3 class="side-bar-register-title">CADASTRO</h3>
     <button class="side-bar-buttons-items2">
-        <a href="{% url 'add_player_team' team.id %}">Adicionar</a>
+        <a href="{% url 'add_player_team' team_sport.id %}">Adicionar</a>
     </button>
 </section>
 {% endblock register %}
@@ -37,49 +28,56 @@
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>GERENCIAMENTO DE JOGADORES DO TIME</h1>
+            <h1>JOGADORES DE <span style="color: var(--global-tenth-color);">{{team_sport.team.name|upper}}</span> - {{team_sport.get_sport_display|upper}} - {{team_sport.get_sexo_display|upper}}</h1>
         </div>
         <section class="block-inputs">
-            <form class="block-inputs-form" id="function_validate_form" method="post">{% csrf_token %}
-                <div class="block-inputs-div">
-                    <select class="select-action" name="select-action" id="select-action">
-                        <option selected disabled>Selecione a ação</option>
-                        <option value="excluir">Excluir jogadores</option>
-                    </select>
-                    <div>
-                        <input class="input-confirm" type="submit" value="Confirmar" />
-                    </div>
-                </div>
-                <div>
-                    <section class="all-table">
-                        <table id="search-table">
-                            <tr>
-                                <th>
-                                    <input type="checkbox" onclick="toggle_checkbox(this)" />
-                                </th>
-                                <th>NOMES</th>
-                                <th>SITUAÇÃO</th>
-                                <th>SEXO</th>
-                            </tr>
-                            {% for i in player_team_sport %}
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="input-checkbox" value="{{ i.player.id }}">
-                                </td>
-                                <td>{{ i.player.name }}</td>
-                                <td>----</td>
-                                <td>{% if i.player.sexo == 0 %} Masculino {% else %} Feminino {% endif %}</td>
-                            </tr>
-                            {% endfor %}
-                            {% if messages %}
-                            {% for m in messages %}
-                            <p style="color: red;">{{m}}</p>
-                            {% endfor %}
-                            {% endif %}
-                        </table>
-                    </section>
-                </div>
-            </form>
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden">
+                        <th>NOME</th>
+                        <th>MATRICULA</th>
+                        <th>CAMPUS</th>
+                        <th>SEXO</th>
+                        <th>DATA NASC.</th>
+                        <th>FOTO</th>
+                        <th>EDITAR</th>
+                        <th>REMOVER</th>
+                    </tr>
+                    {% for i in player_team_sport %}
+                    <tr>
+                        <td>
+                            {{ i.player.name }}
+                        </td>
+                        <td>{{i.player.registration}}</td>
+                        <td>{{i.player.campus}}</td>
+                        <td>{{i.player.get_sexo_display}}</td>
+                        <td>{{i.player.date_nasc}}</td>
+                        <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>
+                            <a href="{% url 'player_edit' i.player.id %}">
+                                <img src="{% static 'images/icon-edit.svg' %}">
+                            </a>
+                        </td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <button name="player_delete" value="{{i.player.id}}" style="background-color: transparent; border: none;">
+                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if messages %}
+                    {% for m in messages %}
+                    <p style="color: red;">{{m}}</p>
+                    {% endfor %}
+                    {% endif %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 20px;">
+                <a href="{% url 'team_manage' %}">VOLTAR</a>
+            </button>
         </section>
     </div>
 </div>

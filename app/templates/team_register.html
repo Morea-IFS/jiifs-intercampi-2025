@@ -9,17 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -34,48 +25,43 @@
             <div class="block-inputs-form">
                 <div>
                     <input type="text" autocomplete="on" autocorrect="on" name="name"
-                        placeholder="Digite o nome do time"></input>
-                    <input type="text" autocomplete="on" autocorrect="on" name="hexcolor"
-                        placeholder="Informe a cor em hexadecimal">
-                    <table class="sports-table">
-                        <tr>
-                            <th>
-                                <input type="checkbox" name="sports" onclick="toggle_checkbox(this)">
-                            </th>
-                            <th>SELECIONE O ESPORTE</th>
-                        </tr>
-                        {% for value, name in sport %}
-                        <tr>
-                            <td><input type="checkbox" name="input-checkbox" value="{{ value }}" {% if sport.id in sport_ids %} checked {% endif %}></input></td>
-                            <td>
-                                {{ name }}
-                            </td>
-                        </tr>
+                        placeholder="Digite o nome do time*"></input>
+                    <select id="sexos" name="sexo" required>
+                        <option selected disabled>Selecione o sexo*</option required>
+                        {% for value, name in sexo %}
+                        <option value="{{value}}">{{name}}</option>
                         {% endfor %}
-                    </table>
-                    <label for="fotos" id="label-foto" class="custom-file-button">Adicione a imagem do time</label>
-                    <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
+                    </select>
+                    <select name="sport_id">
+                        <option value="None" selected disabled>Selecione o esporte*</option>
+                        {% for value, name in sport %}
+                        <option value="{{value}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
                     <br>
-                    {% if messages %}
-                    <style>
-                        .ll {
-                            background-color: #c5c5c5;
-                            padding: 20px;
-                        }
-                    </style>
-                    {% for m in messages %}
-                    <div class="ll">
-                        <p style="color: #AB0000;">{{m}}</p>
-                    </div>
-                    {% endfor %}
-                    <br>
-                    {% endif %}
                 </div>
                 <div>
                     <input class="input-confirm" type="submit" value="Confirmar">
                 </div>
             </div>
         </form>
+        {% if messages %}
+        <style>
+            .ll {
+                background-color: #c5c5c5;
+                padding: 20px;
+            }
+        </style>
+        {% for m in messages %}
+        <div class="ll">
+            <p style="color: #AB0000;">{{m}}</p>
+        </div>
+        {% endfor %}
+        <br>
+        {% endif %}
+        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'team_manage' %}">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

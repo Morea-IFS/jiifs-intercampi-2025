@@ -1,0 +1,92 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <title>JIIFS ADMIN</title>
+</head>
+<body>
+    <main>
+        <div class="all">
+            <div class="all-block" style="width: 100vw; display: flex; align-items: center; justify-content: center;">
+                <div style="width: auto; height: auto; display: flex; flex-direction: column; align-items: center;">
+                    <section class="all-table" style="padding-top: 5vh;">
+                        <table id="search-table">
+                            <tr class="hidden">
+                                <th>NOME</th>
+                                <th>MATRICULA</th>
+                                <th>CAMPUS</th>
+                                <th>SEXO</th>
+                                <th>DATA NASC.</th>
+                                <th>FOTO</th>
+                                <th>EDITAR</th>
+                                <th>DELETAR</th>
+                            </tr>
+                            {% for i in players %}
+                            <tr>
+                                <td>
+                                    {{ i.player.name }}
+                                </td>
+                                <td>{{i.player.registration}}</td>
+                                <td>{{i.player.campus}}</td>
+                                <td>{{i.player.get_sexo_display}}</td>
+                                <td>{{i.player.date_nasc}}</td>
+                                <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                                <td>
+                                    <a href="{% url 'player_edit' i.player.id %}">
+                                        <img src="{% static 'images/icon-edit.svg' %}">
+                                    </a>
+                                </td>
+                                <td>
+                                    <form method="POST" action="">
+                                        {% csrf_token %}
+                                        <button name="player_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                            <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <style>
+                                .hidden {
+                                    display: none;
+                                }
+                            </style>
+                            <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
+                            <div class="title2">
+                                <h2>NENHUM JOGADOR FOI ENCONTRADO <br> <span style="font-size: 20px;">Realize o cadastro dos seus jogadores!</span></h2>
+                                
+                            </div>
+                            
+                            {% endfor %}
+                        </table>
+                        <div style="display: flex; width: auto; height: auto; justify-content: center; align-items: center; gap: 15px;">
+                            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                                <a href="{% url 'manage' %}" style="color: #ffffff; font-size: 30px;">CANCELAR</a>
+                            </button>
+                            <button class="side-bar-buttons-items2" style="background-color: var(--global-color-green); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                                <a href="{% url 'guiate_players_team' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}" style="color: #ffffff; font-size: 30px;">ADICIONAR MAIS</a>
+                            </button>
+                            
+                            <button class="side-bar-buttons-items2 cursor-block" style="background-color: var(--global-tenth-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                                <a {% if players|length > 3 and players|length < 12 %} href="{% url 'guiate_escolha' team_sport.id %}" {% endif %} style="color: #ffffff; font-size: 30px;">CONFIRMAR</a>
+                            </button>
+
+                        </div>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% if not players|length > 3 and players|length < 12 %}
+    <style>  .cursor-block{cursor: not-allowed;}  </style>
+    {% endif %}
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

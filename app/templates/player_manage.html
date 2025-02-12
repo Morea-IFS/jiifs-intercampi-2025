@@ -9,28 +9,10 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
-
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'player_register' %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
 
 {% block content %}
 <div class="all-block">
@@ -44,26 +26,27 @@
                 <table id="search-table">
                     <tr class="hidden">
                         <th>NOME</th>
-                        <th>INSTAGRAM</th>
+                        <th>MATRICULA</th>
+                        <th>CAMPUS</th>
                         <th>SEXO</th>
+                        <th>DATA NASC.</th>
                         <th>FOTO</th>
-                        <th>DELETAR</th>
+                        <th>EDITAR</th>
                     </tr>
                     {% for player in player %}
                     <tr>
                         <td>
                             <a href="{% url 'player_edit' player.id %}">{{ player.name }}</a>
                         </td>
-                        <td>{% if player.instagram %} {{ player.instagram }} {% else %} ---- {% endif %} </td>
+                        <td>{{player.registration}}</td>
+                        <td>{{player.campus}}</td>
                         <td>{{player.get_sexo_display}}</td>
+                        <td>{{player.date_nasc}}</td>
                         <td>{% if player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         <td>
-                            <form method="POST" action="">
-                                {% csrf_token %}
-                                <button name="player_delete" value="{{player.id}}" style="background-color: transparent; border: none;">
-                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
-                                </button>
-                            </form>
+                            <a href="{% url 'player_edit' player.id %}">
+                                <img src="{% static 'images/icon-edit.svg' %}">
+                            </a>
                         </td>
                     </tr>
                     {% empty %}
@@ -74,11 +57,14 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM JOGADOR CADASTRADO!</h2>
+                        <<h2>NENHUM JOGADOR FOI ENCONTRADO <br> <span style="font-size: 20px;">Realize o cadastro dos seus jogadores!</span></h2>
                     </div>
                     {% endfor %}
                 </table>
             </section>
+            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
         </div>
     </div>
 </div>

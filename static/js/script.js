@@ -79,6 +79,18 @@ function trocarTextoLabel() {
     }
 }
 
+function trocarTextoLabelspreadsheetv(){
+    const label = document.getElementById("label-spreadsheet");
+    const input = document.getElementById("spreadsheet");
+
+    // Se um arquivo for selecionado, muda o texto do label
+    if (input.files.length > 0) {
+        label.innerHTML = "Planilha selecionada";
+    } else {
+        // Se nenhum arquivo estiver selecionado, volta para o texto padrão
+        label.innerHTML = "Selecione uma planilha";
+    }
+}
 function toggle_checkbox(source) {
     checkboxes = document.getElementsByName("input-checkbox");
     for (i = 0, n = checkboxes.length; i < n; i++) {

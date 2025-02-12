@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <title>JIIFS ADMIN</title>
+</head>
+<body>
+    <main>
+        <div class="all">
+            <div class="all-block" style="width: 100vw;">
+                <section class="block1">
+                    <div class="title">
+                        <h1>CADASTRO DE TIMES</h1>
+                    </div>
+                    <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="block-inputs-form">
+                            <div class="block-inputs-form">
+                            <div>
+                                <input type="text" autocomplete="on" autocorrect="on" name="name"
+                                    placeholder="Digite o nome do time*"></input>
+                                <select id="sexos" name="sexo" required>
+                                    <option selected disabled>Selecione o sexo*</option required>
+                                    {% for value, name in sexo %}
+                                    <option value="{{value}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="sport_id">
+                                    <option value="None" selected disabled>Selecione o esporte*</option>
+                                    {% for value, name in sport %}
+                                    <option value="{{value}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                            </div>
+                            <div>
+                                <input class="input-confirm" type="submit" value="Confirmar">
+                            </div>
+                        </div>
+                    </form>
+                    {% if messages %}
+                    <style>
+                        .ll {
+                            background-color: #c5c5c5;
+                            padding: 20px;
+                        }
+                    </style>
+                    {% for m in messages %}
+                    <div class="ll">
+                        <p style="color: #AB0000;">{{m}}</p>
+                    </div>
+                    {% endfor %}
+                    <br>
+                    {% endif %}
+                    <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                        <a href="{% url 'manage' %}" style="color: #ffffff; font-size: 30px;">CANCELAR</a>
+                    </button>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

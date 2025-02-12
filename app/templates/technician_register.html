@@ -9,17 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -57,6 +48,9 @@
                 </div>
             </div>
         </form>
+        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'technician_manage' %}">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

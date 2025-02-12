@@ -13,6 +13,7 @@
     /* VARIAVEIS / CORES */
 
     --global-color-white: #f1f1f1;
+    --global-color-green: #009700;
     --global-primary-color: #8b8b8b;
     --global-secondary-color: #3C3D3C;
     --global-third-color: #CBCBCB;
@@ -34,6 +35,7 @@
     /* VARIAVEIS / CORES */
 
     --global-color-white: #f1f1f1;
+    --global-color-green: #009700;
     --global-primary-color: #e2e2e2;
     --global-secondary-color: #232323;
     --global-third-color: #282828;
@@ -107,6 +109,12 @@ button {
     width: 100%;
 }
 
+.center-top{
+    display: flex;
+    justify-content: center;
+    padding-top: 4em;
+}
+
 .title {
     display: flex;
     justify-content: center;
@@ -114,6 +122,11 @@ button {
     text-align: center;
     height: 9em;
     width: 100%;
+}
+
+.sub-title{
+    color: white;
+    padding-bottom: 30px;
 }
 
 .title2 {
@@ -165,6 +178,10 @@ button {
     width: 80%;
 }
 
+.block-inputs-form label{
+    color: white;
+}
+
 .block-inputs-form select {
     background-color: var(--global-secondary-color);
     color: var(--global-primary-color);
@@ -192,6 +209,17 @@ input[type=number] {
     text-align: center;
     padding: 0.8em 0.5em;
     font-size: 14px;
+}
+
+input[type=date] {
+    background-color: var(--global-sixth-color);
+    border: none;
+    color: #5c5c5c;
+    text-align: center;
+    width: 100%;
+    padding: 0.8em 0.5em;
+    font-size: 14px;
+    
 }
 
 input[type=text],

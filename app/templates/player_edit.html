@@ -9,28 +9,10 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
-
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'player_register' %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
 
 {% block content %}
 <div class="all-block">
@@ -43,10 +25,11 @@
                 {% csrf_token %}
                 <div class="block-inputs-form">
                     <div>
-                        <input type="text" autocomplete="on" autocorrect="on" name="name"
-                            placeholder="{{ player.name }}" value="{{ player.name }}" required />
-                        <input type="text" autocomplete="on" autocorrect="on" name="instagram"
-                            placeholder="{{ player.instagram }}" value="{{ player.instagram }}" />
+                        {% if player.name %} placeholder="{{ player.name }}" {% else %} placeholder="Nome do jogador*" {% endif %} value="{{ player.name }}" required />
+                        <input type="text" autocomplete="on" autocorrect="on" name="registration"
+                        {% if player.registration %} placeholder="{{ player.registration }}" value="{{ player.registration }}" {% else %} placeholder="Matrícula" {% endif %} required>
+                        <input type="text" autocomplete="on" autocorrect="on" name="campus"
+                        {% if player.campus %} placeholder="{{ player.campus }}" value="{{ player.campus }}" {% else %} placeholder="Campus" {% endif %} required>
                         <select id="sexos" name="sexo">
                             <option {% if player_disable %} selected disabled {% endif %} value="2"> Selecione o sexo
                             </option>
@@ -65,12 +48,6 @@
                     <div>
                         <input class="input-confirm" type="submit" value="Confirmar" />
                     </div>
-                </div>
-            </form>
-            <form id="function_validate_form_delete" class="block-inputs" method="post">
-                {% csrf_token %}
-                <div class="block-inputs-form">
-                    <input class="input-delete" type="submit" value="Excluir" name="excluir" />
                 </div>
             </form>
         </div>

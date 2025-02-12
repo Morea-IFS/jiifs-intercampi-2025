@@ -9,28 +9,10 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
-
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'technician_register' %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
 
 {% block content %}
 <div class="all-block">

@@ -9,17 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
-    <button class="side-bar-buttons-items">JOGADORES</button>
-</a>
-<a href="{% url 'team_manage' %}">
-    <button class="side-bar-buttons-items">TIMES</button>
-</a>
-<a href="{% url 'matches_manage' %}">
-    <button class="side-bar-buttons-items">PARTIDAS</button>
-</a>
-<a href="{% url 'technician_manage' %}">
-    <button class="side-bar-buttons-items">TÉCNICOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -33,17 +24,25 @@
             {% csrf_token %}
             <div class="block-inputs-form">
                 <div>
-                    <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Nome do jogador"
-                        required>
-                    <input type="text" autocomplete="on" autocorrect="on" name="instagram"
-                        placeholder="Instagram do jogador">
-                    <select id="sexos" name="sexo" required>
-                        <option selected disabled>Selecione o sexo</option required>
+                    <label for="name">Nome do jogador</label>
+                    <input type="text" autocomplete="on" autocorrect="on" id="name" name="name" placeholder="Nome do jogador*"
+                    <label for="registration">Matrícula</label>
+                    <input type="text" autocomplete="on" autocorrect="on" id="registration" name="registration"
+                        placeholder="Matrícula*" required>
+                    <label for="campus">Campus</label>
+                    <input type="text" autocomplete="on" autocorrect="on" id="campus" name="campus"
+                        placeholder="Campus*" required>
+                    <label for="date" >Data de nascimento</label>
+                    <input type="date" autocomplete="on" autocorrect="on" name="date" id="date"
+                            placeholder="Data de nascimento*" required>
+                    <label for="sexos">Sexo</label>
+                    <select id="sexos" name="sexo">
+                        <option selected disabled value="None">Selecione o sexo</option>
                         <option value="0">Masculino</option>
                         <option value="1">Feminino</option>
                     </select>
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione uma imagem</label>
-                    <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
+                    <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
                     {% if messages %}
                     {% for m in messages %}
                     <p style="color: red;">{{m}}</p>
@@ -55,6 +54,21 @@
                 </div>
             </div>
         </form>
+        <br><br>
+        <span style="background-color: white; width: 45vw; height: 3px;"></span>
+        <br><br>
+        <h2 class="sub-title">CADASTRO COM PLANILHA</h2>
+        <form class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form" style="width: 40vw;">
+                <label for="spreadsheet" id="label-spreadsheet" class="custom-file-button">Selecione uma planilha</label>
+                <input type="file" name="spreadsheet" id="spreadsheet" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="trocarTextoLabelspreadsheetv()">
+                <input class="input-confirm" type="submit" value="Confirmar">
+            </div>
+        </form>
+        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'player_manage' %}">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

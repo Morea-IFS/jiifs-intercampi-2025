@@ -6,22 +6,15 @@
 {% endblock head %}
 
 {% block navbar %}
+
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'settings' %}">
-    <button class="side-bar-buttons-items">CONFIGURAÇÕES</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
-{% endblock navbar %}
 
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'banner_register' %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
+{% endblock navbar %}
 
 {% block content %}
 <div class="all-block">
@@ -29,8 +22,12 @@
         <div class="title">
             <h1>BANNERS</h1>
         </div>
+        <button class="side-bar-buttons-items2">
+            <a href="{% url 'banner_register' %}">CADASTRO DE BANNERS</a>
+        </button>
+        <br><br>
         <div class="all-manage">
-            <input type="search" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os jogadores" />
+            <input type="search" class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os jogadores" />
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
@@ -54,7 +51,7 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM JOGADOR CADASTRADO!</h2>
+                        <h2>NÃO HÁ NENHUM BANNER CADASTRADO! <br> <span style="font-size: 20px;">Os banners sõa utilizados no placar do projetor.!</span></h2>
                     </div>
                     {% endfor %}
                     {% if messages %} 
@@ -67,6 +64,9 @@
                     {% endif %}
                 </table>
             </section>
+            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
         </div>
     </div>
 </div>
