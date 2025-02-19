@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Certificate, Badge, Config, Volley_match, Events, Player, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
+from . models import Certificate, Badge, Config, Volley_match, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
 
 # Register your models here.
 
@@ -22,6 +22,11 @@ class CertificatevAdmin(admin.ModelAdmin):
 class TechnicianAdmin(admin.ModelAdmin):
     list_display = ('id','name','sexo', 'siape','campus')
     search_fields = ('id','name','sexo', 'siape','campus')
+
+@admin.register(Voluntary)
+class VoluntaryAdmin(admin.ModelAdmin):
+    list_display = ('id','name','registration','campus')
+    search_fields = ('id','name','registration','campus')
 
 @admin.register(Volley_match)
 class Volley_matchAdmin(admin.ModelAdmin):

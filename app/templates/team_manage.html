@@ -18,7 +18,7 @@
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>GERENCIAMENTO DE TIMES</h1>
+            <h1>GERENCIAMENTO DE CAMPUS</h1>
         </div>
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
             <a href="{% url 'guiate_register_team' %}">CADASTRO DE CAMPUS</a>
@@ -29,6 +29,7 @@
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden error">
+                        <th>ID</th>
                         <th>NOME</th>
                         <th>ESPORTE</th>
                         <th>SEXO</th>
@@ -40,13 +41,14 @@
                     </tr>
                     {% for team_sport in team_sports %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>
                             {% if team_sport.team.name %} {{ team_sport.team.name }} {% else %} ---- {% endif %}
                         </td>
                         <td>{{ team_sport.get_sport_display }}</td>
                         <td>{{ team_sport.get_sexo_display }}</td>
                         <td>
-                            <a href="{% url 'team_players_manage' team_sport.id %}">ACESSAR</a>
+                            <a style="color: #0099ff;" href="{% url 'team_players_manage' team_sport.id %}">ACESSAR</a>
                         </td>
                         {% if user.is_staff %}
                         <td>
@@ -78,9 +80,19 @@
                     {% endfor %}
                 </table>
             </section>
+            <ul class="notifications"></ul>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
+            <script src="{% static 'js/messages.js' %}"></script>
+            {% if messages %}
+            {% for message in messages %}
+            
+                <script>
+                    createToast("{{ message.tags }}", "{{ message }}");
+                </script>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

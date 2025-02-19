@@ -30,8 +30,9 @@
                     placeholder="Matricula ou siape" required>
                     <select name="type_voluntary" required>
                         <option selected disabled>Selecione o tipo de voluntário</option required>
-                        <option value="0">Voluntário</option>
-                        <option value="1">Equipe de organização</option>
+                        {% for v, n in types %}
+                        <option value="{{v}}">{{n}}</option>
+                        {% endfor %}
                     </select>
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>

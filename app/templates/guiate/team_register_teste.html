@@ -14,9 +14,12 @@
     <main>
         <div class="all">
             <div class="all-block" style="width: 100vw;">
+                <div class="theme-mode-button" id="theme-toggle">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </div>
                 <section class="block1">
                     <div class="title">
-                        <h1>{% if technician %} CADASTRE UM ESPORTE AO CAMPUS <span style="color: #0051ff;">{{technician.get_campus_display|upper}}</span>{% else %}CADASTRO DE TIMES {% endif %}</h1>
+                        <h1>{% if technician %} ADICIONE UMA NOVA MODALIDADE AO CAMPUS <span style="color: #0051ff;">{{technician.get_campus_display|upper}}</span>{% else %}CADASTRO DE TIMES {% endif %}</h1>
                     </div>
                     <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -55,19 +58,14 @@
                             </div>
                         </div>
                     </form>
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
                     {% if messages %}
-                    <style>
-                        .ll {
-                            background-color: #c5c5c5;
-                            padding: 20px;
-                        }
-                    </style>
-                    {% for m in messages %}
-                    <div class="ll">
-                        <p style="color: #AB0000;">{{m}}</p>
-                    </div>
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
                     {% endfor %}
-                    <br>
                     {% endif %}
                     <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                         <a href="{% url 'manage' %}">CANCELAR</a>

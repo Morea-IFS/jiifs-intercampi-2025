@@ -69,7 +69,7 @@ class Type_Banner(models.IntegerChoices):
 class Type_service(models.IntegerChoices):
     voluntary = 0, "Voluntario"
     organization = 1, "Organização"
-    technician = 3, "Técnico"
+    technician = 2, "Técnico"
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
@@ -106,7 +106,7 @@ class Voluntary(models.Model):
     type_voluntary = models.IntegerField(choices=Type_service.choices, default=Type_service.voluntary)
 
     def __str__(self):    
-        return f"{self.name} | {self.sexo}"
+        return f"{self.name} | {self.get_campus_display()}"
 
 class Team(models.Model):
     name = models.CharField(max_length=100, blank=True)
@@ -124,7 +124,7 @@ class Badge(models.Model):
     file = models.ImageField(upload_to='badge/', blank=True)
 
     def __str__(self):    
-        return f"{self.name}"
+        return f"{self.name} - {self.id}"
 
 class Certificate(models.Model):
     name = models.CharField(max_length=100, blank=True)

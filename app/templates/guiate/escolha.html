@@ -38,6 +38,16 @@
                 <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                     <a href="{% url 'team_manage' %}">SAIR</a>
                 </button>
+                <script src="{% static 'js/messages.js' %}"></script>
+                {% if messages %}
+                {% for message in messages %}
+                
+                    <script>
+                        createToast("{{ message.tags }}", "{{ message }}");
+                    </script>
+                {% endfor %}
+                {% endif %}
+                <ul class="notifications"></ul>
             </div>
         </div>
     </main>

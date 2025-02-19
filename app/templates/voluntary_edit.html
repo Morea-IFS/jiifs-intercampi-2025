@@ -30,8 +30,9 @@
                     placeholder="{{ voluntary.registration }}" value="{{ voluntary.registration }}" />
                     <select name="type_voluntary">
                         <option selected disabled>Selecione o tipo de voluntário</option required>
-                        <option {% if voluntary.type_voluntary == 0 %} selected {% endif %} value="0">Voluntário</option>
-                        <option {% if voluntary.type_voluntary == 1 %} selected {% endif %} value="1">Equipe de organização</option>
+                        {% for v, n in types %}
+                        <option {% if voluntary.type_voluntary == v %} selected {% endif %} value="{{v}}">{{n}}</option>
+                        {% endfor %}
                     </select>
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>

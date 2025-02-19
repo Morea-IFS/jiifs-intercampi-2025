@@ -15,28 +15,48 @@ from .models import Badge, Certificate, Match,Events, Match, Time_pause
 pdfmetrics.registerFont(TTFont('MsMadi', 'fonts/MsMadi-Regular.ttf'))
 pdfmetrics.registerFont(TTFont('Outfit', 'fonts/Outfit-Black.ttf'))
 
-def generate_certificates(players, user):
+def generate_certificates(players, user, t):
     w, h = (1920, 1080)
     buffer = BytesIO() 
-
-    for name in players:
-        namecertificate = name.player.name.split()[0].upper() + ("_" + name.player.name.split()[1].upper() if len(name.player.name.split()) > 1 else '')
-        c = canvas.Canvas(buffer, pagesize=(w, h))
-        base_certificate = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_certificate.png') )
-        c.drawImage(base_certificate, 0, 0, w, h)
-        c.setFont("MsMadi", 100)
-        c.drawCentredString(w / 2, h / 2 + 22, name.player.name)
-        c.setFont("Outfit", 64)
-        c.drawCentredString(540, 260, name.player.campus.upper())
-        signature = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/signature.png') )
-        c.drawImage(signature, 1330, 60, 500, 350, mask='auto')
-        c.save()
-        arquivo_saida = f"CERTIFICADO_{unidecode(namecertificate)}_{name.player.id}.pdf"
-        buffer.seek(0)
-        certificate = Certificate.objects.create(user=user)
-        certificate.name = unidecode(namecertificate)
-        certificate.file.save(arquivo_saida, ContentFile(buffer.read()))
-        certificate.save()
+    if t == 0:
+        for name in players:
+            namecertificate = name.player.name.split()[0].upper() + ("_" + name.player.name.split()[1].upper() if len(name.player.name.split()) > 1 else '')
+            c = canvas.Canvas(buffer, pagesize=(w, h))
+            base_certificate = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_certificate.png') )
+            c.drawImage(base_certificate, 0, 0, w, h)
+            c.setFont("MsMadi", 100)
+            c.drawCentredString(w / 2, h / 2 + 22, name.player.name)
+            c.setFont("Outfit", 64)
+            c.drawCentredString(540, 260, name.player.get_campus_display().upper())
+            signature = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/signature.png') )
+            c.drawImage(signature, 1330, 60, 500, 350, mask='auto')
+            c.save()
+            arquivo_saida = f"CERTIFICADO_{unidecode(namecertificate)}_{name.player.id}.pdf"
+            buffer.seek(0)
+            certificate = Certificate.objects.create(user=user)
+            certificate.name = unidecode(namecertificate)
+            certificate.file.save(arquivo_saida, ContentFile(buffer.read()))
+            certificate.save()
+    else:
+        for name in players:
+            namecertificate = name.name.split()[0].upper() + ("_" + name.name.split()[1].upper() if len(name.name.split()) > 1 else '')
+            c = canvas.Canvas(buffer, pagesize=(w, h))
+            base_certificate = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_certificate.png') )
+            c.drawImage(base_certificate, 0, 0, w, h)
+            c.setFont("MsMadi", 100)
+            c.drawCentredString(w / 2, h / 2 + 22, name.name)
+            c.setFont("Outfit", 64)
+            c.drawCentredString(540, 260, name.get_campus_display().upper())
+            signature = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/signature.png') )
+            c.drawImage(signature, 1330, 60, 500, 350, mask='auto')
+            c.save()
+            namebadge = f'CAMPUS_{name.get_campus_display().upper()}_{name.get_type_voluntary_display().upper()}'
+            arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{name.id}.pdf"
+            buffer.seek(0)
+            certificate = Certificate.objects.create(user=user)
+            certificate.name = unidecode(namecertificate)
+            certificate.file.save(arquivo_saida, ContentFile(buffer.read()))
+            certificate.save()
 
 def draw_circular_image(c, image_path, center_x, center_y, diameter):
     img = ImageReader(image_path)
@@ -54,131 +74,131 @@ def draw_circular_image(c, image_path, center_x, center_y, diameter):
     )
     c.restoreState()
     
-def generate_badges(players, userr, type):
-    path = os.path.join("results/nametags", "nametags.pdf")
-    w, h = A4
-    nametag_width = (w - 3 * 20) / 2
-    nametag_height = (h - 3 * 20) / 2
-    positions = [
-        (20, h - 20 - nametag_height),
-        (20 * 2 + nametag_width, h - 20 - nametag_height),
-        (20, 20),
-        (20 * 2 + nametag_width, 20),
-    ]
-    if not os.path.exists("results/nametags"):
-        os.makedirs("results/nametags")
-    c = canvas.Canvas(path, pagesize=A4)
-    for j, user in enumerate(players):
-        if j % 4 == 0 and j > 0:
-            c.showPage()
-        x, y = positions[j % 4]
-
-        c.rect(x, y, nametag_width, nametag_height)
-        base_nametag = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_nametag__' + str(type) + '.png'))
-        c.drawImage(base_nametag, x, y, width=nametag_width, height=nametag_height)
-
-        if user.player.photo:
-            try:
-                photo_diameter = nametag_width / 2 + 20
-                center_x = x + nametag_width / 2
-                center_y = y + nametag_height - photo_diameter + 43
-                draw_circular_image(c, user.player.photo, center_x, center_y, photo_diameter)
-                print(user.player.photo)
-                print(user.player.photo.url)
-            except:
-                print("f")
-
-        c.setFont("Helvetica-Bold", 28)
-        c.drawCentredString(
-            x + nametag_width / 2,
-            y + nametag_height / 2 - 30,
-            (
-                user.player.name.upper()
-                if len(user.player.name) < 15
-                else f"{user.player.name.split()[0].upper()} {next((w[0].upper() + '.' for w in user.player.name.split()[1:] if w.lower() not in ['de', 'da', 'dos', 'das', 'do']), '')}"
-            ),
-        )
-
-        c.setFont("Helvetica", 18)
-        c.drawCentredString(
-            x + nametag_width / 2,
-            y + nametag_height / 2 - 50,
-            str(user.player.registration),
-        )
-
-        c.setFont("Helvetica-Bold", 18)
-        c.drawCentredString(
-            x + nametag_width / 2,
-            y + nametag_height / 2 - 70,
-            "CAMPUS: " + user.player.campus,
-        )
-        print(user.team_sport.get_sport_display().lower())
-        print(os.listdir( os.path.join(settings.BASE_DIR, 'static/images/sports')))
-        if user.team_sport.get_sport_display().lower() in [
-            file.replace(".png", "") for file in os.listdir( os.path.join(settings.BASE_DIR, 'static/images/sports'))
-        ]:
-            print("eitam")
-            sport = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/sports/' + user.team_sport.get_sport_display().lower() + '.png'))
-            c.drawImage(
-                sport,
-                x + nametag_width / 2 + 10,
-                y + 17,
-                width=110,
-                height=35,
-                mask="auto",
-            )
-        else:
-            print("af")
-            print(user.team_sport.get_sport_display().lower())
-            c.drawImage(
-                os.path.join(settings.BASE_DIR, 'static/images/logo_ifs.png'),
-                x + nametag_width / 2 + 55,
-                y + 15,
-                width=34,
-                height=45,
-                mask="auto",
-            )
-
-    c.save()
-
-def generate_nametags(players, user):
+def generate_badges(players, user_l, t):
     buffer = BytesIO() 
-    c = canvas.Canvas(buffer, pagesize=A4)
-    w, h = A4
-    nametag_width = (w - 3 * 20) / 2
-    nametag_height = (h - 3 * 20) / 2
-    positions = [
-        (20, h - 20 - nametag_height),
-        (20 * 2 + nametag_width, h - 20 - nametag_height),
-        (20, 20),
-        (20 * 2 + nametag_width, 20)
-    ]
-    for j, i in enumerate(players):
-        print("j: ",j, "i: ",i.player.name, " : ",i)
-        if j % 4 == 0 and j > 0:
-            c.showPage()
-        x, y = positions[j % 4]
+    if t == '2':
+        w, h = A4
+        nametag_width = (w - 3 * 20) / 2
+        nametag_height = (h - 3 * 20) / 2
+        positions = [
+            (20, h - 20 - nametag_height),
+            (20 * 2 + nametag_width, h - 20 - nametag_height),
+            (20, 20),
+            (20 * 2 + nametag_width, 20),
+        ]
+        c = canvas.Canvas(buffer, pagesize=A4)
+        for j, user in enumerate(players):
+            if j % 4 == 0 and j > 0:
+                c.showPage()
+            x, y = positions[j % 4]
 
-        c.rect(x, y, nametag_width, nametag_height)
-        s = str(2)
-        base_nametag = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_nametag__' + s + '.png'))
-        c.drawImage(base_nametag, x, y, width=nametag_width, height=nametag_height)
-        c.setFont("Helvetica-Bold", 28)
-        c.drawCentredString(
-            x + nametag_width / 2, 
-            y + nametag_height / 2 - 30, 
-            i.player.name.upper() if len(i.player.name) < 15 else f"{i.player.name.split()[0].upper()} {next((w[0].upper() + '.' for w in i.player.name.split()[1:] if w.lower() not in ['de', 'da', 'dos', 'das', 'do']), '')}"
-        )
-    c.save()
+            c.rect(x, y, nametag_width, nametag_height)
+            base_nametag = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_nametag__' + t + '.png'))
+            c.drawImage(base_nametag, x, y, width=nametag_width, height=nametag_height)
+
+            if user.player.photo:
+                try:
+                    photo_diameter = nametag_width / 2 + 20
+                    center_x = x + nametag_width / 2
+                    center_y = y + nametag_height - photo_diameter + 43
+                    draw_circular_image(c, user.player.photo, center_x, center_y, photo_diameter)
+                    print(user.player.photo)
+                    print(user.player.photo.url)
+                except:
+                    print("f")
+
+            c.setFont("Helvetica-Bold", 28)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 30,
+                (
+                    user.player.name.upper()
+                    if len(user.player.name) < 15
+                    else f"{user.player.name.split()[0].upper()} {next((w[0].upper() + '.' for w in user.player.name.split()[1:] if w.lower() not in ['de', 'da', 'dos', 'das', 'do']), '')}"
+                ),
+            )
+
+            c.setFont("Helvetica", 18)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 50,
+                str(user.player.registration),
+            )
+
+            c.setFont("Helvetica-Bold", 18)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 70,
+                "CAMPUS: " + user.player.get_campus_display(),
+            )
+
+        c.save()
+        namebadge = f'CAMPUS_{user.get_campus_display()}_{user.get_type_voluntary_display()}'
+        arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{user.id}.pdf"
+    else:
+        w, h = A4
+        nametag_width = (w - 3 * 20) / 2
+        nametag_height = (h - 3 * 20) / 2
+        positions = [
+            (20, h - 20 - nametag_height),
+            (20 * 2 + nametag_width, h - 20 - nametag_height),
+            (20, 20),
+            (20 * 2 + nametag_width, 20),
+        ]
+        c = canvas.Canvas(buffer, pagesize=A4)
+        for j, user in enumerate(players):
+            if j % 4 == 0 and j > 0:
+                c.showPage()
+            x, y = positions[j % 4]
+
+            c.rect(x, y, nametag_width, nametag_height)
+            base_nametag = ImageReader( os.path.join(settings.BASE_DIR, 'static/images/generators/base_nametag__' + t + '.png'))
+            c.drawImage(base_nametag, x, y, width=nametag_width, height=nametag_height)
+
+            if user.photo:
+                try:
+                    photo_diameter = nametag_width / 2 + 20
+                    center_x = x + nametag_width / 2
+                    center_y = y + nametag_height - photo_diameter + 43
+                    draw_circular_image(c, user.photo, center_x, center_y, photo_diameter)
+                    print(user.photo)
+                    print(user.photo.url)
+                except:
+                    print("f")
+
+            c.setFont("Helvetica-Bold", 28)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 30,
+                (
+                    user.name.upper()
+                    if len(user.name) < 15
+                    else f"{user.name.split()[0].upper()} {next((w[0].upper() + '.' for w in user.name.split()[1:] if w.lower() not in ['de', 'da', 'dos', 'das', 'do']), '')}"
+                ),
+            )
+
+            c.setFont("Helvetica", 18)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 50,
+                str(user.registration),
+            )
+
+            c.setFont("Helvetica-Bold", 18)
+            c.drawCentredString(
+                x + nametag_width / 2,
+                y + nametag_height / 2 - 70,
+                "CAMPUS: " + user.get_campus_display(),
+            )
+
+        c.save()
+        namebadge = f'CAMPUS_{user.get_campus_display().upper()}_{user.get_type_voluntary_display().upper()}'
+        arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{user.id}.pdf"
     buffer.seek(0)
-    badge = Badge.objects.create(user=user)
-    badge.name = f'nametags__{badge.id}'
-    arquivo_saida = f'nametags__{badge.id}.pdf'
+    badge = Badge.objects.create(user=user_l)
+    badge.name = namebadge
     badge.file.save(arquivo_saida, ContentFile(buffer.read()))
     badge.save()
-
-    return badge
-
 
 def generate_events(name, details):
     match = Match.objects.get(status=1)

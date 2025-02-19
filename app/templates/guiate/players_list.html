@@ -15,10 +15,14 @@
         <div class="all">
             <div class="all-block" style="width: 100vw; display: flex; align-items: center; justify-content: center;">
                 <div style="width: auto; height: auto; display: flex; flex-direction: column; align-items: center; text-align: center;" >
+                    <div class="theme-mode-button" id="theme-toggle">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </div>
                     <h1 style="color: white;">JOGADORES DO CAMPUS <span style="color: #0051ff;">{{team_sport.team.name|upper}}</span> - <span style="color: #0051ff;">{{team_sport.get_sport_display|upper}}</span> {{team_sport.get_sexo_display|upper}}</h1>
                     <section class="all-table" style="padding-top: 5vh;">
                         <table id="search-table">
                             <tr class="hidden">
+                                <th>ID</th>
                                 <th>NOME</th>
                                 <th>MATRICULA</th>
                                 <th>CAMPUS</th>
@@ -31,6 +35,7 @@
                             </tr>
                             {% for i in players %}
                             <tr>
+                                <td>{{ forloop.counter }}</td>
                                 <td>
                                     {{ i.player.name }}
                                 </td>
@@ -74,11 +79,20 @@
                             </button>
                             
                             <button class="side-bar-buttons-item2 custom-buttons-sport-nav">
-                                <a href="{% url 'guiate_escolha' team_sport.id %}">CONFIRMAR</a>
+                                <a href="{% url 'guiate_escolha' team_sport.id %}">FINALIZAR</a>
                             </button>
                         </div>
                         
                     </section>
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
+                    {% if messages %}
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>

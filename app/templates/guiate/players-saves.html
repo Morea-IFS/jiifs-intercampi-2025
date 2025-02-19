@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <title>JIIFS ADMIN</title>
+</head>
+<body>
+    <main>
+        <div class="all">
+            <div class="all-block" style="width: 100vw; display: flex; align-items: center; justify-content: center;">
+                <div style="width: auto; height: auto; display: flex; flex-direction: column; align-items: center; text-align: center;" >
+                    <div class="theme-mode-button" id="theme-toggle">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </div>
+                    <h1 style="color: white;">JOGADORES JÁ CADASTRADOS NO SISTEMA</span></h1>
+                    <form class="block-inputs-form" id="function_validate_form" method="post">{% csrf_token %}
+                    <section class="all-table" style="padding-top: 5vh;">
+                        
+                        <table id="search-table">
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>NOME</th>
+                                <th>MATRICULA</th>
+                                <th>CAMPUS</th>
+                                <th>SEXO</th>
+                                <th>DATA NASC.</th>
+                            </tr>
+                            {% for i in player %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="player-checkbox" value="{{ i.id }}">
+                                </td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    {{ i.name }}
+                                </td>
+                                <td>{{i.registration}}</td>
+                                <td>{{i.get_campus_display}}</td>
+                                <td>{{i.get_sexo_display}}</td>
+                                <td>{{i.date_nasc}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        <div style="display: flex; width: auto; height: auto; justify-content: center; align-items: center; gap: 15px; flex-direction: column;">                            
+                            <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-color-green);">
+                                ADICIONAR OS SELECIONADOS
+                            </button>
+                            
+                            <button type="button" class="side-bar-buttons-item2 custom-buttons-sport-nav" style="margin-bottom: 5vh; background-color: var(--global-seventh-color);">
+                                <a href="{% url 'guiate_players_team' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">VOLTAR</a>
+                            </button>
+                        </div>
+                    
+                    </section>
+                    </form>
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
+                    {% if messages %}
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

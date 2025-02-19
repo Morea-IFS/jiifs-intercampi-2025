@@ -15,6 +15,10 @@
         <div class="all">
             <div class="all-block" style="width: 100vw;">
                 <div class="block1">
+                    <div class="block1" style="display: flex;">
+                        <div class="theme-mode-button" id="theme-toggle">
+                            <i class="fas fa-sun" id="theme-icon"></i>
+                        </div>
                     <div class="title" style="display: flex; flex-direction: column; color: white;">
                         <h1>ADICIONE ATLETAS NO TIME DE <span style="color: #0051ff; ">{{team_sport.get_sport_display|upper}} {{team_sport.get_sexo_display|upper}}</span> DO CAMPUS <span style="color: #0051ff;">{{team_sport.team.name|upper}}</span></h1>
                     </div>
@@ -45,15 +49,15 @@
                                 <label for="Fotografia">Fotografia</label>
                                 <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui e adicione uma fotografia</label>
                                 <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
-                                {% if messages %}
-                                {% for m in messages %}
-                                <p style="color: red;">{{m}}</p>
-                                {% endfor %}
-                                {% endif %}
                             </div>
                             <div>
-                                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-tenth-color);">
-                                    CONFIRMAR
+                                <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                                    CONFIRMAR ATLETA
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #ff5e00">
+                                    <a href="{% url 'players_general' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">BUSCAR JOGADORES JÁ CADASTRADOS</a>
                                 </button>
                             </div>
                         </div>
@@ -65,20 +69,21 @@
                         <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-color-green);">
                             <a href="{% url 'guiate_players_list' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">VER JOGADORES</a>
                         </button>
-
                     </div>
-                    
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
+                    {% if messages %}
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </main>
 
     <script src="{% static 'js/script.js' %}"></script>
-    <script>
-        const input = document.getElementById('bulletin')
-        input.addEventListener('change', () =>{
-            console.log(input.value)
-        })
-    </script>
 </body>
 </html>

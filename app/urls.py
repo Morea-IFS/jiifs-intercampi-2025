@@ -40,8 +40,9 @@ urlpatterns = [
     path('timer/<int:id>', views.timer_page, name = "timer"),
     path('termos-de-uso/', views.termos_uso, name='termos_uso'),
     path('erro404', views.page_in_erro404),
-
     path('manage', views.manage, name="manage"),
+
+    path('players_general/<str:team_name>/<str:team_sexo>/<str:sport_name>', views.players_general, name="players_general"),
     path('register_team', views.register_team, name="guiate_register_team"),
     path('register_new_sport/<str:team_name>/', views.register_new_sport, name="guiate_register_new_sport"),
     path('players/<str:team_name>/<str:team_sexo>/<str:sport_name>', views.players_team, name="guiate_players_team"),
