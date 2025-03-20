@@ -9,8 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'games' %}">
-    <button class="side-bar-buttons-items">JOGOS</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -18,19 +18,12 @@
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>JOGOS</h1>
+            <h1>PARTIDAS</h1>
         </div>
-        {% if messages %}
-        <style>.k select{background-color: #AB0000; color: rgb(255, 255, 255);} 
-            .ll{background-color: #c5c5c5; padding: 20px;}
-        </style>
-        {% for m in messages %}
-        <div class="ll">
-            <p style="color: #AB0000;">{{m}}</p>
-        </div>
-        {% endfor %}
-        <br>
-        {% endif %}
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+            <a href="{% url 'matches_register' %}">CADASTRAR PARTIDA</a>
+        </button>
+        <br><br>
         <div class="games">
             {% for i in context %}
             <section class="game-section">
@@ -73,6 +66,9 @@
             </div>
             {% endfor %}
         </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'manage' %}">VOLTAR</a>
+        </button>
     </div>
 </div>
 {% endblock content %}

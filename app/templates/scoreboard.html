@@ -10,14 +10,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'player_manage' %}">
+<a href="{% url 'manage' %}">
     <button class="side-bar-buttons-items">GERENCIAMENTO</button>
-</a>
-<a href="{% url 'games' %}">
-    <button class="side-bar-buttons-items">JOGOS</button>
-</a>
-<a href="{% url 'settings' %}">
-    <button class="side-bar-buttons-items">CONFIGURAÇÕES</button>
 </a>
 {% endblock navbar %}
 
@@ -266,11 +260,6 @@
             </div>
         </div>
     </div>
-    {% if messages %}
-    {% for m in messages %}
-        <p style="color: #AB0000;">{{m}}</p>
-    {% endfor %}
-    {% endif %}
 </div>
 {% endblock content %}
 {% block scripts %}

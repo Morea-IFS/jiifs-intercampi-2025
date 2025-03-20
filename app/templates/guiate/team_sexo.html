@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/team_sexo.css' %}" />
+    <title>JIIFS ADMIN</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+    
+    <div class="gender-container">
+        {% if sport == 2 %}
+        
+        <button type="submit" name="mixed" class="gender-btn mixed-btn">
+            <i class="gender-icon fas fa-mars-and-venus"></i>
+            <span class="btn-title">Misto</span>
+        </button>
+
+        <button type="submit" name="mixed" class="gender-btn mixed-btn">
+            <i class="gender-icon fas fa-mars-and-venus"></i>
+            <span class="btn-title">Misto</span>
+        </button>
+
+        {% else %}
+
+        <button type="submit" name="male" class="gender-btn male-btn">
+            <i class="gender-icon fas fa-mars"></i>
+            <span class="btn-title">Masculino</span>
+        </button>
+        
+        <button type="submit" name="female" class="gender-btn female-btn">
+            <i class="gender-icon fas fa-venus"></i>
+            <span class="btn-title">Feminino</span>
+        </button>
+
+        {% endif %}
+    </div>
+</form>
+    <div style="width: 98vw; height: auto; justify-content: center; display: flex; bottom: 10vh;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #AB0000;">
+            <a href="{% url 'guiate_register_team' %}">VOLTAR</a>
+        </button>
+    </div>
+</body>
+</html>

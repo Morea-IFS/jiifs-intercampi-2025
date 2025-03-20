@@ -9,11 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'games' %}">
-    <button class="side-bar-buttons-items">JOGOS</button>
-</a>
-<a href="{% url 'settings' %}">
-    <button class="side-bar-buttons-items">CONFIGURAÇÕES</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -24,7 +21,11 @@
             <h1 class="title">{{team_match_a.team.name}}</h1>
             <form method="post">
                 {% csrf_token %}
-                <button name="team-a" type="submit">ENVIAR</button>
+                <div style="width: auto; display: flex; justify-content: center;">
+                    <button name="team-a" type="submit" style="width: auto; height: auto;" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                        CONFIRMAR
+                    </button>
+                </div>
                 <br><br>
                 <table id="search-table">
                     <tr>
@@ -41,12 +42,22 @@
                     {% endfor %}
                 </table>
             </form>
+            <div style="width: 100%; display: flex; justify-content: center;">
+                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px; width: auto; height: auto;">
+                    <a href="{% url 'manage' %}">VOLTAR</a>
+                </button>
+            </div>
         </div>
+        
         <div class="block-division">
             <h1 class="title">{{team_match_b.team.name}}</h1>
             <form method="post">
                 {% csrf_token %}
-                <button name="team-b" type="submit">ENVIAR</button>
+                <div style="width: auto; display: flex; justify-content: center;">
+                    <button name="team-b" type="submit" style="width: auto; height: auto;" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                        CONFIRMAR
+                    </button>
+                </div>
                 <br><br>
                 <table id="search-table">
                     <tr>
@@ -63,6 +74,11 @@
                     {% endfor %}
                 </table>
             </form>
+            <div style="width: 100%; display: flex; justify-content: center;">
+                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px; width: auto; height: auto;">
+                    <a href="{% url 'manage' %}">VOLTAR</a>
+                </button>
+            </div>
         </div>
     </section>
 </div>

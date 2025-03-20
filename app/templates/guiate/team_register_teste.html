@@ -8,73 +8,69 @@
     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/guiate-team.css' %}" />
     <title>JIIFS ADMIN</title>
 </head>
 <body>
-    <main>
-        <div class="all">
-            <div class="all-block" style="width: 100vw;">
-                <div class="theme-mode-button" id="theme-toggle">
-                    <i class="fas fa-sun" id="theme-icon"></i>
-                </div>
-                <section class="block1">
-                    <div class="title">
-                        <h1>{% if technician %} ADICIONE UMA NOVA MODALIDADE AO CAMPUS <span style="color: #0051ff;">{{technician.get_campus_display|upper}}</span>{% else %}CADASTRO DE TIMES {% endif %}</h1>
-                    </div>
-                    <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="block-inputs-form">
-                            <div class="block-inputs-form">
-                            <div>
-                                {% if campusField %}
-                                <label for="">Campus</label>
-                                <select name="campus" required>
-                                    <option selected disabled>Selecione o campus</option required>
-                                    {% for value, name in campus %}
-                                    <option value="{{value}}">{{name}}</option>
-                                    {% endfor %}
-                                </select>
-                                {% endif %}
-                                <label for="">Esporte</label>
-                                <select name="sport_id">
-                                    <option value="None" selected disabled>Selecione o esporte*</option>
-                                    {% for value, name in sport %}
-                                    <option value="{{value}}">{{name}}</option>
-                                    {% endfor %}
-                                </select>
-                                <label for="">Sexo</label>
-                                <select id="sexos" name="sexo" required>
-                                    <option selected disabled>Selecione o sexo*</option required>
-                                    {% for value, name in sexo %}
-                                    <option value="{{value}}">{{name}}</option>
-                                    {% endfor %}
-                                </select>
-                                <br>
-                            </div>
-                            <div>
-                                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-tenth-color);">
-                                    CONFIRMAR
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <ul class="notifications"></ul>
-                    <script src="{% static 'js/messages.js' %}"></script>
-                    {% if messages %}
-                    {% for message in messages %}
-                        <script>
-                            createToast("{{ message.tags }}", "{{ message }}");
-                        </script>
-                    {% endfor %}
-                    {% endif %}
-                    <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
-                        <a href="{% url 'manage' %}">CANCELAR</a>
-                    </button>
-                </section>
-            </div>
-        </div>
-    </main>
+    <div style="width: 98vw; display: flex; justify-content: center; padding: 20px; right: 0px;">
+        <h1 style="color: white;">ESCOLHA A MODALIDADE DO CAMPUS <span style="color: #7bff00;">{{technician.get_campus_display|upper}}</span></h1>
+    </div>
+    <div class="grid-container">
+        <!-- Lista completa de esportes -->
+        <a href="{% url 'guiate_team' sport.0 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-3.webp' %}" alt=""></i>
+            <span class="btn-text">Futsal</span>
+        </a>
 
-    <script src="{% static 'js/script.js' %}"></script>
+        <a href="{% url 'guiate_team' sport.1 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-4.webp' %}" alt=""></i>
+            <span class="btn-text">Vôlei</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.2 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-10.webp' %}" alt=""></i>
+            <span class="btn-text">Vôlei Sentado</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.3 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-11.webp' %}" alt=""></i>
+            <span class="btn-text">Handebol</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.4 %}" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.2em; height: 3.2em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-chess" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Xadrez</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.7 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-7.webp' %}" alt=""></i>
+            <span class="btn-text">Salto em Distância</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.5 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-5.webp' %}" alt=""></i>
+            <span class="btn-text">Tênis de Mesa</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.6 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-8.webp' %}" alt=""></i>
+            <span class="btn-text">Corrida 100m</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.8 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-6.webp' %}" alt=""></i>
+            <span class="btn-text">Lançamento de Dardo</span>
+        </a>
+
+        <a href="{% url 'guiate_team' sport.9 %}" class="sport-btn">
+            <i><img style="width: 3em;" src="{% static 'images/sports/icone-JIFSAtivo-11.webp' %}" alt=""></i>
+            <span class="btn-text">Lançamento de Peso</span>
+        </a>
+    </div>
+    <div style="width: 98vw; height: auto; justify-content: center; display: flex; bottom: 10vh;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #AB0000;">
+            <a href="{% url 'team_manage' %}">VOLTAR</a>
+        </button>
+    </div>
 </body>
 </html>

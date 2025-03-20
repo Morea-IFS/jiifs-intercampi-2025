@@ -9,11 +9,8 @@
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
-<a href="{% url 'games' %}">
-    <button class="side-bar-buttons-items">JOGOS</button>
-</a>
-<a href="{% url 'settings' %}">
-    <button class="side-bar-buttons-items">CONFIGURAÇÕES</button>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
 {% endblock navbar %}
 
@@ -23,14 +20,6 @@
         <div class="title">
             <h1>DADOS GERAIS DA PARTIDA</h1>
         </div>
-        {% if messages %} 
-        {% for m in messages %}
-        <div style="background-color: #c5c5c5; padding: 20px;">
-            <p style="color: #AB0000;">{{m}}</p>
-        </div>
-        {% endfor %}
-        <br>
-        {% endif %}
         <form id="function_validate_form" class="block-inputs-form" method="post">
             {% csrf_token %}
             <section class="match-status k">
@@ -40,7 +29,10 @@
                     <option {% if match.status == 2 %} selected {% endif %} value="2">FINALIZADO</option>
                     <option {% if match.status == 3 %} selected {% endif %} value="3">CANCELADO</option>
                 </select>
-                <input class="input-confirm" type="submit" value="Confirmar">
+                <button type="submit" style="margin-bottom: 1.5em;" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                    CONFIRMAR
+                </button>
+                
             </section>
         </form>
         {% if match.sport.sets %}
@@ -106,7 +98,7 @@
         <div class="title2">
             <h2>{{team_match_b.team.name}}</h2>
         </div>
-        <section class="all-table bottom-space">
+        <section class="all-table">
             <table id="matches-table">
                 <tr>
                     <th class="red-th">ID</th>
@@ -128,6 +120,14 @@
             </table>
         </section>
         {% endif %}
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'games' %}">VOLTAR</a>
+        </button>
+        <form action="" method="post">{% csrf_token %}
+            <button type="submit" name="delete_match" class="side-bar-buttons-items2 custom-buttons-sport-nav bottom-space" style="background-color: var(--global-seventh-color); margin-top: 50px; ">
+                APAGAR PARTIDA
+            </button>
+        </form>
     </div>
 </div>
 {% endblock content %}

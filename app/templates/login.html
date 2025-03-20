@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <title>Login</title>
 </head>
 
@@ -18,22 +17,19 @@
     <div class="hero is-fullheight">
         <div class="hero-body">
             <section class="container has-text-centered">
-                <div class="column is-8 is-offset-2">
-                    <h1 class="title is-3 title-login">MOREA ADMIN</h1>
-                    <hr class="login-hr">
-                </div>
                 <div class="box">
                     <div class="box box-logo">
                         <img class="image-login" src="{% static 'images/morea-sports.png' %}" alt="Morea Sports Logo">
                     </div>
-                    <form method="POST">{% csrf_token %}
+                    <form method="POST">
+                        {% csrf_token %}
                         <div class="field">
                             <label class="label is-size-4">Usuário</label>
                             <div class="control has-icons-left">
-                                <input name="username" class="input is-medium" type="text" placeholder="Nome de usuário">
+                                <input name="username" class="input is-medium" type="text" placeholder="Nome de usuário" style="border: 1px solid #515357;">
                                 <span class="icon is-small is-left">
                                     <i>
-                                        <img src="{% static 'images/icon-user.svg' %}" alt="User Icon">
+                                        <img src="{% static 'images/icon-user.svg' %}" alt="User Icon" style="filter: brightness(50%);">
                                     </i>
                                 </span>
                             </div>
@@ -41,10 +37,10 @@
                         <div class="field">
                             <label class="label is-size-4">Senha</label>
                             <div class="control has-icons-left">
-                                <input name="password" class="input is-medium" type="password" placeholder="Senha">
+                                <input name="password" class="input is-medium" type="password" placeholder="Senha" style="border: 1px solid #515357;">
                                 <span class="icon is-small is-left">
                                     <i>
-                                        <img src="{% static 'images/icon-password.svg' %}" alt="">
+                                        <img src="{% static 'images/icon-password.svg' %}" alt="Password Icon" style="filter: brightness(50%);">
                                     </i>
                                 </span>
                             </div>
@@ -62,7 +58,6 @@
                 {% endfor %}
                 {% endif %}
             </section>
-
         </div>
     </div>
 </body>

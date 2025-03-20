@@ -26,16 +26,19 @@
             <div class="block-inputs-form">
                 <div>
                     <select id="team-badges" name="team-badge" required style="min-width: 40vw;">
-                        <option selected disabled>Selecione o time</option required>
+                        <option selected disabled>Selecione o tipo de crachá</option required>
                             <optgroup label="Gerais">
+                                {% if user.is_staff %}
                                 <option value="all_player">Todos os atletas</option>
+                                {% endif %}
                                 <option value="all_technician">Todos os Técnicos</option>
                                 <option value="all_organization">Todos da organização</option>
                                 <option value="all_voluntary">Todos os voluntarios</option>
+                                <option value="all_head">Chefe de delegação</option>
                             </optgroup>
                             <optgroup label="Times">
                             {% for i in team_sport %}
-                            <option value="{{i.id}}">{{i.team.name}} - {{i.get_sport_display}}</option>
+                            <option value="{{i.id}}">{{i.team.name}} - {{i.get_sport_display}} - {{i.get_sexo_display}}</option>
                             {% endfor %}
                             </optgroup>
                     </select>
@@ -50,8 +53,8 @@
             <table id="search-table" style="min-width: 40vw;">
                 <tr class="hidden">
                     <th>NOME</th>
-                    <th>FILE</th>
-                    <th><form method="POST" action="">{% csrf_token %}<button name="badge_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></th>
+                    <th>ARQUIVO</th>
+                    <th><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir TODOS os crachás?" name="badge_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></th>
                 </tr>
                 {% for i in badge %}
                 <tr>
@@ -61,7 +64,7 @@
                             <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
                         </a>
                     </td>
-                    <td><form method="POST" action="">{% csrf_token %}<button name="badge_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                    <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir este crachá?" name="badge_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
                 </tr>
                 {% empty %}
                 <style>
@@ -75,15 +78,6 @@
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
-            <ul class="notifications"></ul>
-            <script src="{% static 'js/messages.js' %}"></script>
-            {% if messages %}
-            {% for message in messages %}
-                <script>
-                    createToast("{{ message.tags }}", "{{ message }}");
-                </script>
-            {% endfor %}
-            {% endif %}
         </section>
     </section>
 </div>

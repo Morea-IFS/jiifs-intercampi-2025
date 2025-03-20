@@ -20,24 +20,29 @@
     
     <section style="margin-bottom: 20px;">
         <div class="title">
-            <h1>GERAR CERTIFICADO</h1>
+            <h1>GERAR DADOS DO SISTEMA</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="block-inputs-form">
                 <div>
-                    <select id="team-certificates" name="team-certificate" required style="min-width: 40vw;">
-                        <option selected disabled>Selecione o tipo de certificado</option required>
+                    <select id="team-datas" name="data" required style="min-width: 40vw;">
+                        <option selected disabled>Selecione o time</option required>
+                            {% if user.is_staff %}
+                            <optgroup label="Organização">
+                                <option value="all_data">Relatorio geral</option>
+                            </optgroup>
+                            {% endif %}
                             <optgroup label="Gerais">
                                 <option value="all_player">Todos os atletas</option>
-                                <option value="all_technician">Todos os Técnicos</option>
-                                <option value="all_organization">Todos da organização</option>
+                                <option value="all_sexo_masc">Todos os atletas do sexo masculino</option>
+                                <option value="all_sexo_fem">Todos os atletas do sexo feminino</option>
                                 <option value="all_voluntary">Todos os voluntarios</option>
                             </optgroup>
-                            <optgroup label="Times">
-                            {% for i in team_sport %}
-                            <option value="{{i.id}}">{{i.team.name}} - {{i.get_sport_display}}</option>
-                            {% endfor %}
+                            <optgroup label="Modalidades">
+                                {% for i in team_sport %}
+                                <option value="{{i.get_sport_display}}">{{i.get_sport_display}}</option>
+                                {% endfor %}
                             </optgroup>
                     </select>
                 </div>
@@ -51,10 +56,10 @@
             <table id="search-table" style="min-width: 40vw;">
                 <tr class="hidden">
                     <th>NOME</th>
-                    <th>ARQUIVO</th>
-                    <th><form method="POST" action="">{% csrf_token %}<button name="certificate_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form</th>
+                    <th>FILE</th>
+                    <th><form method="POST" action="">{% csrf_token %}<button name="data_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form</th>
                 </tr>
-                {% for i in certificate %}
+                {% for i in data %}
                 <tr>
                     <td>{{ i.name }}</td>
                     <td>
@@ -75,6 +80,15 @@
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
+            <ul class="notifications"></ul>
+            <script src="{% static 'js/messages.js' %}"></script>
+            {% if messages %}
+            {% for message in messages %}
+                <script>
+                    createToast("{{ message.tags }}", "{{ message }}");
+                </script>
+            {% endfor %}
+            {% endif %}
         </section>
     </section>
     

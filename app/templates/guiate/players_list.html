@@ -30,7 +30,9 @@
                                 <th>DATA NASC.</th>
                                 <th>FOTO</th>
                                 <th>BOLETIM</th>
+                                {% if user.is_staff %}
                                 <th>EDITAR</th>
+                                {% endif %}
                                 <th>DELETAR</th>
                             </tr>
                             {% for i in players %}
@@ -45,11 +47,13 @@
                                 <td>{{i.player.date_nasc}}</td>
                                 <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 <td>{% if i.player.bulletin %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                                {% if user.is_staff %}
                                 <td>
                                     <a href="{% url 'player_edit' i.player.id %}">
                                         <img src="{% static 'images/icon-edit.svg' %}">
                                     </a>
                                 </td>
+                                {% endif %}
                                 <td>
                                     <form method="POST" action="">
                                         {% csrf_token %}
@@ -79,7 +83,7 @@
                             </button>
                             
                             <button class="side-bar-buttons-item2 custom-buttons-sport-nav">
-                                <a href="{% url 'guiate_escolha' team_sport.id %}">FINALIZAR</a>
+                                <a href="{% url 'team_manage' %}">FINALIZAR</a>
                             </button>
                         </div>
                         

@@ -33,6 +33,9 @@
                         {% block navbar %}
 
                         {% endblock navbar %}
+                        <a href="{% url 'attachments' %}">
+                            <button class="side-bar-buttons-items">ANEXOS</button>
+                        </a>
                     </div>
                 </div>
                 <div class="side-bar-bottom">
@@ -55,7 +58,15 @@
             {% endblock content %}
         </div>
     </main>
-
+    <ul class="notifications"></ul>
+    <script src="{% static 'js/messages.js' %}"></script>
+    {% if messages %}
+    {% for message in messages %}
+        <script>
+            createToast("{{ message.tags }}", "{{ message }}");
+        </script>
+    {% endfor %}
+    {% endif %}
     <script src="{% static 'js/script.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}

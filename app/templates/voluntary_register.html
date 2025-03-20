@@ -18,7 +18,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>CADASTRO DE VOLUNTÁRIOS</h1>
+            <h1>CADASTRO DE MEMBRO DA EQUIPE</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -29,31 +29,28 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
                     placeholder="Matricula ou siape" required>
                     <select name="type_voluntary" required>
-                        <option selected disabled>Selecione o tipo de voluntário</option required>
-                        {% for v, n in types %}
-                        <option value="{{v}}">{{n}}</option>
+                        <option selected disabled>Selecione o tipo de membro</option required>
+                        {% for value, name in types %}
+                        <option value="{{value}}">{{name}}</option>
                         {% endfor %}
                     </select>
+                    {% if user.is_staff %}
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>
                         {% for value, name in campus %}
                         <option value="{{value}}">{{name}}</option>
                         {% endfor %}
                     </select>
+                    {% endif %}
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione uma imagem</label>
                     <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </div>
-                <div>
-                    <input class="input-confirm" type="submit" value="Confirmar"></input>
-                </div>
+                <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                    CONFIRMAR
+                </button>
             </div>
         </form>
-        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'voluntary_manage' %}">VOLTAR</a>
         </button>
     </section>

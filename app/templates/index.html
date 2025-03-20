@@ -13,11 +13,6 @@
 <a href="{% url 'manage' %}">
     <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
-{% if user.is_staff %}
-<a href="{% url 'games' %}">
-    <button class="side-bar-buttons-items">JOGOS</button>
-</a>
-{% endif %}
 {% endblock navbar %}
 
 {% block content %}

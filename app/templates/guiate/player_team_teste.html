@@ -35,6 +35,9 @@
                                 <label for="registration">Matrícula</label>
                                 <input type="text" autocomplete="on" autocorrect="on" id="registration" name="registration"
                                     placeholder="Matrícula*" required>
+                                <label for="registration">Cpf</label>
+                                <input type="text" autocomplete="on" autocorrect="on" id="cpf" name="cpf"
+                                    placeholder="Cpf*" required>
                                 {% if team_sport.sport == 2 %}
                                 <label for="sexos">Sexo</label>
                                 <select id="sexos" name="sexo">
@@ -44,8 +47,8 @@
                                 </select>
                                 {% endif %}
                                 <label for="Boletin">Boletim</label>
-                                <label for="bulletin" id="label-foto" class="custom-file-button">Clique aqui e adicione o boletim escolar</label>
-                                <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoLabel()">
+                                <label for="bulletin" id="label-bulletin" class="custom-file-button">Clique aqui e adicione o boletim escolar</label>
+                                <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoBELabel()">
                                 <label for="Fotografia">Fotografia</label>
                                 <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui e adicione uma fotografia</label>
                                 <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
@@ -55,13 +58,16 @@
                                     CONFIRMAR ATLETA
                                 </button>
                             </div>
-                            <div>
-                                <button type="button" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #ff5e00">
-                                    <a href="{% url 'players_general' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">BUSCAR JOGADORES JÁ CADASTRADOS</a>
-                                </button>
-                            </div>
                         </div>
                     </form>
+                    <div>
+                        <br><br><br>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input name="qe" style="width: 50vw; padding: 12px; color: white; font-size: 12px;" type="search" placeholder="Procure um jogador pelo nome ou matrícula">
+                            <button type="submit" style="height: 4em; width: 4em; background-color: #979797; border: 0; border-radius: 100%; margin-left: 1em;"><i class="fa-solid fa-magnifying-glass" style="color: var(--global-third-color); font-size: 2em;"></i></button>
+                        </form>
+                    </div>
                     <br><br>
                     <span style="background-color: white; width: 45vw; height: 3px;"></span>
                     <br><br>

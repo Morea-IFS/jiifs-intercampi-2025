@@ -18,33 +18,36 @@
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>GERENCIAMENTO DE CAMPUS</h1>
+            <h1>{% if user.is_staff %} GERENCIAMENTO CAMPUS {% else %} GERENCIAMENTO DE CAMPUS {{campus.get_campus_display|upper}} {% endif %}</h1>
         </div>
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
-            <a href="{% url 'guiate_register_team' %}">CADASTRO DE CAMPUS</a>
+            <a href="{% url 'guiate_register_team' %}">CADASTRAR MODALIDADE</a>
         </button>
         <br><br>
         <div class="all-manage">
-            <input type="search" class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os times" />
+            <input type="search" class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar as modalidades" />
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden error">
                         <th>ID</th>
+                        {% if user.is_staff %}
                         <th>NOME</th>
+                        {% endif %}
                         <th>ESPORTE</th>
                         <th>SEXO</th>
                         <th>JOGADORES</th>
                         {% if user.is_staff %}
                         <th>EDITAR</th>
+                        <th>STATUS</th>
                         {% endif %}
                         <th>DELETAR</th>
                     </tr>
                     {% for team_sport in team_sports %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>
-                            {% if team_sport.team.name %} {{ team_sport.team.name }} {% else %} ---- {% endif %}
-                        </td>
+                        {% if user.is_staff %}
+                        <td>{{ team_sport.team.name }}</td>
+                        {% endif %}
                         <td>{{ team_sport.get_sport_display }}</td>
                         <td>{{ team_sport.get_sexo_display }}</td>
                         <td>
@@ -56,11 +59,12 @@
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
+                        <td>{% if i.player.status %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         {% endif %}
                         <td>
                             <form method="POST">
                                 {% csrf_token %}
-                                <button name="team_sport_delete" value="{{team_sport.id}}" style="background-color: transparent; border: none;">
+                                <button data-confirm="Você realmente deseja excluir esta modalidade?" name="team_sport_delete" value="{{team_sport.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
@@ -75,24 +79,14 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>O SEU CAMPUS NÃO ESTÁ CADASTRADO <br> <span style="font-size: 20px;">Realize o cadastro!</span></h2>
+                        <h2>NENHUMA MODALIDADE CADASTRADA NO SEU CAMPUS<br> <span style="font-size: 20px;">Realize o cadastro!</span></h2>
                     </div>
                     {% endfor %}
                 </table>
             </section>
-            <ul class="notifications"></ul>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
-            <script src="{% static 'js/messages.js' %}"></script>
-            {% if messages %}
-            {% for message in messages %}
-            
-                <script>
-                    createToast("{{ message.tags }}", "{{ message }}");
-                </script>
-            {% endfor %}
-            {% endif %}
         </div>
     </div>
 </div>
