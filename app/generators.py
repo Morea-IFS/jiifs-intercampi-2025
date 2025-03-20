@@ -76,6 +76,7 @@ def draw_circular_image(c, image_path, center_x, center_y, diameter):
     
 def generate_badges(players, user_l, t):
     buffer = BytesIO() 
+    print("P: ",players)
     if t == '2':
         w, h = A4
         nametag_width = (w - 3 * 20) / 2
@@ -88,6 +89,7 @@ def generate_badges(players, user_l, t):
         ]
         c = canvas.Canvas(buffer, pagesize=A4)
         for j, user in enumerate(players):
+            print("ueupa")
             if j % 4 == 0 and j > 0:
                 c.showPage()
             x, y = positions[j % 4]
@@ -133,7 +135,7 @@ def generate_badges(players, user_l, t):
             )
 
         c.save()
-        namebadge = f'CAMPUS_{user.get_campus_display()}_{user.get_type_voluntary_display()}'
+        namebadge = f'CAMPUS_{user.player.get_campus_display()}_atletas'
         arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{user.id}.pdf"
     else:
         w, h = A4
