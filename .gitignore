@@ -9,7 +9,9 @@ media/badge/*
 media/certificate/*
 media/photo_player/*
 media/photo_config/*
+media/photos_config/*
 media/photo_technician/*
 media/bulletins/*
+media/attachments/*
 media/photo_voluntary/*
 .env
