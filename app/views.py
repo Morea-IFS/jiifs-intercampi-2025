@@ -2219,6 +2219,7 @@ def players_team(request, team_name, team_sexo, sport_name):
                     return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
                 registration = request.POST.get('registration')
                 cpf = request.POST.get('cpf')
+                cpf = cpf.replace("-","").replace(".","")
                 photo = request.FILES.get('photo')
                 bulletin = request.FILES.get('bulletin')
                 print(team_sport.team.campus)

@@ -37,7 +37,7 @@
                                     placeholder="Matrícula*" required>
                                 <label for="registration">Cpf</label>
                                 <input type="text" autocomplete="on" autocorrect="on" id="cpf" name="cpf"
-                                    placeholder="Cpf*" required>
+                                    placeholder="Cpf*" required maxlength="14">
                                 {% if team_sport.sport == 2 %}
                                 <label for="sexos">Sexo</label>
                                 <select id="sexos" name="sexo">
@@ -89,7 +89,15 @@
             </div>
         </div>
     </main>
-
+    <script>
+        document.getElementById("cpf").addEventListener("input", function () {
+            let cpf = this.value.replace(/\D/g, ""); 
+            if (cpf.length > 3) cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
+            if (cpf.length > 7) cpf = cpf.substring(0, 7) + "." + cpf.substring(7);
+            if (cpf.length > 11) cpf = cpf.substring(0, 11) + "-" + cpf.substring(11, 14);
+            this.value = cpf; 
+        });
+    </script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
