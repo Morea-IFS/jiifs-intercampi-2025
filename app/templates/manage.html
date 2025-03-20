@@ -26,7 +26,7 @@
       <ul class="card-list swiper-wrapper">
         <li class="card-item swiper-slide">
           <a href="{% url 'Home' %}" class="card-link" style="background-color: #003cff;">
-            <img src="{% static 'images/door-open-solid.svg' %}" alt="Card Image" class="card-image">
+            <img src="{% static 'images/door-open-solid.svg' %}" alt="Card Image" class="card-image" style="filter: invert();">
             <p class="badge badge-return">VOLTAR</p>
             {% if user.is_staff %}
             <h2 class="card-title" style="color: #ffffff;">A pagina  que você está agora é utilizada para o gerenciamento de atletas, times, partidas, técnicos, banners, certificados e crachás! <span style="color: #2bff00e1;">clique aqui para sair</span></h2>
