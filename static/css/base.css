@@ -394,7 +394,7 @@ tr:nth-child(even) {
     display: flex;
     justify-content: space-between;
     background-color: var(--global-color-white);
-    height: 15em;
+    height: 100%;
     width: 70%;
     margin-bottom: 4em;
 }
