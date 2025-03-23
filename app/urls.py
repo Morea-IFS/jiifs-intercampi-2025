@@ -5,7 +5,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('' , views.home_public, name = "home_public"),
+    path('' , views.login, name = "home_public"),
     path('placar' , views.scoreboard_public, name="scoreboard_public"),
     path('scoreboard_projector', views.scoreboard_projector, name="scoreboard_projector"),
     path('sobre', views.about_us, name="about_us"),
@@ -22,6 +22,7 @@ urlpatterns = [
     path('add/player/team/<int:id>', views.add_player_team, name = "add_player_team"),
     path('register/match', views.matches_register, name = "matches_register"),
     path('games', views.games, name = "games"),
+    path('attachments', views.attachments, name = "attachments"),
     path('manage/technician', views.technician_manage, name = "technician_manage"),
     path('register/technician', views.technician_register, name = "technician_register"),
     path('edit/technician/<int:id>', views.technician_edit, name = "technician_edit"),
@@ -40,17 +41,21 @@ urlpatterns = [
     path('timer/<int:id>', views.timer_page, name = "timer"),
     path('termos-de-uso/', views.termos_uso, name='termos_uso'),
     path('erro404', views.page_in_erro404),
-
     path('manage', views.manage, name="manage"),
+
     path('register_team', views.register_team, name="guiate_register_team"),
-    path('register_new_sport/<str:team_name>/', views.register_new_sport, name="guiate_register_new_sport"),
+    path('team/<str:sport_name>', views.team_sexo, name="guiate_team"),
     path('players/<str:team_name>/<str:team_sexo>/<str:sport_name>', views.players_team, name="guiate_players_team"),
-    path('players/<int:id>/', views.guiate_escolha, name="guiate_escolha"),
     path('players/<str:team_name>/list/<str:team_sexo>/<str:sport_name>/', views.players_list, name="guiate_players_list"),
 
+    path('dashboard', views.dashboard, name="dashboard"),
 
     path('generator/badge', views.generator_badge, name="badge"),
     path('generator/certificate', views.generator_certificate, name="certificate"),
+    path('generator/data', views.generator_data, name="data"),
+    path('generator/bolletin', views.generator_bolletin, name="bolletin"),
+
+    path('generator/datae', views.generator_data2, name="data2"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

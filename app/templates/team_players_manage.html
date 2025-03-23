@@ -7,24 +7,18 @@
 {% endblock head %}
 
 {% block navbar %}
+
 <a href="{% url 'Home' %}">
     <button class="side-bar-buttons-items">HOME</button>
 </a>
 <a href="{% url 'manage' %}">
     <button class="side-bar-buttons-items">GERENCIAMENTO</button>
 </a>
+
 {% endblock navbar %}
 
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'add_player_team' team_sport.id %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
-
 {% block content %}
+
 <div class="all-block">
     <div class="block1">
         <div class="title">
@@ -34,45 +28,46 @@
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
+                        <th>ID</th>
                         <th>NOME</th>
                         <th>MATRICULA</th>
                         <th>CAMPUS</th>
                         <th>SEXO</th>
                         <th>DATA NASC.</th>
                         <th>FOTO</th>
+                        {% if user.is_staff %}
                         <th>EDITAR</th>
+                        {% endif %}
                         <th>REMOVER</th>
                     </tr>
                     {% for i in player_team_sport %}
                     <tr>
+                        <td>{{ forloop.counter }}</td>
                         <td>
                             {{ i.player.name }}
                         </td>
                         <td>{{i.player.registration}}</td>
-                        <td>{{i.player.campus}}</td>
+                        <td>{{i.player.get_campus_display}}</td>
                         <td>{{i.player.get_sexo_display}}</td>
                         <td>{{i.player.date_nasc}}</td>
                         <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        {% if user.is_staff %}
                         <td>
                             <a href="{% url 'player_edit' i.player.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
+                        {% endif %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <button name="player_delete" value="{{i.player.id}}" style="background-color: transparent; border: none;">
+                                <button data-confirm="Você realmente deseja excluir este jogador?" name="player_delete" value="{{i.player.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
                         </td>
                     </tr>
                     {% endfor %}
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </table>
             </section>
             <div style="display: flex; width: auto; height: auto; justify-content: center; align-items: center; gap: 15px;">

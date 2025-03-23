@@ -70,11 +70,6 @@
                     </select>
                     <input {% if match.time_match %} value="{{match.time_match|date:'Y-m-d\TH:i'}}"  {% endif %} class="input-data" type="datetime-local" name="datetime" id="date-game" />
                 </div>
-                {% if messages %}
-                {% for m in messages %}
-                <p style="color: red;">{{m}}</p>
-                {% endfor %}
-                {% endif %}
                 <div>
                     <input class="input-confirm" type="submit" value="Confirmar" />
                 </div>

@@ -18,7 +18,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>CADASTRO PARTIDAS</h1>
+            <h1>CADASTRO DE PARTIDAS</h1>
         </div>
         <div>
             <form id="function_validate_form" class="block-inputs" method="post">{% csrf_token %}
@@ -51,19 +51,17 @@
                         </select>
                         <input class="input-data" type="datetime-local" name="datetime" id="date-game" />
                     </div>
-                    {% if messages %}
-                    {% for m in messages %}
-                    <div style="background-color: #c5c5c5; padding: 20px;">
-                        <p style="color: #AB0000;">{{m}}</p>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
                     <div>
-                        <input class="input-confirm" type="submit" value="Confirmar" />
+                        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                            CONFIRMAR
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'games' %}">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

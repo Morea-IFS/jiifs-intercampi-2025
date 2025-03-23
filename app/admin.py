@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Certificate, Badge, Config, Volley_match, Events, Player, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
+from . models import Certificate, Badge, Bolletin, Section, Config, Volley_match, Attachments, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
 
 # Register your models here.
 
@@ -13,15 +13,34 @@ class BadgevAdmin(admin.ModelAdmin):
     list_display = ('id','name','user','file')
     search_fields = ('id','name','user','file')
 
+@admin.register(Attachments)
+class AttachmentsvAdmin(admin.ModelAdmin):
+    list_display = ('id','name','user','file')
+    search_fields = ('id','name','user','file')
+
 @admin.register(Certificate)
 class CertificatevAdmin(admin.ModelAdmin):
     list_display = ('id','name','user','file')
     search_fields = ('id','name','user','file')
+@admin.register(Bolletin)
+class BolletinvAdmin(admin.ModelAdmin):
+    list_display = ('id','title','date')
+    search_fields = ('id','title','date')
+
+@admin.register(Section)
+class SectionvAdmin(admin.ModelAdmin):
+    list_display = ('id','bolletin','subtitle','contend')
+    search_fields = ('id','bolletin','subtitle','contend')
 
 @admin.register(Technician)
 class TechnicianAdmin(admin.ModelAdmin):
     list_display = ('id','name','sexo', 'siape','campus')
     search_fields = ('id','name','sexo', 'siape','campus')
+
+@admin.register(Voluntary)
+class VoluntaryAdmin(admin.ModelAdmin):
+    list_display = ('id','name','registration','campus')
+    search_fields = ('id','name','registration','campus')
 
 @admin.register(Volley_match)
 class Volley_matchAdmin(admin.ModelAdmin):
@@ -35,8 +54,8 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(Team_sport)
 class Team_sportAdmin(admin.ModelAdmin):
-    list_display = ('id','team','sport','sexo','admin')
-    search_fields = ('id','team','sport','sexo','admin')
+    list_display = ('id','team','sport','sexo','status','admin')
+    search_fields = ('id','team','sport','sexo','status','admin')
 
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):

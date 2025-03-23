@@ -26,7 +26,6 @@ class Sport_types(models.IntegerChoices):
     launch_dart = 8, "Lançamento de dardo"
     pitch_weight = 9, "Lançamento de peso"
 
-
 class Campus_types(models.IntegerChoices):
     aracaju = 0, "Aracaju"
     estancia = 1, "Estância"
@@ -68,8 +67,9 @@ class Type_Banner(models.IntegerChoices):
 
 class Type_service(models.IntegerChoices):
     voluntary = 0, "Voluntario"
-    organization = 1, "Organização"
-    technician = 3, "Técnico"
+    organization = 2, "Organização"
+    technician = 1, "Técnico"
+    head_delegation = 3,"Chefe de delegação"
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
@@ -106,7 +106,7 @@ class Voluntary(models.Model):
     type_voluntary = models.IntegerField(choices=Type_service.choices, default=Type_service.voluntary)
 
     def __str__(self):    
-        return f"{self.name} | {self.sexo}"
+        return f"{self.name} | {self.get_campus_display()}"
 
 class Team(models.Model):
     name = models.CharField(max_length=100, blank=True)
@@ -124,7 +124,15 @@ class Badge(models.Model):
     file = models.ImageField(upload_to='badge/', blank=True)
 
     def __str__(self):    
-        return f"{self.name}"
+        return f"{self.name} - {self.id}"
+    
+class Attachments(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='attachments/', blank=True)
+
+    def __str__(self):    
+        return f"{self.name} - {self.id}"
 
 class Certificate(models.Model):
     name = models.CharField(max_length=100, blank=True)
@@ -139,13 +147,14 @@ class Team_sport(models.Model):
     sport = models.IntegerField(choices=Sport_types.choices)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
     sexo = models.IntegerField(choices=Sexo_types.choices)
+    status = models.BooleanField(default=False)
 
     def __str__(self):    
         return f"{self.team} | {self.get_sport_display()}"
     
 class Player_team_sport(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    team_sport = models.ForeignKey(Team_sport, on_delete=models.CASCADE)
+    team_sport = models.ForeignKey(Team_sport, on_delete=models.CASCADE, related_name="players")
 
     def __str__(self):    
         return f"{self.player} | {self.team_sport}"
@@ -264,3 +273,12 @@ class Terms_Use(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.date_accept_local.strftime('%d/%m/%Y %H:%M:%S')}"
+    
+class Bolletin(models.Model):
+    title = models.CharField(max_length=255)
+    date = models.DateTimeField(auto_now_add=True)
+
+class Section(models.Model):
+    bolletin = models.ForeignKey(Bolletin, on_delete=models.CASCADE)
+    subtitle = models.CharField(max_length=500)
+    contend = models.CharField(max_length=1500)

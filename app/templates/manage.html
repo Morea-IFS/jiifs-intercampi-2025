@@ -8,52 +8,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
   <title>JIIFS ADMIN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/manage.css' %}"/>
+
 
 </head>
 <body>
+  <div class="theme-mode-button" id="theme-toggle">
+    <i class="fas fa-sun" id="theme-icon"></i>
+  </div>
   <div class="container swiper">
     <div class="card-wrapper">
       <ul class="card-list swiper-wrapper">
         <li class="card-item swiper-slide">
           <a href="{% url 'Home' %}" class="card-link" style="background-color: #003cff;">
-            <img src="{% static 'images/exit.png' %}" alt="Card Image" class="card-image" style="filter: invert();">
+            <img src="{% static 'images/door-open-solid.svg' %}" alt="Card Image" class="card-image" style="filter: invert();">
             <p class="badge badge-return">VOLTAR</p>
+            {% if user.is_staff %}
             <h2 class="card-title" style="color: #ffffff;">A pagina  que você está agora é utilizada para o gerenciamento de atletas, times, partidas, técnicos, banners, certificados e crachás! <span style="color: #2bff00e1;">clique aqui para sair</span></h2>
+            {% else %}
+            <h2 class="card-title" style="color: #ffffff;">Aqui você irá gerenciar o seu campus, atletas, chefe de delegação, técnicos, organização, voluntarios e crachás! <span style="color: #2bff00e1;">clique aqui para sair</span></h2>
+            {% endif %}
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
         <li class="card-item swiper-slide">
           <a href="{% url 'team_manage' %}" class="card-link">
-            <img src="{% static 'images/campus.png' %}" alt="Card Image" class="card-image">
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-team">CAMPUS</p>
-            <h2 class="card-title">Aqui você poderá cadastrar e ver os esporte em que seu campus que está inscritos. Você também poderá cadastrar os seus jogadores!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar e ver as modalidades em que o seu campus que está inscrito. Você também poderá cadastrar os seus jogadores!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
         <li class="card-item swiper-slide">
           <a href="{% url 'voluntary_manage' %}" class="card-link">
-            <img src="{% static 'images/voluntary.png' %}" alt="Card Image" class="card-image">
-            <p class="badge badge-technician">VOLUNTÁRIOS</p>
-            <h2 class="card-title">Aqui você poderá cadastrar os seus voluntarios e a equipe de organização! Para posteriormente gerar os crachás na pagina 'crachá'</h2>
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
+            <p class="badge badge-technician">EQUIPE</p>
+            <h2 class="card-title">Aqui você poderá cadastrar toda a sua equipe, de voluntarios a chefe de delegação! Para posteriormente gerar os crachás na pagina 'crachá'</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
         {% if user.is_staff %}
         <li class="card-item swiper-slide">
-          <a href="{% url 'matches_manage' %}" class="card-link">
-            <img src="{% static 'images/match.png' %}" alt="Card Image" class="card-image">
+          <a href="{% url 'games' %}" class="card-link">
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-match">PARTIDAS</p>
-            <h2 class="card-title">Aqui você vai pode cadastrar, editar e também ver as partidas que já foram cadastrados. Lembre que para iniciar uma partida você eve ir a área games!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar, editar e também ver as partidas que já foram cadastrados. Lembre que para iniciar uma partida você eve ir a área games!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
         <li class="card-item swiper-slide">
           <a href="{% url 'player_manage' %}" class="card-link">
-            <img src="{% static 'images/players.png' %}" alt="Card Image" class="card-image">
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-team">ATLETAS</p>
             <h2 class="card-title">Nesse local você poderá apenas ver os jogadores que você já adicionou em algum time, certo? aqui você também poderá editar as informações deles!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -61,17 +71,17 @@
         </li>
         <li class="card-item swiper-slide">
           <a href="{% url 'technician_manage' %}" class="card-link">
-            <img src="{% static 'images/technicians.png' %}" alt="Card Image" class="card-image">
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-technician">Técnicos</p>
-            <h2 class="card-title">Aqui você vai pode cadastrar, editar e também ver os técnicos que tem acesso ao sistema. Cuidado para não excluir nenhum sem querer!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar, editar e também ver os técnicos que tem acesso ao sistema. Cuidado para não excluir nenhum sem querer!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
         <li class="card-item swiper-slide">
           <a href="{% url 'banner_manage' %}" class="card-link">
-            <img src="{% static 'images/banners.png' %}" alt="Card Image" class="card-image">
+            <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-banner">Banner</p>
-            <h2 class="card-title">Aqui você vai pode cadastrar, editar e também ver os banners que estão cadastrados! Eles servem para você os colocar no placar do projetor!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar, editar e também ver os banners que estão cadastrados! Eles servem para você os colocar no placar do projetor!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -79,20 +89,30 @@
       </li>
       <li class="card-item swiper-slide">
         <a href="{% url 'badge' %}" class="card-link">
-          <img src="{% static 'images/nametag.png' %}" alt="Card Image" class="card-image">
+          <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
           <p class="badge badge-badge">CRACHÁ</p>
-          <h2 class="card-title">Aqui você vai pode gerar os cracrá dos atletas e técnicos! lembre sempre que ele gera o crachá dos atletas que estão em um time!</h2>
+          <h2 class="card-title">Aqui você poderá gerar os cracrás dos atletas, chefe de delegação, organização, técnicos e voluntarios! ele gera de forma separada para maior organização! </h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>
       <li class="card-item swiper-slide">
-        <a href="{% url 'certificate' %}" class="card-link">
-          <img src="{% static 'images/certificate.png' %}" alt="Card Image" class="card-image">
-          <p class="badge badge-certificate">CERTIFICADO</p>
-          <h2 class="card-title">Aqui você vai poder gerar o certificado de participação dos atletas! lembre sempre que ele gera o certificado dos atletas que estão em um time!</h2>
+        <a href="{% url 'data' %}" class="card-link">
+          <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
+          <p class="badge badge-badge">RELATÓRIO</p>
+          <h2 class="card-title">Aqui você poderá gerar os dados referentes as modalidades do seu campus e aos jogadores, os dados serão em formato pdf, está certo?!</h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>
+      {% if user.is_staff %}
+      <li class="card-item swiper-slide">
+        <a href="{% url 'certificate' %}" class="card-link">
+          <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
+          <p class="badge badge-certificate">CERTIFICADO</p>
+          <h2 class="card-title">Aqui você poderá gerar o certificado de participação dos atletas! lembre sempre que ele gera o certificado dos atletas que estão em um time!</h2>
+          <button class="card-button material-symbols-rounded">arrow_forward</button>
+        </a>
+      </li>
+      {% endif %}
       </ul>
        <!-- Pagination -->
       <div class="swiper-pagination"></div>
@@ -101,8 +121,19 @@
       <div class="swiper-slide-button swiper-button-next"></div>
     </div>
   </div>
+  <ul class="notifications"></ul>
+  <script src="{% static 'js/messages.js' %}"></script>
+  {% if messages %}
+  {% for message in messages %}
+      <script>
+          createToast("{{ message.tags }}", "{{ message }}");
+      </script>
+  {% endfor %}
+  {% endif %}
   
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
   <script src="{% static 'js/manage.js' %}"></script>
+
 </body>
 </html>

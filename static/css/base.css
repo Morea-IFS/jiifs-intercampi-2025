@@ -1,17 +1,26 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
+
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
-
+:root{
+        /* VARIAVEIS / CORES */
+        --dark: #34495e;
+        --light: #fff;
+        --success: #0abf30;
+        --error: #f24d4c;
+        --warning: #e9bd0c;
+        --info: #3498db;
+}
 .light-mode {
 
     /* VARIAVEIS / CORES */
-
     --global-color-white: #f1f1f1;
     --global-color-green: #009700;
     --global-primary-color: #8b8b8b;
@@ -31,8 +40,6 @@
 }
 
 .dark-mode {
-
-    /* VARIAVEIS / CORES */
 
     --global-color-white: #f1f1f1;
     --global-color-green: #009700;
@@ -90,6 +97,7 @@
     font-weight: 600;
     font-size: 25px;
     cursor: pointer;
+    color: #ffffff;
 }
 .custom-buttons-sport-nav a{
     font-size: 25px;
@@ -386,7 +394,7 @@ tr:nth-child(even) {
     display: flex;
     justify-content: space-between;
     background-color: var(--global-color-white);
-    height: 15em;
+    height: 100%;
     width: 70%;
     margin-bottom: 4em;
 }
@@ -822,4 +830,160 @@ tr:nth-child(even) {
         height: 4em
     }
 
+}
+
+
+/*Notices*/
+
+.notifications {
+	position: fixed;
+	top: 30px;
+	right: 20px;
+}
+
+.notifications :where(.toast, .column) {
+	display: flex;
+	align-items: center;
+}
+
+.notifications .toast {
+	width: 400px;
+	position: relative;
+	overflow: hidden;
+	list-style: none;
+	border-radius: 4px;
+	padding: 16px 17px;
+	margin-bottom: 10px;
+	background: var(--light);
+	justify-content: space-between;
+	animation: show_toast 0.3s ease forwards;
+}
+
+@keyframes show_toast {
+	0% {
+		transform: translateX(100%);
+	}
+	40% {
+		transform: translateX(-5%);
+	}
+	80% {
+		transform: translateX(0%);
+	}
+	100% {
+		transform: translateX(-10%);
+	}
+}
+
+.notifications .toast.hide {
+	animation: hide_toast 0.3s ease forwards;
+}
+
+@keyframes hide_toast {
+	0% {
+		transform: translateX(-10%);
+	}
+	40% {
+		transform: translateX(0%);
+	}
+	80% {
+		transform: translateX(-5%);
+	}
+	100% {
+		transform: translateX(calc(100% + 20px));
+	}
+}
+
+.toast::before {
+	position: absolute;
+	content: '';
+	height: 3px;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+	100% {
+		width: 0%;
+	}
+}
+
+.toast.success::before, .btn#success {
+	background: var(--success);
+}
+
+.toast.error::before, .btn#error {
+	background: var(--error);
+}
+
+.toast.warning::before, .btn#warning {
+	background: var(--warning);
+}
+
+.toast.info::before, .btn#info {
+	background: var(--info);
+}
+
+.toast .column i {
+	font-size: 1.75rem;
+}
+
+.toast.success .column i {
+	color: var(--success);
+}
+
+.toast.error .column i {
+	color: var(--error);
+}
+
+.toast.warning .column i {
+	color: var(--warning);
+}
+
+.toast.info .column i {
+	color: var(--info);
+}
+
+.toast .column span {
+	font-size: 1.07rem;
+	margin-left: 12px;
+}
+
+.toast i:last-child {
+	color: #aeb0d7;
+	cursor: pointer;
+}
+
+.toast i:last-child:hover {
+	color: var(--dark);
+}
+
+.buttons .btn {
+	border: none;
+	outline: none;
+	color: var(--light);
+	cursor: pointer;
+	margin: 0 5px;
+	font-size: 1.2rem;
+	padding: 10px 20px;
+	border-radius: 4px;
+}
+
+@media screen and (max-width: 530px) {
+	.notifications {
+		width: 80%;
+	}
+	
+	.notifications .toast {
+		width: 100%;
+		font-size: 1rem;
+		margin-left: 20px;
+	}
+	
+	.buttons .btn {
+		margin: 0 1px;
+		font-size: 1.1rem;
+		padding: 8px 15px;
+	}
 }

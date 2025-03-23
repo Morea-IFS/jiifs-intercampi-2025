@@ -18,7 +18,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>EDITAR VOLUNTÁRIO</h1>
+            <h1>EDITAR MEMBRO DA EQUIPE</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -29,10 +29,12 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
                     placeholder="{{ voluntary.registration }}" value="{{ voluntary.registration }}" />
                     <select name="type_voluntary">
-                        <option selected disabled>Selecione o tipo de voluntário</option required>
-                        <option {% if voluntary.type_voluntary == 0 %} selected {% endif %} value="0">Voluntário</option>
-                        <option {% if voluntary.type_voluntary == 1 %} selected {% endif %} value="1">Equipe de organização</option>
+                        <option selected disabled>Selecione o tipo de membro</option required>
+                        {% for v, n in types %}
+                        <option {% if voluntary.type_voluntary == v %} selected {% endif %} value="{{v}}">{{n}}</option>
+                        {% endfor %}
                     </select>
+                    {% if user.is_staff %}
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>
                         {% for value, name in campus %}
@@ -40,21 +42,19 @@
                         </option>
                         {% endfor %}
                     </select>
+                    {% endif %}
                     <label for="fotos" id="label-foto" class="custom-file-button" required>{% if voluntary.photo %}
                         Trocar imagem {% else %} Adicione uma imagem {% endif %}</label>
                     <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" />
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </div>
                 <div>
-                    <input class="input-confirm" type="submit" value="Confirmar" />
+                    <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                        CONFIRMAR
+                    </button>
                 </div>
             </div>
         </form>
-        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'voluntary_manage' %}">VOLTAR</a>
         </button>
     </section>

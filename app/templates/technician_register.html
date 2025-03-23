@@ -18,23 +18,18 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>CADASTRO DE TÉCNICOS</h1>
+            <h1>CADASTRO DE GESTORES</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="block-inputs-form">
                 <div>
-                    <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Nome do técnico"
+                    <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Nome do gestor"
                         required>
                         <input type="password" autocomplete="on" autocorrect="on" name="password" placeholder="Senha"
                             required>
                     <input type="text" autocomplete="on" autocorrect="on" name="siape"
-                        placeholder="Siape do Técnico" required>
-                    <select id="sexos" name="sexo" required>
-                        <option selected disabled>Selecione o sexo</option required>
-                        <option value="0">Masculino</option>
-                        <option value="1">Feminino</option>
-                    </select>
+                        placeholder="Siape do gestor" required>
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>
                         {% for value, name in campus %}
@@ -43,18 +38,15 @@
                     </select>
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione uma imagem</label>
                     <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </div>
                 <div>
-                    <input class="input-confirm" type="submit" value="Confirmar"></input>
+                    <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 0;">
+                        CONFIRMAR
+                    </button>
                 </div>
             </div>
         </form>
-        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'technician_manage' %}">VOLTAR</a>
         </button>
     </section>

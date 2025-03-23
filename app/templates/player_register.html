@@ -43,11 +43,6 @@
                     </select>
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione uma imagem</label>
                     <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </div>
                 <div>
                     <input class="input-confirm" type="submit" value="Confirmar"></input>

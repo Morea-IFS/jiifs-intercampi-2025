@@ -45,20 +45,6 @@
                 </div>
             </div>
         </form>
-        {% if messages %}
-        <style>
-            .ll {
-                background-color: #c5c5c5;
-                padding: 20px;
-            }
-        </style>
-        {% for m in messages %}
-        <div class="ll">
-            <p style="color: #AB0000;">{{m}}</p>
-        </div>
-        {% endfor %}
-        <br>
-        {% endif %}
         <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'team_manage' %}">VOLTAR</a>
         </button>

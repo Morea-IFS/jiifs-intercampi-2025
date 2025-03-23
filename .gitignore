@@ -5,9 +5,13 @@ interclasse/__pycache__
 
 db.*
 media/logo_team/*
+media/badge/*
+media/certificate/*
 media/photo_player/*
+media/photo_config/*
 media/photos_config/*
-media/photos_technician/*
+media/photo_technician/*
 media/bulletins/*
+media/attachments/*
 media/photo_voluntary/*
 .env

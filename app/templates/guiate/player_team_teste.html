@@ -15,6 +15,10 @@
         <div class="all">
             <div class="all-block" style="width: 100vw;">
                 <div class="block1">
+                    <div class="block1" style="display: flex;">
+                        <div class="theme-mode-button" id="theme-toggle">
+                            <i class="fas fa-sun" id="theme-icon"></i>
+                        </div>
                     <div class="title" style="display: flex; flex-direction: column; color: white;">
                         <h1>ADICIONE ATLETAS NO TIME DE <span style="color: #0051ff; ">{{team_sport.get_sport_display|upper}} {{team_sport.get_sexo_display|upper}}</span> DO CAMPUS <span style="color: #0051ff;">{{team_sport.team.name|upper}}</span></h1>
                     </div>
@@ -31,6 +35,9 @@
                                 <label for="registration">Matrícula</label>
                                 <input type="text" autocomplete="on" autocorrect="on" id="registration" name="registration"
                                     placeholder="Matrícula*" required>
+                                <label for="registration">Cpf</label>
+                                <input type="text" autocomplete="on" autocorrect="on" id="cpf" name="cpf"
+                                    placeholder="Cpf*" required maxlength="14">
                                 {% if team_sport.sport == 2 %}
                                 <label for="sexos">Sexo</label>
                                 <select id="sexos" name="sexo">
@@ -40,24 +47,27 @@
                                 </select>
                                 {% endif %}
                                 <label for="Boletin">Boletim</label>
-                                <label for="bulletin" id="label-foto" class="custom-file-button">Clique aqui e adicione o boletim escolar</label>
-                                <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoLabel()">
+                                <label for="bulletin" id="label-bulletin" class="custom-file-button">Clique aqui e adicione o boletim escolar</label>
+                                <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoBELabel()">
                                 <label for="Fotografia">Fotografia</label>
                                 <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui e adicione uma fotografia</label>
                                 <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
-                                {% if messages %}
-                                {% for m in messages %}
-                                <p style="color: red;">{{m}}</p>
-                                {% endfor %}
-                                {% endif %}
                             </div>
                             <div>
-                                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-tenth-color);">
-                                    CONFIRMAR
+                                <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                                    CONFIRMAR ATLETA
                                 </button>
                             </div>
                         </div>
                     </form>
+                    <div>
+                        <br><br><br>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input name="qe" style="width: 50vw; padding: 12px; color: white; font-size: 12px;" type="search" placeholder="Procure um jogador pelo nome ou matrícula">
+                            <button type="submit" style="height: 4em; width: 4em; background-color: #979797; border: 0; border-radius: 100%; margin-left: 1em;"><i class="fa-solid fa-magnifying-glass" style="color: var(--global-third-color); font-size: 2em;"></i></button>
+                        </form>
+                    </div>
                     <br><br>
                     <span style="background-color: white; width: 45vw; height: 3px;"></span>
                     <br><br>
@@ -65,20 +75,29 @@
                         <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-color-green);">
                             <a href="{% url 'guiate_players_list' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}">VER JOGADORES</a>
                         </button>
-
                     </div>
-                    
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
+                    {% if messages %}
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </main>
-
-    <script src="{% static 'js/script.js' %}"></script>
     <script>
-        const input = document.getElementById('bulletin')
-        input.addEventListener('change', () =>{
-            console.log(input.value)
-        })
+        document.getElementById("cpf").addEventListener("input", function () {
+            let cpf = this.value.replace(/\D/g, ""); 
+            if (cpf.length > 3) cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
+            if (cpf.length > 7) cpf = cpf.substring(0, 7) + "." + cpf.substring(7);
+            if (cpf.length > 11) cpf = cpf.substring(0, 11) + "-" + cpf.substring(11, 14);
+            this.value = cpf; 
+        });
     </script>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
