@@ -1927,6 +1927,9 @@ def generator_data(request):
                 name_pdf = 'dados_campus'
                 if user.is_staff: teams = Team_sport.objects.prefetch_related('players').all().order_by('team__campus','sport','-sexo')
                 else: teams = Team_sport.objects.prefetch_related('players').filter(admin=user).order_by('team__campus','sport','-sexo')
+                if len(teams) == 0:
+                    messages.error(request, "Você não está cadastrado em alguma modalidade ou não há atletas cadastrados.")
+                    return redirect('data')
                 cont['teams'] = teams
                 cont['infor'] = "campus x modalidade x atletas"
             elif 'all_eqp' in request.POST:
@@ -1935,18 +1938,27 @@ def generator_data(request):
                 cont['infor'] = "equipe do jifs 2025"
                 if user.is_staff: voluntary = Voluntary.objects.all().order_by('campus','-type_voluntary')
                 else: voluntary = Voluntary.objects.filter(admin=user).order_by('campus','-type_voluntary')
+                if len(voluntary) == 0:
+                    messages.error(request, "Não há voluntarios, técnicos, atletas ou chefe de delagação cadastrados.")
+                    return redirect('data')
                 cont['team'] = voluntary
             elif 'all_players' in request.POST:
                 name_html = 'data-base'
                 name_pdf = 'dados_atletas'
                 if user.is_staff: players = Player.objects.all().order_by('campus','-sexo')
                 else: players = Player.objects.filter(admin=user).order_by('campus','-sexo')
+                if len(players) == 0:
+                    messages.error(request, "Não há atletas cadastrados.")
+                    return redirect('data')  
                 cont['players'] = players
             elif 'all_players_fem' in request.POST:
                 name_html = 'data-base'
                 name_pdf = 'dados_atletas'
                 if user.is_staff: players = Player.objects.filter(sexo=1).order_by('campus','-sexo')
                 else: players = Player.objects.filter(sexo=1, admin=user).order_by('campus','-sexo')
+                if len(players) == 0:
+                    messages.error(request, "Não há atletas do sexo feminino cadastrados.")
+                    return redirect('data')
                 cont['players'] = players
                 cont['infor'] = "atletas do sexo feminino"
                 cont['type'] = True
@@ -1955,22 +1967,31 @@ def generator_data(request):
                 name_pdf = 'dados_atletas'
                 if user.is_staff: players = Player.objects.filter(sexo=0).order_by('campus','-sexo')
                 else: players = Player.objects.filter(sexo=0, admin=user).order_by('campus','-sexo')
+                if len(players) == 0:
+                    messages.error(request, "Não há atletas do sexo masculino cadastrados.")
+                    return redirect('data')
                 cont['players'] = players
                 cont['infor'] = "atletas do sexo masculino"
                 cont['type'] = True
             elif 'all_players_sport' in request.POST:
                 name_pdf = 'dados_atletas'
                 data = request.POST.get('all_players_sport')
+                name_sport = Sport_types(int(data)).label
                 if user.is_staff:
                     print("uaii")
                     name_html = 'data-base-campus'
                     teams = Team_sport.objects.prefetch_related('players').filter(sport=data).order_by('team__campus','sport','-sexo')
+                    if len(teams) == 0:
+                        messages.error(request, "Não há equipes em modalidades ou atletas cadastrados.")
+                        return redirect('data')
                     cont['teams'] = teams
-                    nome_sport = Sport_types(int(data)).label
-                    cont['infor'] = f"atletas da modalidade {nome_sport}"
+                    cont['infor'] = f"atletas da modalidade {name_sport}"
                 else:
                     name_html = 'data-base'
-                    players = Player_team_sport.objects.filter(team_sport__sport=data)
+                    players = Player_team_sport.objects.filter(team_sport__sport=data, team_sport__admin=user)
+                    if len(players) == 0:
+                        messages.error(request, f'Não há atletas cadastrados no {name_sport}.')
+                        return redirect('data')
                     cont['players'] = players
                     if players:
                         cont['infor'] = f'atletas da modalidade {players[0].team_sport.get_sport_display()}'
