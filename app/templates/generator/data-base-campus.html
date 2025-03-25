@@ -4,16 +4,15 @@
 <head>
     <style>
         body { font-family: Arial, sans-serif; margin: 1cm; page-break-before: avoid; }
-        h1, h2 { text-align: center; }
+        h1 { text-align: center; }
+        h2 { text-align: left; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         th, td { border: 1px solid #000; padding: 8px; text-align: center; word-wrap: break-word; font-size: 13px; }
         td{ white-space: pre-wrap; }
         th { background-color: #f2f2f2; }
 
-        /* Força quebra de página antes do elemento */
         .page-break { page-break-before: always; }
 
-        /* Evita quebra de página dentro da tabela */
         table { page-break-inside: avoid; }
 
         .header-page {
@@ -46,7 +45,7 @@
         </tr>
         {% for j in i.players.all %}
         <tr>
-            <td>{{ j.player.name|upper }}a</td>
+            <td>{{ j.player.name|upper }}</td>
             <td>{{ j.player.get_sexo_display | truncatechars:5 }}</td>
             <td>{{ j.player.get_campus_display | truncatechars:7 }}</td>
             <td>{{ j.player.registration|upper }}</td>
@@ -54,17 +53,12 @@
         </tr>
         {% endfor %}
 
-        <!-- Exemplo de dados fictícios -->
-
     </table>
     {% else %}
     <p>Não há atletas cadastrados ainda.</p>
     {% endif %}
     {% endfor %}
 
-    <!-- Exemplo de dados fictícios -->
-
-    <!-- Forçando uma nova página -->
     <div class="page-break"></div>
 
     <h2>JIFS - MOREA <br> 2025</h2>
