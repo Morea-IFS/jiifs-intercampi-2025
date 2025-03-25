@@ -1,7 +1,12 @@
 from django.contrib import admin
-from . models import Certificate, Badge, Bolletin, Section, Config, Volley_match, Attachments, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
+from . models import Certificate, Settings_access, Badge, Bolletin, Section, Config, Volley_match, Attachments, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
 
 # Register your models here.
+
+@admin.register(Settings_access)
+class Settings_accessAdmin(admin.ModelAdmin):
+    list_display = ('id','start','end')
+    search_fields = ('id','start','end')
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):

@@ -71,9 +71,11 @@
                 </table>
             </section>
             <div style="display: flex; width: auto; height: auto; justify-content: center; align-items: center; gap: 15px;">
+                {% if allowed %}
                 <button class="side-bar-buttons-items2" style="background-color: var(--global-color-green); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
                     <a href="{% url 'guiate_players_team' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}" style="color: #ffffff; font-size: 25px;">ADICIONAR MAIS</a>
-                </button>       
+                </button> 
+                {% endif %}      
                 <button class="side-bar-buttons-items2 cursor-block" style="background-color: var(--global-seventh-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
                     <a href="{% url 'team_manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
                 </button>

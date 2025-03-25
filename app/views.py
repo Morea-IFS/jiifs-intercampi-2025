@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from .models import Sexo_types, Campus_types, Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
+from .models import Sexo_types, Settings_access,Campus_types, Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
 from django.db.models import Count, Q
+from .decorators import time_restriction
 from django.contrib import messages
 from django.db import IntegrityError
 from django.templatetags.static import static
@@ -13,7 +14,7 @@ from .forms import Terms_UseForm
 from datetime import date, datetime
 from reportlab.pdfgen import canvas
 from .generators import generate_certificates, generate_badges, generate_events, generate_timer
-import time
+import time, pytz
 from django.core.files.base import ContentFile
 from weasyprint import HTML
 from django.utils import timezone
@@ -232,6 +233,7 @@ def home_public(request):
 def about_us(request):
     return render(request, 'about_us.html')
 
+@login_required(login_url="login")
 def attachments(request):
     attachments = Attachments.objects.all()
     return render(request, 'attachments.html', {'attachments': attachments})
@@ -257,7 +259,8 @@ def player_manage(request):
         except Exception as e:
             messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
             return redirect('player_manage')
-    
+
+
 @login_required(login_url="login")
 def player_edit(request, id):
     try:
@@ -284,17 +287,20 @@ def player_edit(request, id):
     except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('manage')
 
+
 @login_required(login_url="login")
 def team_manage(request):
     try:
-        if request.user.is_staff: 
+        user = User.objects.get(id=request.user.id)
+        if user.is_staff: 
             team_sports = Team_sport.objects.all().order_by('team__campus','sport','-sexo')
             campus = ""
         else: 
-            team_sports = Team_sport.objects.filter(admin__id=request.user.id).order_by('team__campus','sport','-sexo')
-            campus = Technician.objects.get(user__id=request.user.id)
+            team_sports = Team_sport.objects.filter(admin__id=user.id).order_by('team__campus','sport','-sexo')
+            campus = Technician.objects.get(user__id=user.id)
         if request.method == "GET":
-            return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus':campus})
+
+            return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus':campus, 'allowed': allowed_pages(user)})
         else:
 
             team_sport_id = request.POST.get('team_sport_delete')
@@ -337,11 +343,12 @@ def team_edit(request, id):
 def team_players_manage(request, id):
     try:
         team = get_object_or_404(Team_sport, id=id)
+        user = User.objects.get(id=request.user.id)
         if request.method == "GET":
             player_team_sport = Player_team_sport.objects.select_related('player', 'team_sport').filter(team_sport=id)
             if not player_team_sport: 
                 messages.info(request, "Não há nenhum atleta cadastrado!")        
-            return render(request, 'team_players_manage.html', {'player_team_sport': player_team_sport,'team_sport': team})
+            return render(request, 'team_players_manage.html', {'player_team_sport': player_team_sport,'team_sport': team, 'allowed': allowed_pages(user)})
         else:
             print(request.POST)
             player = request.POST.get('player_delete')
@@ -609,16 +616,17 @@ def technician_edit(request, id):
 @login_required(login_url="login")
 def voluntary_manage(request):
     try:
+        user = User.objects.get(id=request.user.id)
         if request.user.is_staff:
             voluntary = Voluntary.objects.all().order_by('-type_voluntary','campus')
         else:
             voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus')
-        print("uaaai")
         if request.method == "GET":
             if not voluntary:
                 print("Não há nenhum voluntário cadastrado!")
-            messages.info(request, "Aqui você cadastrará o chefe de delegação, equipe de organizaçao, técnicos e voluntarios!")
-            return render(request, 'voluntary_manage.html', {'voluntary': voluntary})
+            if not len(messages.get_messages(request)) == 1:
+                messages.info(request, "Aqui você cadastrará o chefe de delegação, equipe de organizaçao, técnicos e voluntarios!")
+            return render(request, 'voluntary_manage.html', {'voluntary': voluntary, 'allowed': allowed_pages(user)})
         else:
             voluntary_id = request.POST.get('voluntary_delete')
             voluntary_delete = voluntary.objects.get(id=voluntary_id)
@@ -628,7 +636,8 @@ def voluntary_manage(request):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return render(request, 'voluntary_manage.html')
-    
+
+@time_restriction("voluntary_manage")
 @login_required(login_url="login")
 def voluntary_register(request):
     user = User.objects.get(id=request.user.id)
@@ -658,6 +667,7 @@ def voluntary_register(request):
             messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return redirect('voluntary_register')
 
+@time_restriction("voluntary_manage")
 @login_required(login_url="login")
 def voluntary_edit(request, id):
     try:
@@ -1995,17 +2005,13 @@ def generator_data(request):
                     cont['players'] = players
                     if players:
                         cont['infor'] = f'atletas da modalidade {players[0].team_sport.get_sport_display()}'
-            print(cont)
             html_string = render_to_string(f'generator/{name_html}.html', cont)
-            print("a ")
-            # Gerar o PDF
+
             response = HttpResponse(content_type='application/pdf')
-            print("b ")
             response['Content-Disposition'] = f'attachment; filename="{name_pdf}.pdf"'
-            print("c ")
 
             HTML(string=html_string).write_pdf(response)
-            print("d ")
+
             return response
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
@@ -2102,7 +2108,7 @@ def generator_data2(request):
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('data')
     
-
+@time_restriction("team_manage")
 @login_required(login_url="login")
 def register_team(request):
     sport = Sport_types.choices
@@ -2117,6 +2123,8 @@ def register_team(request):
     else:
         return redirect('guiate_register_team')
 
+    
+@time_restriction("team_manage")
 @login_required(login_url="login")  
 def team_sexo(request, sport_name):
     try:
@@ -2174,6 +2182,8 @@ def team_sexo(request, sport_name):
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('guiate_register_team')
 
+    
+@time_restriction("team_manage")
 @login_required(login_url="login")
 def players_team(request, team_name, team_sexo, sport_name):
     try:
@@ -2323,6 +2333,25 @@ def players_list(request, team_name, team_sexo, sport_name):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-    
+
+@login_required(login_url="login") 
 def dashboard(request):
     return render(request, 'guiate/dashboard.html', {'players': Player_team_sport.objects.all()})
+
+def allowed_pages(user):
+    brasilia_tz = pytz.timezone('America/Sao_Paulo')
+    now = datetime.now(brasilia_tz)
+    
+    config = Settings_access.objects.order_by('-id').first()
+
+    if config:
+        if config.start.tzinfo is None:
+            config.start = brasilia_tz.localize(config.start)
+        if config.end.tzinfo is None:
+            config.end = brasilia_tz.localize(config.end)
+    
+    if not config or (config.start <= now <= config.end) or user.is_staff:  
+        allowed = True
+    else:
+        allowed = False
+    return allowed

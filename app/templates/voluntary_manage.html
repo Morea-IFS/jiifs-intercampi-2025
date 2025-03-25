@@ -22,10 +22,12 @@
         <div class="title">
             <h1>GERENCIAMENTO DA EQUIPE</h1>
         </div>
+        {% if allowed %}
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
             <a href="{% url 'voluntary_register' %}">CADASTRAR MEMBRO DA EQUIPE</a>
         </button>
         <br><br>
+        {% endif %}
         <div class="all-manage">
             <input type="search"class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os voluntários" />
             <section class="all-table">
@@ -36,7 +38,9 @@
                         <th>MATRICULA/SIAPE</th>
                         {% if user.is_staff %} <th>CAMPUS</th> {% endif %}
                         <th>FOTO</th>
+                        {% if allowed %}
                         <th>EDITAR</th>
+                        {% endif %}
                         <th>DELETAR</th>
                     </tr>
                     {% for voluntary in voluntary %}
@@ -48,11 +52,13 @@
                         <td>{{voluntary.registration}}</td>
                         {% if user.is_staff %} <td>{{voluntary.get_campus_display}}</td> {% endif %}
                         <td>{% if voluntary.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        {% if allowed %}
                         <td>
                             <a href="{% url 'voluntary_edit' voluntary.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
+                        {% endif %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
