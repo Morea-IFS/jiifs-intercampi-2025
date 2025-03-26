@@ -71,6 +71,13 @@ class Type_service(models.IntegerChoices):
     technician = 1, "Técnico"
     head_delegation = 3,"Chefe de delegação"
 
+class Settings_access(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+
+    def __str__(self):    
+        return f"{self.start} | {self.end}"
+
 class Player(models.Model):
     name = models.CharField(max_length=100)
     instagram = models.CharField(max_length=100, blank=True)

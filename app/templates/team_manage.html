@@ -19,11 +19,13 @@
     <div class="block1">
         <div class="title">
             <h1>{% if user.is_staff %} GERENCIAMENTO CAMPUS {% else %} GERENCIAMENTO DE CAMPUS {{campus.get_campus_display|upper}} {% endif %}</h1>
-        </div>
+        </div>  
+        {% if allowed %}
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
             <a href="{% url 'guiate_register_team' %}">CADASTRAR MODALIDADE</a>
         </button>
         <br><br>
+        {% endif %}
         <div class="all-manage">
             <input type="search" class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar as modalidades" />
             <section class="all-table">
@@ -59,7 +61,7 @@
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
-                        <td>{% if i.player.status %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>{% if team_sport.status %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         {% endif %}
                         <td>
                             <form method="POST">
