@@ -55,7 +55,7 @@ urlpatterns = [
     path('generator/data', views.generator_data, name="data"),
     path('generator/bolletin', views.generator_bolletin, name="bolletin"),
 
-    path('generator/datae', views.generator_data2, name="data2"),
+    path('generator/data', views.generator_data2, name="data2"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

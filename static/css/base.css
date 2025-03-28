@@ -72,6 +72,10 @@
         color: var(--global-color-white);
     }
 
+    .pagination {
+        color: var(--global-color-white);
+    }
+
     input[type=number] {
         background-color: var(--global-sixth-color);
     }
@@ -187,6 +191,8 @@ button {
 }
 
 .image-no-players {
+    cursor: pointer;
+    user-select: none;
     max-height: 25em;
 }
 
@@ -377,7 +383,38 @@ tr:nth-child(even) {
     background-color: var(--global-fifth-color);
 }
 
+.pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: var(--global-ninth-color);
+    font-weight: bold;
+    margin-top: 2em;
+    gap: 1em;
+}
 
+.pagination-buttons > button {
+    background-color: var(--global-ninth-color);
+    color: var(--global-color-white);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+.pagination-buttons > button:hover {
+    background-color: var(--global-fourth-color);
+}
+.pagination-buttons a {
+    color: var(--global-color-white);
+    text-decoration: none;
+}
+.pagination-buttons {
+    display: flex;
+    gap: 2em;
+}
 
 /* CSS DOS JOGOS */
 
@@ -839,6 +876,7 @@ tr:nth-child(even) {
 	position: fixed;
 	top: 30px;
 	right: 20px;
+    z-index: 10;
 }
 
 .notifications :where(.toast, .column) {
