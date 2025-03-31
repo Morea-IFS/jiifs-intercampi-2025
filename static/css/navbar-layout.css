@@ -122,7 +122,6 @@ a {
 /*MEDIA SCREEN*/
 
 
-
 @media screen and (max-width: 925px) {
     .side-bar,
     .invisible-side-bar {
@@ -158,6 +157,8 @@ a {
         opacity: 0;
         display: flex;
         transition: all 0.4s ease 0s;
+        pointer-events: none; 
+        visibility: hidden;
     }
 
     .change .first-line {
@@ -172,5 +173,7 @@ a {
         max-width: 400px;
         opacity: 1;
         z-index: 1;
+        pointer-events: auto;
+        visibility: visible;
     }
 }

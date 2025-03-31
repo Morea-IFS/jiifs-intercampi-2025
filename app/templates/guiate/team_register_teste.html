@@ -12,8 +12,8 @@
     <title>JIIFS ADMIN</title>
 </head>
 <body>
-    <div style="width: 98vw; display: flex; justify-content: center; padding: 20px; right: 0px;">
-        <h1 style="color: white;">ESCOLHA A MODALIDADE DO CAMPUS <span style="color: #7bff00;">{{technician.get_campus_display|upper}}</span></h1>
+    <div style="display: flex; justify-content: center; padding: 20px;">
+        <h1 style="color: white; text-align: center;">ESCOLHA A MODALIDADE DO CAMPUS <span style="color: #7bff00;">{{technician.get_campus_display|upper}}</span></h1>
     </div>
     <div class="grid-container">
         <!-- Lista completa de esportes -->
@@ -67,7 +67,7 @@
             <span class="btn-text">Lançamento de Peso</span>
         </a>
     </div>
-    <div style="width: 98vw; height: auto; justify-content: center; display: flex; bottom: 10vh;">
+    <div style="display: flex; justify-content: center; margin-bottom: 2em;">
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #AB0000;">
             <a href="{% url 'team_manage' %}">VOLTAR</a>
         </button>

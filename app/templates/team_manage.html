@@ -32,7 +32,7 @@
         {% endif %}
 
         <div class="all-manage">
-            <form name="search-form" method="GET" action="{% url 'team_manage' %}">
+            <form style="display: flex; justify-content: center;  width: 100%;" name="search-form" method="GET" action="{% url 'team_manage' %}">
                 <input type="search" name="search" placeholder="Pesquisar modalidades..." value="{{ search_query }}">
             </form>
             
