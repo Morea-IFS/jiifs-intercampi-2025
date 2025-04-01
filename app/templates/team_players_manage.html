@@ -35,6 +35,7 @@
                         <th>SEXO</th>
                         <th>DATA NASC.</th>
                         <th>FOTO</th>
+                        <th>BOLETIN</th>
                         {% if user.is_staff %}
                         <th>EDITAR</th>
                         {% endif %}
@@ -51,6 +52,11 @@
                         <td>{{i.player.get_sexo_display}}</td>
                         <td>{{i.player.date_nasc}}</td>
                         <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>                       
+                            <a href="{{ i.player.bulletin.url }}" download="{{ i.player.bulletin.name }}">
+                                <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
                         {% if user.is_staff %}
                         <td>
                             <a href="{% url 'player_edit' i.player.id %}">
@@ -72,11 +78,11 @@
             </section>
             <div style="display: flex; width: auto; height: auto; justify-content: center; align-items: center; gap: 15px;">
                 {% if allowed %}
-                <button class="side-bar-buttons-items2" style="background-color: var(--global-color-green); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-color-green);">
                     <a href="{% url 'guiate_players_team' team_sport.team.name team_sport.get_sexo_display team_sport.get_sport_display %}" style="color: #ffffff; font-size: 25px;">ADICIONAR MAIS</a>
                 </button> 
                 {% endif %}      
-                <button class="side-bar-buttons-items2 cursor-block" style="background-color: var(--global-seventh-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
+                <button class="side-bar-buttons-items2  custom-buttons-sport-nav cursor-block" style="background-color: var(--global-seventh-color);">
                     <a href="{% url 'team_manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
                 </button>
             </div>

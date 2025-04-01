@@ -50,11 +50,16 @@
                         <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" />
                     </div>
                     <div>
-                        <input class="input-confirm" type="submit" value="Confirmar" />
+                        <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                            CONFIRMAR
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
+            <a href="{% url 'team_manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

@@ -19,7 +19,7 @@
     <div class="block1">
         <div class="title">
             <h1>
-                {% if user.is_staff %} GERENCIAMENTO CAMPUS {% else %} GERENCIAMENTO DE CAMPUS
+                {% if user.is_staff %} GERENCIAMENTO DOS CAMPUS {% else %} GERENCIAMENTO DE CAMPUS
                 {{campus.get_campus_display|upper}} {% endif %}
             </h1>
         </div>
