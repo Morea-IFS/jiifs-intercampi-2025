@@ -97,6 +97,7 @@ jobs:
           python manage.py migrate
           systemctl restart your-app-service
           EOF
+          
       - name: Set up Tailscale
         uses: tailscale/github-action@v3
         with:
