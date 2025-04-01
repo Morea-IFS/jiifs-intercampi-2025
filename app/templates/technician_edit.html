@@ -18,7 +18,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>EDITAR TÉCNICO</h1>
+            <h1>EDITAR GESTOR</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -26,14 +26,10 @@
                 <div>
                     <input type="text" autocomplete="on" autocorrect="on" name="name"
                         placeholder="{{ technician.name }}" value="{{ technician.name }}" required />
+                    <input type="password" autocomplete="on" autocorrect="on" name="password"
+                        placeholder="Para trocar a senha, digite a nova aqui. (opcional)" />
                     <input type="text" autocomplete="on" autocorrect="on" name="siape"
                         placeholder="{{ technician.siape }}" value="{{ technician.siape }}" />
-                    <select id="sexos" name="sexo" required>
-                        <option selected disabled>Selecione o sexo</option required>
-                        {% for value, name in sexo %}
-                        <option {% if technician.sexo == value %} selected {% endif %} value="{{value}}">{{name}}</option>
-                        {% endfor %}
-                    </select>
                     <select name="campus" required>
                         <option selected disabled>Selecione o campus</option required>
                         {% for value, name in campus %}
@@ -44,18 +40,15 @@
                     <label for="fotos" id="label-foto" class="custom-file-button">{% if technician.photo %} Trocar imagem {% else %} Adicione uma imagem {% endif %}</label>
                     <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png"
                         onchange="trocarTextoLabel()" />
-                    {% if messages %}
-                    {% for m in messages %}
-                    <p style="color: red;">{{m}}</p>
-                    {% endfor %}
-                    {% endif %}
                 </div>
                 <div>
-                    <input class="input-confirm" type="submit" value="Confirmar" />
+                    <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                        CONFIRMAR
+                    </button>
                 </div>
             </div>
         </form>
-        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'technician_manage' %}">VOLTAR</a>
         </button>
     </section>

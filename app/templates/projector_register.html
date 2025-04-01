@@ -36,12 +36,6 @@
                         placeholder="Informe uma frase">
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione o qrcode</label>
                     <input required type="file" name="qrcode" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
-                    {% if messages %} 
-                    <br>
-                    {% for m in messages %}
-                    <div style="background-color: #c5c5c5; padding: 20px;"><p style="color: #AB0000;">{{m}}</p></div>
-                    {% endfor %}
-                    {% endif %}
                 </div>
                 <div>
                     <input class="input-confirm" type="submit" value="Confirmar"></input>

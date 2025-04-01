@@ -107,6 +107,19 @@ function trocarTextoLabel() {
     }
 }
 
+function trocarTextoBELabel() {
+    const label = document.getElementById("label-bulletin");
+    const input = document.getElementById("bulletin");
+
+    // Se um arquivo for selecionado, muda o texto do label
+    if (input.files.length > 0) {
+        label.innerHTML = "Boletim escolar selecionado";
+    } else {
+        // Se nenhum arquivo estiver selecionado, volta para o texto padrão
+        label.innerHTML = "Clique aqui e adicione o boletim escolar";
+    }
+}
+
 function trocarTextoLabelspreadsheetv(){
     const label = document.getElementById("label-spreadsheet");
     const input = document.getElementById("spreadsheet");
@@ -119,6 +132,7 @@ function trocarTextoLabelspreadsheetv(){
         label.innerHTML = "Selecione uma planilha";
     }
 }
+
 function toggle_checkbox(source) {
     checkboxes = document.getElementsByName("input-checkbox");
     for (i = 0, n = checkboxes.length; i < n; i++) {
@@ -272,3 +286,23 @@ function mostrarCampos() {
         camposBanner.classList.remove('hidden');
     }
 }
+
+function confirmAction(event, message) {
+    if (!message) return;
+    
+    if (!window.confirm(message) && event) {
+        event.preventDefault(); // Cancela a ação se o usuário clicar em "Cancelar"
+    }
+}
+
+// Mapeia os botões e aplica eventos de confirmação dinamicamente
+function applyConfirmation() {
+    document.querySelectorAll("[data-confirm]").forEach(button => {
+        button.addEventListener("click", event => {
+            const message = button.getAttribute("data-confirm");
+            confirmAction(event, message);
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", applyConfirmation);

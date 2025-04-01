@@ -22,6 +22,7 @@
 .block-logo {
     height: 10em;
     user-select: none;
+    cursor: pointer;
 }
 
 

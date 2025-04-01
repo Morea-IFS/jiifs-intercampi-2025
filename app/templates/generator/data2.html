@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>JIIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+<a href="{% url 'Home' %}">
+    <button class="side-bar-buttons-items">HOME</button>
+</a>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
+</a>
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block center-top">
+    
+    <section style="margin-bottom: 20px;">
+        <div class="title">
+            <h1>GERAR DADOS DO SISTEMA</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form">
+                <div>
+                    <select id="team-datas" name="data" required style="min-width: 40vw;">
+                        <option selected disabled>Selecione o time</option required>
+                            {% if user.is_staff %}
+                            <optgroup label="Organização">
+                                <option value="all_data">Relatorio geral</option>
+                            </optgroup>
+                            {% endif %}
+                            <optgroup label="Gerais">
+                                <option value="all_player">Todos os atletas</option>
+                                <option value="all_sexo_masc">Todos os atletas do sexo masculino</option>
+                                <option value="all_sexo_fem">Todos os atletas do sexo feminino</option>
+                                <option value="all_voluntary">Todos os voluntarios</option>
+                            </optgroup>
+                            <optgroup label="Modalidades">
+                                {% for i in team_sport %}
+                                <option value="{{i.get_sport_display}}">{{i.get_sport_display}}</option>
+                                {% endfor %}
+                            </optgroup>
+                    </select>
+                </div>
+                <div>
+                    <input class="custom-buttons-sport-nav" type="submit" value="Confirmar"></input>
+                </div>
+            </div>
+        </form>
+        <br><br>
+        <section class="all-table">
+            <table id="search-table" style="min-width: 40vw;">
+                <tr class="hidden">
+                    <th>NOME</th>
+                    <th>FILE</th>
+                    <th><form method="POST" action="">{% csrf_token %}<button name="data_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form</th>
+                </tr>
+                {% for i in data %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>
+                        <a href="{{ i.file.url }}" download="{{ i.file.name }}">
+                          <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                        </a>
+                      </td>
+                    <td><form method="POST" action="">{% csrf_token %}<button name="certificate_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                </tr>
+                {% empty %}
+                <style>
+                    .hidden {
+                        display: none;
+                    }
+                </style>
+                {% endfor %}
+            </table>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
+            <ul class="notifications"></ul>
+            <script src="{% static 'js/messages.js' %}"></script>
+            {% if messages %}
+            {% for message in messages %}
+                <script>
+                    createToast("{{ message.tags }}", "{{ message }}");
+                </script>
+            {% endfor %}
+            {% endif %}
+        </section>
+    </section>
+    
+
+</div>
+{% endblock content %}

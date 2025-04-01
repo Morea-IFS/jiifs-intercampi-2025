@@ -25,7 +25,6 @@
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
-                        <th>FOTO</th>
                         <th>NOME</th>
                         <th>MATRICULA</th>
                         <th>CAMPUS</th>
@@ -45,7 +44,6 @@
                     </tr>
                     {% for player in player %}
                     <tr>
-                        <td>{% if player.photo %} <img src="{{ player.photo.url }}" style="width: 2em;"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         <td>{{ player.name }}</td>
                         <td>{{player.registration}}</td>
                         <td>{{player.get_campus_display}}</td>
@@ -60,7 +58,7 @@
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <button name="player_delete" value="{{player.id}}" style="background-color: transparent; border: none;">
+                                <button name="player_delete" data-confirm="Você deseja excluir o jogador?" value="{{player.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>

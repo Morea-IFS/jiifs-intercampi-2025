@@ -1,5 +1,5 @@
 # app/signals.py
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from django.conf import settings
 from django.templatetags.static import static
@@ -7,7 +7,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from .generators import generate_timer
 
-from .models import Point, Match, Team_match, Team, Penalties, Volley_match, Player_match, Time_pause, Banner
+from .models import Point, Match, Team_match, Team, Penalties, Volley_match, Player_match, Time_pause, Banner, Player_team_sport
 
 default_photo_url = f"{settings.MEDIA_URL}defaults/team.png"
 
@@ -117,9 +117,7 @@ def generate_score_data():
             return match_data
 
     elif Match.objects.filter(status=1):
-        print("ff")
         match = Match.objects.get(status=1)
-        print("j: ",match)
         team_matchs = Team_match.objects.filter(match=match)
         team_match_a = team_matchs[0]
         team_match_b = team_matchs[1]
@@ -181,7 +179,6 @@ def generate_score_data():
             'status':status,
             'sets_time_auto': True,
         }
-        print("sets off: ",match_data)
         return match_data
     else:
         if Banner.objects.filter(status=0): 
@@ -260,3 +257,31 @@ def penalties_updated(sender, instance, using, **kwargs):
 def penalties_updated(sender, instance, using, **kwargs):
     print("hmm, mudanças no volley_match :)")
     send_score_update()
+
+@receiver([post_save, pre_delete], sender=Player_team_sport)
+def team_sport_updated(sender, instance, **kwargs):
+    validate_team_sport(instance)
+
+
+def validate_team_sport(instance):
+    team_sport = instance.team_sport
+    if Player_team_sport.objects.filter(team_sport=team_sport).exists():
+        players_numbers = len(Player_team_sport.objects.filter(team_sport=team_sport))
+        match team_sport.sport:
+            case 1 | 2| 3| 4:
+                if players_numbers >= 6 and players_numbers <= 12:
+                    team_sport.status = True
+                    team_sport.save()
+                else:
+                    team_sport.status = False
+                    team_sport.save()
+            case _:
+                if players_numbers >= 1 and players_numbers <= 4:
+                    team_sport.status = True
+                    team_sport.save()
+                else:
+                    team_sport.status = False
+                    team_sport.save()
+        print(f"Novo time criado: {instance.player.name}")
+    else:
+        print(f"Time atualizado: {instance.player.name}")

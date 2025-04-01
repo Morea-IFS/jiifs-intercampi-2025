@@ -29,6 +29,8 @@
                         
                         <input type="text" autocomplete="on" autocorrect="on" name="registration" {% if player.registration %} placeholder="{{ player.registration }}" value="{{ player.registration }}" {% else %} placeholder="Matrícula" {% endif %} required>
 
+                        <input type="text" autocomplete="on" autocorrect="on" name="cpf" {% if player.cpf %} placeholder="{{ player.cpf }}" value="{{ player.cpf }}" {% else %} placeholder="Cpf" {% endif %} required>
+
                         <select id="sexos" name="sexo">
                             <option {% if player_disable %} selected disabled {% endif %} value="2"> Selecione o sexo
                             </option>
@@ -46,11 +48,6 @@
                         {% endif %}
                         <label for="fotos" id="label-foto" class="custom-file-button">{% if player.photo %} Trocar imagem {% else %} Adicione uma imagem {% endif %}</label>
                         <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" />
-                        {% if messages %}
-                        {% for m in messages %}
-                        <p style="color: red;">{{m}}</p>
-                        {% endfor %}
-                        {% endif %}
                     </div>
                     <div>
                         <input class="input-confirm" type="submit" value="Confirmar" />

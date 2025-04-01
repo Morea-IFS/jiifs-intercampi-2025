@@ -14,6 +14,9 @@
     <main>
         <div class="all">
             <div class="all-block" style="width: 100vw;">
+                <div class="theme-mode-button" id="theme-toggle">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </div>
                 <section class="block1">
                     <div class="title">
                         <h1>ADICIONE UMA NOVA MODALIDADE AO CAMPUS <span style="color: #0059ff;">{{team.name|upper}}</span></h1>
@@ -46,19 +49,14 @@
                             </div>
                         </div>
                     </form>
+                    <ul class="notifications"></ul>
+                    <script src="{% static 'js/messages.js' %}"></script>
                     {% if messages %}
-                    <style>
-                        .ll {
-                            background-color: #c5c5c5;
-                            padding: 20px;
-                        }
-                    </style>
-                    {% for m in messages %}
-                    <div class="ll">
-                        <p style="color: #AB0000;">{{m}}</p>
-                    </div>
+                    {% for message in messages %}
+                        <script>
+                            createToast("{{ message.tags }}", "{{ message }}");
+                        </script>
                     {% endfor %}
-                    <br>
                     {% endif %}
                     <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 20px; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
                         <a href="{% url 'manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>

@@ -1,0 +1,31 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="titulo" placeholder="Título do Documento" required>
+    <div id="container">
+        <div class="input-group">
+            <input type="text" name="subtitulo[]" placeholder="Subtítulo" required>
+            <textarea name="conteudo[]" placeholder="Conteúdo" required></textarea>
+            <button type="button" onclick="removerCampo(this)">Remover</button>
+        </div>
+    </div>
+    <button type="button" onclick="adicionarCampo()">Adicionar Campo</button>
+    <button type="submit">Salvar</button>
+</form>
+
+<script>
+function adicionarCampo() {
+    let container = document.getElementById('container');
+    let div = document.createElement('div');
+    div.classList.add('input-group');
+    div.innerHTML = `
+        <input type="text" name="subtitulo[]" placeholder="Subtítulo" required>
+        <textarea name="conteudo[]" placeholder="Conteúdo" required></textarea>
+        <button type="button" onclick="removerCampo(this)">Remover</button>
+    `;
+    container.appendChild(div);
+}
+
+function removerCampo(botao) {
+    botao.parentElement.remove();
+}
+</script>

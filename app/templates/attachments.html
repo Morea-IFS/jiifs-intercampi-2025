@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>JIIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+<a href="{% url 'Home' %}">
+    <button class="side-bar-buttons-items">HOME</button>
+</a>
+<a href="{% url 'manage' %}">
+    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
+</a>
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block center-top">
+    <section>
+        <div class="title">
+            <h1>ANEXOS, ARQUIVOS, DOCUMENTOS E O REGULAMENTO</h1>
+        </div>
+        <br><br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table" style="min-width: 40vw;">
+                    <tr class="hidden">
+                        <th>NOME</th>
+                        <th>ARQUIVO</th>
+                    </tr>
+                    {% for i in attachments %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>
+                            <a href="{{ i.file.url }}" download="{{ i.file.name }}">
+                                <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden {
+                            display: none;
+                        }
+                    </style>
+                    {% endfor %}
+                </table>
+
+                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
+                    <a href="{% url 'manage' %}">VOLTAR</a>
+                </button>
+            </section>
+        </div>
+    </section>
+</div>
+{% endblock content %}

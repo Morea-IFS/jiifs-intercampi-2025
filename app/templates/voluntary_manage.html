@@ -16,54 +16,53 @@
 
 {% endblock navbar %}
 
-{% block register %}
-<section class="side-bar-register">
-    <h3 class="side-bar-register-title">CADASTRO</h3>
-    <button class="side-bar-buttons-items2">
-        <a href="{% url 'voluntary_register' %}">Adicionar</a>
-    </button>
-</section>
-{% endblock register %}
-
 {% block content %}
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>GERENCIAMENTO DOS VOLUNTÁRIOS</h1>
+            <h1>GERENCIAMENTO DA EQUIPE</h1>
         </div>
-        <button class="side-bar-buttons-items2">
-            <a href="{% url 'voluntary_register' %}">CADASTRO DE VOLUNTÁRIOS</a>
+        {% if allowed %}
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+            <a href="{% url 'voluntary_register' %}">CADASTRAR MEMBRO DA EQUIPE</a>
         </button>
         <br><br>
+        {% endif %}
         <div class="all-manage">
             <input type="search"class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os voluntários" />
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
-                        <th>HIERARQUIA</th>
                         <th>NOME</th>
-                        <th>MATRICULA</th>
+                        <th>CARGO</th>
+                        <th>MATRICULA/SIAPE</th>
+                        {% if user.is_staff %} <th>CAMPUS</th> {% endif %}
                         <th>FOTO</th>
+                        {% if allowed %}
                         <th>EDITAR</th>
+                        {% endif %}
                         <th>DELETAR</th>
                     </tr>
                     {% for voluntary in voluntary %}
                     <tr>
-                        <td>{% if voluntary.type_voluntary == 0 %} Voluntário {% elif voluntary.type_voluntary == 1 %} Equipe de organização {% endif %}</td>
                         <td>
                             <a href="{% url 'voluntary_edit' voluntary.id %}">{{ voluntary.name }}</a>
                         </td>
+                        <td>{{voluntary.get_type_voluntary_display}}</td>
                         <td>{{voluntary.registration}}</td>
+                        {% if user.is_staff %} <td>{{voluntary.get_campus_display}}</td> {% endif %}
                         <td>{% if voluntary.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        {% if allowed %}
                         <td>
                             <a href="{% url 'voluntary_edit' voluntary.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
+                        {% endif %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <button name="voluntary_delete" value="{{voluntary.id}}" style="background-color: transparent; border: none;">
+                                <button data-confirm="Você realmente deseja excluir este membro da equipe?" name="voluntary_delete" value="{{voluntary.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
@@ -77,12 +76,12 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM VOLUNTÁRIO CADASTRADO <br> <span style="font-size: 20px;">Os voluntários tem acesso ao sistema!</span></h2>
+                        <h2>NÃO HÁ NENHUM MEMBRO DA EQUIPE CADASTRADO <br> <span style="font-size: 20px;">Aqui cadastramos: chefe de delegação, voluntarios, organização e técnicos a junção de todos é a equipe!</span></h2>
                     </div>
                     {% endfor %}
                 </table>
             </section>
-            <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
         </div>
