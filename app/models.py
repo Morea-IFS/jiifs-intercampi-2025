@@ -117,7 +117,7 @@ class Voluntary(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100, blank=True)
-    photo = models.ImageField(upload_to='logo_team/', default='defaults/team.png', blank=True)
+    photo = models.ImageField(upload_to='logo_team/', default='defaults/team.png', blank=True, null=True)
     hexcolor = models.CharField(max_length=7, null=True, blank=True)
     campus = models.IntegerField(choices=Campus_types.choices, default=Campus_types.reitoria)
 
@@ -157,7 +157,7 @@ class Team_sport(models.Model):
     status = models.BooleanField(default=False)
 
     def __str__(self):    
-        return f"{self.team} | {self.get_sport_display()}"
+        return f"{self.team.get_campus_display()} | {self.get_sport_display()}"
     
 class Player_team_sport(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)

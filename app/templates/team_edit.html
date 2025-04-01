@@ -27,21 +27,49 @@
                 {% csrf_token %}
                 <div class="block-inputs-form">
                     <div>
-                        <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="{{ team.name }}"
-                            value="{{ team.name }}"></input>
+                        <label for="campus">Campus</label>
+                        <select id="campus" name="campus">
+                            <option selected disabled>Selecione o campus</option>
+                            {% for value, name in campus %}
+                            <option value="{{value}}" {% if team_sport.team.campus == value %} selected {% endif %}>{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        <br><br><br>
+                        <label for="user_admin">User</label>
+                        <select id="user_admin" name="user">
+                            <option selected disabled>Selecione o usuario admin</option>
+                            {% for i in users %}
+                            <option value="{{i.id}}" {% if team_sport.admin == i %} selected {% endif %}>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="sport">Sport</label>
+                        <select id="sport" name="sport">
+                            <option selected disabled>Selecione o sport</option>
+                            {% for value, name in sport %}
+                            <option value="{{value}}" {% if team_sport.sport == value %} selected {% endif %}>{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo" name="sexo">
+                            <option selected disabled>Selecione o sexo</option>
+                            {% for value, name in sexo %}
+                            <option value="{{value}}" {% if team_sport.sexo == value %} selected {% endif %}>{{name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
-                        <input class="input-confirm" type="submit" value="Confirmar">
+                        <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                            CONFIRMAR
+                        </button>
                     </div>
                 </div>
             </form>
-            <form id="function_validate_form_delete" class="block-inputs" method="post">
-                {% csrf_token %}
-                <div class="block-inputs-form">
-                    <input class="input-delete" type="submit" value="Excluir" name="excluir" />
-                </div>
-            </form>
+
         </div>
+        <br><br>
+        <button class="side-bar-buttons-items2  custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
+            <a href="{% url 'team_manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
+        </button>
     </section>
 </div>
 {% endblock content %}

@@ -258,7 +258,7 @@ def penalties_updated(sender, instance, using, **kwargs):
     print("hmm, mudanças no volley_match :)")
     send_score_update()
 
-@receiver([post_save, pre_delete], sender=Player_team_sport)
+@receiver([post_save, post_delete], sender=Player_team_sport)
 def team_sport_updated(sender, instance, **kwargs):
     validate_team_sport(instance)
 
@@ -268,7 +268,7 @@ def validate_team_sport(instance):
     if Player_team_sport.objects.filter(team_sport=team_sport).exists():
         players_numbers = len(Player_team_sport.objects.filter(team_sport=team_sport))
         match team_sport.sport:
-            case 1 | 2| 3| 4:
+            case 0 | 1 | 2| 3 :
                 if players_numbers >= 6 and players_numbers <= 12:
                     team_sport.status = True
                     team_sport.save()
@@ -282,6 +282,6 @@ def validate_team_sport(instance):
                 else:
                     team_sport.status = False
                     team_sport.save()
-        print(f"Novo time criado: {instance.player.name}")
     else:
-        print(f"Time atualizado: {instance.player.name}")
+        team_sport.status = False
+        team_sport.save()

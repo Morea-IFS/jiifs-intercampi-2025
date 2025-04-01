@@ -302,26 +302,8 @@ def team_manage(request):
             team_sports = Team_sport.objects.filter(admin__id=user.id).order_by('team__campus', 'sport', '-sexo')
             campus = Technician.objects.get(user__id=user.id)
 
-        page = request.GET.get('page', 1) 
-        paginator = Paginator(team_sports, 2) 
-
-        try:
-            team_sports_paginated = paginator.page(page)
-        except PageNotAnInteger:
-            team_sports_paginated = paginator.page(1)
-        except EmptyPage:
-            team_sports_paginated = paginator.page(paginator.num_pages)
-
         if request.method == "GET":
-            return render(
-                request, 
-                'team_manage.html', 
-                {
-                    'team_sports': team_sports_paginated, 
-                    'campus': campus, 
-                    'allowed': allowed_pages(user)
-                }
-            )
+            return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus':campus, 'allowed': allowed_pages(user)})
         else:
             team_sport_id = request.POST.get('team_sport_delete')
             team_sport_delete = Team_sport.objects.get(id=team_sport_id)
