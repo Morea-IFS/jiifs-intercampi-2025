@@ -315,37 +315,36 @@ def team_manage(request):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return render(request, 'team_manage.html', {
-            'team_sports': team_sports_paginated, 
+            'team_sports': team_sports, 
             'campus': campus, 
             'allowed': allowed_pages(user)
         })
-
     
 @login_required(login_url="login")
 def team_edit(request, id):
-    team = get_object_or_404(Team, id=id)
+    team_sport = get_object_or_404(Team_sport, id=id)
     sport = Sport_types.choices
-    sport_ids = Team_sport.objects.filter(team=team).values_list('sport', flat=True)
+    campus = Campus_types.choices
+    sexo = Sexo_types.choices
+    users = User.objects.all()
     if request.method == 'GET': 
-        return render(request, 'team_edit.html', { 'team': team, 'sport': sport, 'sport_ids': sport_ids })
-    elif 'excluir' in request.POST:
-        try:
-            if team.photo:
-                team.photo.delete()
-            Team_sport.objects.filter(team=team).delete()
-
-            team.delete()
-            return redirect('team_manage')
-        except Exception as e:
-            messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return render(request, 'team_edit.html', {'team_sport': team_sport, 'campus': campus, 'sport': sport, 'sexo': sexo, 'users': users})
     else:
         try:
-            team.name = request.POST.get('name')
-            team.save()            
+            team_sport.sport = request.POST.get('sport')
+            team_sport.sexo = request.POST.get('sexo')
+            team_sport.admin = User.objects.get(id=request.POST.get('user'))
+            team_sport.team.campus = request.POST.get('campus')
+            for i in campus: 
+                if i[0] == int(request.POST.get('campus')): team_sport.team.name = i[1]
+            team_sport.team.save() 
+            team_sport.save() 
+            messages.success(request, 'Alteração feita com sucesso!')
+            return redirect('team_manage')  
         except (TypeError, ValueError): messages.error(request, 'Um valor foi informado incorretamente!')
         except IntegrityError as e: messages.error(request, 'Algumas informações não foram preenchidas :(')
         except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-    return redirect('team_manage')  
+    return redirect('team_manage') 
 
 @login_required(login_url="login")
 def team_players_manage(request, id):
@@ -637,9 +636,9 @@ def voluntary_manage(request):
             return render(request, 'voluntary_manage.html', {'voluntary': voluntary, 'allowed': allowed_pages(user)})
         else:
             voluntary_id = request.POST.get('voluntary_delete')
-            voluntary_delete = voluntary.objects.get(id=voluntary_id)
+            voluntary_delete = Voluntary.objects.get(id=voluntary_id)
             voluntary_delete.delete()
-            messages.success(request, "Voluntario removido do sistema com sucesso!")
+            messages.success(request, f"{voluntary_delete.get_type_voluntary_display()} removido do sistema com sucesso!")
             return redirect('voluntary_manage')
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
