@@ -14,8 +14,8 @@ Group=root
 # DynamicUser=yes
 # see http://0pointer.net/blog/dynamic-users-with-systemd.html
 RuntimeDirectory=gunicorn
-WorkingDirectory=/home/jiifs/jiifs-interclass-2024
-ExecStart=/home/jiifs/jiifs-interclass-2024/env/bin/gunicorn interclasse.asgi:application -k uvicorn.workers.UvicornWorker
+WorkingDirectory=/home/jiifs/jiifs-intercampi-2025
+ExecStart=/home/jiifs/jiifs-intercampi-2025/env/bin/gunicorn interclasse.asgi:application -k uvicorn.workers.UvicornWorker
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5

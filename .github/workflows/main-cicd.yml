@@ -1,0 +1,104 @@
+name: Main Worflow Pipeline
+run-name: ${{ github.actor }} Test Code  🚀
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  Testing-Deps:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11.0, 3.11.5, 3.12.0]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Getting .env file
+      run: |
+        wget https://pastebin.com/raw/6Z7HS1x9 -O .env
+
+    - name: Run Django Migrations
+      run: |
+        python manage.py migrate
+
+    - name: Run Tests
+      run: |
+        python manage.py test
+        
+  Testing-Migrations:
+    runs-on: ubuntu-latest
+    needs: Testing-Deps
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11.0, 3.11.5, 3.12.0]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Getting .env file
+      run: |
+        wget https://pastebin.com/raw/6Z7HS1x9 -O .env
+
+    - name: Run Django Migrations
+      run: |
+        python manage.py migrate
+  
+  DeployDev:
+    name: Deploy to Development
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    needs: Testing-Migrations
+    environment: 
+        name: development
+        url: 'http://dev.myapp.com'
+    steps:
+     - name: Deploy
+       run: echo I am deploying!
+
+  DeployStaging:
+    name: Deploy to Staging 
+    if: github.event.ref == 'refs/heads/main'
+    needs: [Testing-Migrations]
+    runs-on: ubuntu-latest
+    environment: 
+      name: staging
+      url: 'http://test.myapp.com'
+    steps:
+      - name: Deploy
+        run: echo I am deploying! 
+            
+  DeployProd:
+    name: Deploy to Production 
+    needs: [DeployStaging]
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: 'http://www.myapp.com'
+    steps:
+      - name: Deploy
+        run: echo I am deploying! 
