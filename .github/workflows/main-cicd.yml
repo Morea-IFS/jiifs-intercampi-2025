@@ -77,8 +77,34 @@ jobs:
         name: development
         url: 'http://dev.myapp.com'
     steps:
-     - name: Deploy
-       run: echo I am deploying!
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your-server.com >> ~/.ssh/known_hosts
+
+      - name: Deploy Application
+        run: |
+          ssh user@your-server.com << 'EOF'
+          cd /path/to/your/application
+          git pull origin main
+          source /path/to/your/venv/bin/activate
+          pip install -r requirements.txt
+          python manage.py migrate
+          systemctl restart your-app-service
+          EOF
+      - name: Set up Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+     
 
   DeployStaging:
     name: Deploy to Staging 
@@ -93,12 +119,37 @@ jobs:
         run: echo I am deploying! 
             
   DeployProd:
-    name: Deploy to Production 
+    name: Deploy to Production
     needs: [DeployStaging]
     runs-on: ubuntu-latest
     environment: 
       name: production
       url: 'http://www.myapp.com'
     steps:
-      - name: Deploy
-        run: echo I am deploying! 
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci    
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Application
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} << 'EOF'
+          cd ${{ secrets.INSIDE_PROJECT_DIR }}
+          git pull origin main
+          source ${{ secrets.INSIDE_PROJECT_DIR }}${{ secrets.INSIDE_PROJECT_ENV }}
+          pip install -r requirements.txt
+          python manage.py migrate
+          systemctl restart jiifs
+          EOF
