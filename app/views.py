@@ -553,23 +553,24 @@ def games(request):
 
 @login_required(login_url="login")
 def technician_manage(request):
-    try:
-        if request.user.is_authenticated == False:
-            return redirect('login')
-        else:
-            technician = Technician.objects.all()
-            if request.method == "GET":
-                if not technician:
-                    print("Não há nenhum tecnico cadastrado!")
-                return render(request, 'technician_manage.html', {'technician': technician})
-            else:
-                technician_id = request.POST.get('technician_delete')
-                technician_delete = technician.objects.get(id=technician_id)
-                technician_delete.delete()
-                return redirect('technician_manage')
-    except Exception as e:
-        messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-        return render(request, 'technician_manage.html')
+    technician = Technician.objects.all()
+    if request.method == "GET":
+        if not technician:
+            print("Não há nenhum gestor cadastrado!")
+            messages.info(request, "Não há nenhum gestor cadastrado!")
+        return render(request, 'technician_manage.html', {'technician': technician})
+    else:
+        try:
+            technician_id = request.POST.get('technician_delete')
+            technician_delete = Technician.objects.get(id=technician_id)
+            technician_delete.delete()
+            technician_delete.user.delete()
+            messages.info(request, f"{technician_delete.user.username} removido do sistema com sucesso!")
+            return redirect('technician_manage')
+        except Exception as e:
+            messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('technician_manage')
+
 
 @login_required(login_url="login")
 def technician_register(request):
@@ -589,6 +590,8 @@ def technician_register(request):
             else:
                 technician = Technician.objects.create(name=name, user=user, siape=siape, campus=campus_id)
             technician.save()
+            messages.success(request, f"{technician.user.username} cadastrado do sistema com sucesso!")
+            return redirect('technician_manage')
         except (TypeError, ValueError):
             messages.error(request, 'Um valor foi informado incorretamente!')
         except IntegrityError as e:
@@ -602,25 +605,20 @@ def technician_edit(request, id):
     try:
         technician = get_object_or_404(Technician, id=id)
         if request.method == 'GET':
-                return render(request, 'technician_edit.html', {'technician': technician,'sexo':Sexo_types.choices, 'campus':Campus_types.choices})            
-        elif 'excluir' in request.POST:
-            if technician.photo:
-                technician.photo.delete()
-            technician.delete()
-            return redirect('technician_manage')
+            return render(request, 'technician_edit.html', {'technician': technician,'sexo':Sexo_types.choices, 'campus':Campus_types.choices})            
         else:
-            user = get_object_or_404(User, id=technician.user.id)
-            if technician.name != request.POST.get('name') and len(request.POST.get('name')) >= 8:
+            if request.POST.get('name'):
                 technician.name = request.POST.get('name')
-                user = User.objects.get(id=technician.user.id)
-                user.username = str(request.POST.get('name'))
-            if request.POST.get('password'): user.set_password(request.POST.get('password'))
+                technician.user.username = str(request.POST.get('name'))
+            if request.POST.get('password'): technician.user.set_password(request.POST.get('password'))
             technician.siape = request.POST.get('siape')
             technician.campus = request.POST.get('campus')
-            technician.save()
-            user.save()
             if request.FILES.get('photo'):
                 if technician.photo: technician.photo.delete()
+                technician.photo = request.FILES.get('photo')
+            technician.save()
+            technician.user.save()
+            messages.success(request, f"{technician.user.username} do sistema atualizado com sucesso!")
             return redirect('technician_manage')
     except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('technician_manage')
