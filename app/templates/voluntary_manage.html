@@ -81,6 +81,25 @@
                     {% endfor %}
                 </table>
             </section>
+            <section class="pagination">
+                <div class="pagination-info">
+                    <p>Página {{ voluntary.number }} de {{ voluntary.paginator.num_pages }}</p>
+                </div>
+                
+                <div class="pagination-buttons">
+                    {% if voluntary.has_previous %}
+                        <button class="pagination-button">
+                            <a href="?page={{ voluntary.previous_page_number }}" class="pagination-link">Anterior</a>
+                        </button>
+                    {% endif %}
+                    
+                    {% if voluntary.has_next %}
+                        <button class="pagination-button">
+                            <a href="?page={{ voluntary.next_page_number }}" class="pagination-link">Próxima</a>
+                        </button>
+                    {% endif %}
+                </div>
+            </section>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>

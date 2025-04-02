@@ -630,15 +630,27 @@ def voluntary_manage(request):
     try:
         user = User.objects.get(id=request.user.id)
         if request.user.is_staff:
+            qnt = 20
             voluntary = Voluntary.objects.all().order_by('-type_voluntary','campus')
         else:
+            qnt = 15
             voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus')
+        page = request.GET.get('page', 1) 
+        
+        paginator = Paginator(voluntary, qnt) 
+
+        try:
+            voluntary_paginated = paginator.page(page)
+        except PageNotAnInteger:
+            voluntary_paginated = paginator.page(1)
+        except EmptyPage:
+            voluntary_paginated = paginator.page(paginator.num_pages)
         if request.method == "GET":
             if not voluntary:
                 print("Não há nenhum voluntário cadastrado!")
             if not len(messages.get_messages(request)) == 1:
                 messages.info(request, "Aqui você cadastrará o chefe de delegação, equipe de organizaçao, técnicos e voluntarios!")
-            return render(request, 'voluntary_manage.html', {'voluntary': voluntary, 'allowed': allowed_pages(user)})
+            return render(request, 'voluntary_manage.html', {'voluntary': voluntary_paginated, 'allowed': allowed_pages(user)})
         else:
             voluntary_id = request.POST.get('voluntary_delete')
             voluntary_delete = Voluntary.objects.get(id=voluntary_id)
