@@ -41,7 +41,7 @@
                     {% for technician in technician %}
                     <tr>
                         <td>
-                            <a href="{% url 'technician_edit' technician.id %}">{{ technician.name }}</a>
+                            <a href="{% url 'technician_edit' technician.id %}">{{ technician.user.username }}</a>
                         </td>
                         <td>{{technician.siape}}</td>
                         <td>{{technician.get_campus_display}}</td>
@@ -54,7 +54,7 @@
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <button name="technician_delete" value="{{technician.id}}" style="background-color: transparent; border: none;">
+                                <button data-confirm="Você realmente deseja excluir este gestor da equipe?" name="technician_delete" value="{{technician.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
