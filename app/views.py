@@ -301,9 +301,18 @@ def team_manage(request):
         else: 
             team_sports = Team_sport.objects.filter(admin__id=user.id).order_by('team__campus', 'sport', '-sexo')
             campus = Technician.objects.get(user__id=user.id)
+            
+        page = request.GET.get('page', 1) 
+        paginator = Paginator(team_sports, 10) 
 
+        try:
+            team_sports_paginated = paginator.page(page)
+        except PageNotAnInteger:
+            team_sports_paginated = paginator.page(1)
+        except EmptyPage:
+            team_sports_paginated = paginator.page(paginator.num_pages)
         if request.method == "GET":
-            return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus':campus, 'allowed': allowed_pages(user)})
+            return render(request, 'team_manage.html', {'team_sports': team_sports_paginated, 'campus':campus, 'allowed': allowed_pages(user)})
         else:
             team_sport_id = request.POST.get('team_sport_delete')
             team_sport_delete = Team_sport.objects.get(id=team_sport_id)
@@ -314,11 +323,7 @@ def team_manage(request):
 
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-        return render(request, 'team_manage.html', {
-            'team_sports': team_sports, 
-            'campus': campus, 
-            'allowed': allowed_pages(user)
-        })
+        return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus': campus, 'allowed': allowed_pages(user) })
     
 @login_required(login_url="login")
 def team_edit(request, id):
@@ -642,7 +647,7 @@ def voluntary_manage(request):
             return redirect('voluntary_manage')
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-        return render(request, 'voluntary_manage.html')
+        return redirect('voluntary_manage')
 
 @time_restriction("voluntary_manage")
 @login_required(login_url="login")
@@ -666,6 +671,7 @@ def voluntary_register(request):
                 voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=user, campus=campus_id)
             voluntary.save()
             messages.success(request, "Parabéns, você cadastrou mais um membro da equipe do JIFS 2025!")
+            return redirect('voluntary_manage')
         except (TypeError, ValueError):
             messages.error(request, 'Um valor foi informado incorretamente!')
         except IntegrityError as e:

@@ -56,7 +56,7 @@
 
                     {% for team_sport in team_sports %}
                     <tr>
-                        <td>{{ team_sports.start_index|add:forloop.counter0 }}</td>
+                        <td>{{ forloop.counter }}</td>
                         {% if user.is_staff %}
                         <td>{{ team_sport.team.name }}</td>
                         {% endif %}
@@ -67,7 +67,7 @@
                         </td>
                         {% if user.is_staff %}
                         <td>
-                            <a href="{% url 'team_edit' team_sport.team.id %}">
+                            <a href="{% url 'team_edit' team_sport.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
