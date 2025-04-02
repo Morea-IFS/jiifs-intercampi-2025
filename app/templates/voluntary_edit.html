@@ -10,7 +10,7 @@
     <button class="side-bar-buttons-items">HOME</button>
 </a>
 <a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
+    <button class="side-bar-buttons-items">MENU</button>
 </a>
 {% endblock navbar %}
 
@@ -29,7 +29,7 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
                     placeholder="{{ voluntary.registration }}" value="{{ voluntary.registration }}" />
                     <select name="type_voluntary">
-                        <option selected disabled>Selecione o tipo de membro</option required>
+                        <option selected disabled>Selecione a função</option required>
                         {% for v, n in types %}
                         <option {% if voluntary.type_voluntary == v %} selected {% endif %} value="{{v}}">{{n}}</option>
                         {% endfor %}

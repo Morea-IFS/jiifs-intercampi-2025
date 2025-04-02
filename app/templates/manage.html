@@ -24,6 +24,7 @@
   <div class="container swiper">
     <div class="card-wrapper">
       <ul class="card-list swiper-wrapper">
+        <!--
         <li class="card-item swiper-slide">
           <a href="{% url 'Home' %}" class="card-link" style="background-color: #003cff;">
             <img src="{% static 'images/door-open-solid.svg' %}" alt="Card Image" class="card-image" style="filter: invert();">
@@ -36,10 +37,11 @@
             <button class="card-button material-symbols-rounded" style="color: #ffffff; border: 2px solid #ffffff;">arrow_forward</button>
           </a>
         </li>
+        -->
         <li class="card-item swiper-slide">
           <a href="{% url 'team_manage' %}" class="card-link">
             <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
-            <p class="badge badge-team">CAMPUS</p>
+            <p class="badge badge-team">MODALIDADES</p>
             <h2 class="card-title">Aqui você poderá cadastrar e ver as modalidades em que o seu campus que está inscrito. Você também poderá cadastrar os seus jogadores!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
@@ -47,8 +49,8 @@
         <li class="card-item swiper-slide">
           <a href="{% url 'voluntary_manage' %}" class="card-link">
             <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
-            <p class="badge badge-technician">EQUIPE</p>
-            <h2 class="card-title">Aqui você poderá cadastrar toda a sua equipe, de voluntarios a chefe de delegação! Para posteriormente gerar os crachás na pagina 'crachá'</h2>
+            <p class="badge badge-technician">COMISSÃO TÉCNICA</p>
+            <h2 class="card-title">Aqui você poderá cadastrar toda a sua comissão técnica, de voluntarios a chefe de delegação! Para posteriormente gerar os crachás na pagina 'crachá'</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -91,7 +93,7 @@
         <a href="{% url 'badge' %}" class="card-link">
           <img src="{% static 'images/logo-morea-sports.svg' %}" alt="Card Image" class="card-image">
           <p class="badge badge-badge">CRACHÁ</p>
-          <h2 class="card-title">Aqui você poderá gerar os cracrás dos atletas, chefe de delegação, organização, técnicos e voluntarios! ele gera de forma separada para maior organização! </h2>
+          <h2 class="card-title">Aqui você poderá gerar os cracrás dos atletas, chefe de delegação, apoio, técnicos e voluntarios! ele gera de forma separada para maior organização! </h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>
@@ -114,13 +116,20 @@
       </li>
       {% endif %}
       </ul>
-       <!-- Pagination -->
-      <div class="swiper-pagination"></div>
-      <!-- Navigation Buttons -->
-      <div class="swiper-slide-button swiper-button-prev"></div>
-      <div class="swiper-slide-button swiper-button-next"></div>
+    <!-- Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Navigation Buttons -->
+    <div class="swiper-slide-button swiper-button-prev"></div>
+    <div class="swiper-slide-button swiper-button-next"></div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); padding: 10px 20px; border: 0; border-radius: 7px; font-weight: 600;">
+            <a href="{% url 'Home' %}" style="color: #ffffff; font-size: 20px; text-decoration: none;">VOLTAR</a>
+        </button>
     </div>
-  </div>
+
+</div> 
+
   <ul class="notifications"></ul>
   <script src="{% static 'js/messages.js' %}"></script>
   {% if messages %}
