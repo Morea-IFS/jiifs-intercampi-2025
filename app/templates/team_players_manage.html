@@ -36,6 +36,7 @@
                         <th>DATA NASC.</th>
                         <th>FOTO</th>
                         <th>BOLETIN</th>
+                        <th>RG</th>
                         {% if user.is_staff %}
                         <th>EDITAR</th>
                         {% endif %}
@@ -54,6 +55,11 @@
                         <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         <td>                       
                             <a href="{{ i.player.bulletin.url }}" download="{{ i.player.bulletin.name }}">
+                                <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
+                        <td>                       
+                            <a href="{{ i.player.rg.url }}" download="{{ i.player.rg.name }}">
                                 <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
                             </a>
                         </td>

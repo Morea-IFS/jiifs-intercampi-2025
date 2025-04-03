@@ -12,6 +12,7 @@ media/photo_config/*
 media/photos_config/*
 media/photo_technician/*
 media/bulletins/*
+media/rg/*
 media/attachments/*
 media/photo_voluntary/*
 .env

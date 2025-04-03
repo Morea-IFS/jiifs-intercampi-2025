@@ -34,6 +34,7 @@
                                 <th>DATA NASC.</th>
                                 <th>FOTO</th>
                                 <th>BOLETIM</th>
+                                <th>RG</th>
                                 {% if user.is_staff %}
                                 <th>EDITAR</th>
                                 {% endif %}
@@ -51,6 +52,7 @@
                                 <td>{{i.player.date_nasc}}</td>
                                 <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 <td>{% if i.player.bulletin %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                                <td>{% if i.player.rg %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 {% if user.is_staff %}
                                 <td>
                                     <a href="{% url 'player_edit' i.player.id %}">

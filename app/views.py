@@ -2276,6 +2276,7 @@ def players_team(request, team_name, team_sexo, sport_name):
                 cpf = cpf.replace("-","").replace(".","")
                 photo = request.FILES.get('photo')
                 bulletin = request.FILES.get('bulletin')
+                rg = request.FILES.get('rg')
                 print(team_sport.team.campus)
                 print("printe: ",len(Player_team_sport.objects.filter(team_sport=team_sport)))
                 number_players = len(Player_team_sport.objects.filter(team_sport=team_sport))
@@ -2291,13 +2292,13 @@ def players_team(request, team_name, team_sexo, sport_name):
                         return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
                 if request.POST.get('sexo'):
                     sexo = request.POST.get('sexo')
-                    if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                    if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
+                        player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, rg=rg, photo=photo, admin=user)
                     else:
-                        player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                        player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
                 else:
                     if not Player.objects.filter(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                        player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, rg=rg, photo=photo, admin=user)
                     else:
                         player = Player.objects.get(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
                 if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          

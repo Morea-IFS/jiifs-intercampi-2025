@@ -83,6 +83,7 @@ class Player(models.Model):
     instagram = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(upload_to='photo_player/', default='defaults/person.png', blank=True)
     bulletin = models.FileField(upload_to='bulletins/')
+    rg = models.FileField(upload_to='rg/')
     sexo = models.IntegerField(choices=Sexo_types.choices, default=Sexo_types.mixed)
     campus = models.IntegerField(choices=Campus_types.choices, default=Campus_types.reitoria)
     registration = models.CharField(max_length=15, default="0000000000")
