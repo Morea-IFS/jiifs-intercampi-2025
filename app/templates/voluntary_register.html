@@ -10,7 +10,7 @@
     <button class="side-bar-buttons-items">HOME</button>
 </a>
 <a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
+    <button class="side-bar-buttons-items">MENU</button>
 </a>
 {% endblock navbar %}
 
@@ -18,7 +18,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>CADASTRO DE MEMBRO DA EQUIPE</h1>
+            <h1>CADASTRO DE MEMBRO DA COMISSÃO TÉCNICA</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -29,7 +29,7 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
                     placeholder="Matricula ou siape" required>
                     <select name="type_voluntary" required>
-                        <option selected disabled>Selecione o tipo de membro</option required>
+                        <option selected disabled>Selecione a função</option required>
                         {% for value, name in types %}
                         <option value="{{value}}">{{name}}</option>
                         {% endfor %}
