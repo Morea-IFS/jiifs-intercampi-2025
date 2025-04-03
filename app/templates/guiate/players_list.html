@@ -18,8 +18,12 @@
                     <div class="theme-mode-button" id="theme-toggle">
                         <i class="fas fa-sun" id="theme-icon"></i>
                     </div>
-                    <h1 style="color: white;">JOGADORES DO CAMPUS <span style="color: #0051ff;">{{team_sport.team.name|upper}}</span> - <span style="color: #0051ff;">{{team_sport.get_sport_display|upper}}</span> {{team_sport.get_sexo_display|upper}}</h1>
-                    <section class="all-table" style="padding-top: 5vh;">
+                    <div class="title">
+                        <h1>
+                            <h1>JOGADORES DO CAMPUS <span style="color: #24a700;">{{team_sport.team.name|upper}}</span> - <span style="color: #0051ff;">{{team_sport.get_sport_display|upper}}</span> {{team_sport.get_sexo_display|upper}}</h1>
+                        </h1>
+                    </div>
+                    <section class="all-table">
                         <table id="search-table">
                             <tr class="hidden">
                                 <th>ID</th>

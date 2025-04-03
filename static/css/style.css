@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    opacity: 10%;
+    opacity: 30%;
     width: 50%;
     border: solid var(--global-primary-color) 2px;
 
