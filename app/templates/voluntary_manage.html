@@ -20,7 +20,7 @@
 <div class="all-block">
     <div class="block1">
         <div class="title">
-            <h1>GERENCIAMENTO DA EQUIPE</h1>
+            <h1>GERENCIAMENTO DA COMISSÃO TÉCNICA</h1>
         </div>
         {% if allowed %}
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
@@ -64,7 +64,7 @@
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
-                                <button data-confirm="Você realmente deseja excluir este membro da equipe?" name="voluntary_delete" value="{{voluntary.id}}" style="background-color: transparent; border: none;">
+                                <button data-confirm="Você realmente deseja excluir este membro da comissão técnica?" name="voluntary_delete" value="{{voluntary.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
@@ -78,7 +78,7 @@
                     </style>
                     <img style="width: 18em;" class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM MEMBRO DA EQUIPE CADASTRADO</h2>
+                        <h2>NÃO HÁ NENHUM MEMBRO DA COMISSÃO TÉCNICA</h2>
                     </div>
                     {% endfor %}
                 </table>
