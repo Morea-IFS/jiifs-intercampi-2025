@@ -11,8 +11,6 @@
 }
 :root{
         /* VARIAVEIS / CORES */
-        --dark: #34495e;
-        --light: #fff;
         --success: #0abf30;
         --error: #f24d4c;
         --warning: #e9bd0c;
@@ -21,17 +19,22 @@
 .light-mode {
 
     /* VARIAVEIS / CORES */
-    --global-color-white: #f1f1f1;
+    --light: #d6d6d6;
+    --global-color-white: #dddddd;
+    --global-color-manage: #CBCBCB;
     --global-color-green: #009700;
     --global-primary-color: #8b8b8b;
+    --global-nav-color: #000086;
+    --global-nav-links-color: #323e73;
     --global-secondary-color: #3C3D3C;
-    --global-third-color: #CBCBCB;
-    --global-fourth-color: #e0e0e0;
-    --global-fifth-color: #d4d4d4;
+    --global-header-color: #0008ff;
+    --global-third-color: #ffffff;
+    --global-fourth-color: #c3c3c3;
+    --global-fifth-color: #d8d8d8;
     --global-sixth-color: #B4B4B4;
     --global-seventh-color: #AB0000;
-    --global-eighth-color: #00A3FF;
-    --global-ninth-color: #525352;
+    --global-eighth-color: #149400;
+    --global-ninth-color: #0205b5;
     --global-tenth-color: #2727c2;
     --global-eleventh-color: #004903;
     --global-twelfth-color: #2B2C2F;
@@ -41,10 +44,15 @@
 
 .dark-mode {
 
+    --light: #bdbdbd;
     --global-color-white: #f1f1f1;
+    --global-color-manage: #3C3D3C;
     --global-color-green: #009700;
     --global-primary-color: #e2e2e2;
     --global-secondary-color: #232323;
+    --global-header-color: #00ff00;
+    --global-nav-color: #232323;
+    --global-nav-links-color: #333333;
     --global-third-color: #282828;
     --global-fourth-color: #3f3f3f;
     --global-fifth-color: #3a3a3a;
@@ -149,7 +157,7 @@ button {
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 9em;
+    height: 7em;
     width: 100%;
 }
 
@@ -169,7 +177,7 @@ button {
 
 .title h1 {
     text-align: center;
-    color: var(--global-secondary-color);
+    color: var(--global-header-color);
     font-size: 2.3em;
 }
 
@@ -210,7 +218,7 @@ button {
 }
 
 .block-inputs-form label{
-    color: white;
+    color: #868686;
 }
 
 .block-inputs-form select {

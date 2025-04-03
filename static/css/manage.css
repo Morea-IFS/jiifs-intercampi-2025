@@ -12,7 +12,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100dvh;
-  background-color: var(--global-third-color);
+  background-color: var(--global-color-manage);
 }
 
 .card-link {

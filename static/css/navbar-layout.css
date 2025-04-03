@@ -8,7 +8,7 @@ a {
 }
 
 .invisible-side-bar {
-    min-width: 10em;
+    min-width: 13em;
     height: 100%;
 }
 
@@ -30,8 +30,8 @@ a {
     align-items: center;
     flex-direction: column;
     justify-content: space-evenly;
-    background-color: var(--global-secondary-color);
-    min-width: 10em;
+    background-color: var(--global-nav-color);
+    min-width: 13em;
     position: fixed;
     overflow: auto;
     height: 100%;
@@ -61,7 +61,7 @@ a {
     padding: 5px;
     color: white;
     border-radius: 10px;
-    background-color: var(--global-ninth-color);
+    background-color: var( --global-nav-links-color);
     margin-inline: 16px;
 }
 
@@ -79,7 +79,7 @@ a {
 
 .side-bar-buttons-items {
     border: none;
-    background-color: var(--global-ninth-color);
+    background-color: var( --global-nav-links-color);
     padding-block: 0.7em;
     width: 80%;
     border-radius: 0.5em;
