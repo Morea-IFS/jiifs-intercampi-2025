@@ -67,10 +67,12 @@ class Type_Banner(models.IntegerChoices):
 
 class Type_service(models.IntegerChoices):
     voluntary = 0, "Voluntario"
-    organization = 2, "Organização"
-    technician = 1, "Técnico"
-    head_delegation = 3,"Chefe de delegação"
+    technician = 1, "Técnico de modalidade esportiva"
+    organization = 2, "Apoio"
+    trainee = 3, "Estagiario"
+    head_delegation = 4,"Chefe de delegação"
 
+    # Manter o ultimo como chefe de delegação sempre, o ultimo valor númerico.
 class Settings_access(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
@@ -114,7 +116,7 @@ class Voluntary(models.Model):
     type_voluntary = models.IntegerField(choices=Type_service.choices, default=Type_service.voluntary)
 
     def __str__(self):    
-        return f"{self.name} | {self.get_campus_display()}"
+        return f"{self.name} | {self.type_voluntary} | {self.get_campus_display()}"
 
 class Team(models.Model):
     name = models.CharField(max_length=100, blank=True)

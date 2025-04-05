@@ -2,16 +2,11 @@
 {% load static %}
 
 {% block head %}
-<title>JIIFS ADMIN</title>
+<title>JIFS ADMIN</title>
 {% endblock head %}
 
 {% block navbar %}
-<a href="{% url 'Home' %}">
-    <button class="side-bar-buttons-items">HOME</button>
-</a>
-<a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">MENU</button>
-</a>
+
 {% endblock navbar %}
 
 {% block content %}
@@ -39,6 +34,12 @@
                         <option selected disabled>Selecione o campus</option required>
                         {% for value, name in campus %}
                         <option value="{{value}}">{{name}}</option>
+                        {% endfor %}
+                    </select>
+                    <select id="user_admin" name="user">
+                        <option selected disabled>Selecione o usuario admin</option>
+                        {% for i in users %}
+                        <option value="{{i.id}}">{{i}}</option>
                         {% endfor %}
                     </select>
                     {% endif %}
