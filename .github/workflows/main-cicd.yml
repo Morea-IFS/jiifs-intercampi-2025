@@ -80,24 +80,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your-server.com >> ~/.ssh/known_hosts
-
-      - name: Deploy Application
-        run: |
-          ssh user@your-server.com << 'EOF'
-          cd /path/to/your/application
-          git pull origin main
-          source /path/to/your/venv/bin/activate
-          pip install -r requirements.txt
-          python manage.py migrate
-          systemctl restart your-app-service
-          EOF
-          
       - name: Set up Tailscale
         uses: tailscale/github-action@v3
         with:
@@ -105,7 +87,24 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
-     
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Application
+        run: |
+          ssh ${{ secrets.SSH_USER }}${{ secrets.SSH_IP }} << 'EOF'
+          cd /home/admin/jiifs-intercampi-2025
+          git pull origin main
+          source /home/admin/jiifs-intercampi-2025/env/bin/activate
+          pip install -r requirements.txt
+          python3 manage.py migrate
+          python3 manage.py collectstatic --noinput
+          systemctl restart jiifs
+          EOF
 
   DeployStaging:
     name: Deploy to Staging 
