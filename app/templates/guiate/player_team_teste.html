@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-    <title>JIIFS ADMIN</title>
+    <title>JIFS ADMIN</title>
 </head>
 <body>
     <main>
@@ -35,9 +35,9 @@
                                 <label for="registration">Matrícula</label>
                                 <input type="text" autocomplete="on" autocorrect="on" id="registration" name="registration"
                                     placeholder="Matrícula*" required>
-                                <label for="registration">Cpf</label>
+                                <label for="registration">CPF</label>
                                 <input type="text" autocomplete="on" autocorrect="on" id="cpf" name="cpf"
-                                    placeholder="Cpf*" required maxlength="14">
+                                    placeholder="CPF*" required maxlength="14">
                                 {% if team_sport.sport == 2 %}
                                 <label for="sexos">Sexo</label>
                                 <select id="sexos" name="sexo">
@@ -52,6 +52,9 @@
                                 <label for="Fotografia">Fotografia</label>
                                 <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui e adicione uma fotografia</label>
                                 <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
+                                <label for="Rg">rg</label>
+                                <label for="general-register" id="label-general-register" class="custom-file-button">Clique aqui e anexe o rg</label>
+                                <input type="file" name="rg" id="general-register" required onchange="trocarTextoRGLabel()">
                             </div>
                             <div>
                                 <button class="side-bar-buttons-items2 custom-buttons-sport-nav">

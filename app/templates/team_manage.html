@@ -2,16 +2,11 @@
 {% load static %}
 
 {% block head %}
-<title>JIIFS ADMIN</title>
+<title>JIFS ADMIN</title>
 {% endblock head %}
 
 {% block navbar %}
-<a href="{% url 'Home' %}">
-    <button class="side-bar-buttons-items">HOME</button>
-</a>
-<a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">MENU</button>
-</a>
+
 {% endblock navbar %}
 
 {% block content %}
@@ -19,8 +14,7 @@
     <div class="block1">
         <div class="title">
             <h1>
-                {% if user.is_staff %} GERENCIAMENTO DE MODALIDADES {% else %} GERENCIAMENTO DE MODALIDADE
-                {{campus.get_campus_display|upper}} {% endif %}
+                {% if user.is_staff %} GERENCIAMENTO DE MODALIDADES {% else %} GERENCIAMENTO DE MODALIDADE CAMPUS {{campus.get_campus_display|upper}} {% endif %}
             </h1>
         </div>
 
@@ -52,7 +46,9 @@
                         <th>EDITAR</th>
                         <th>STATUS</th>
                         {% endif %}
+                        {% if allowed %}
                         <th>DELETAR</th>
+                        {% endif %}
                     </tr>
 
                     {% for team_sport in team_sports %}
@@ -75,6 +71,7 @@
                         <td>{% if team_sport.status %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img
                                 src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         {% endif %}
+                        {% if allowed %}
                         <td>
                             <form method="POST">
                                 {% csrf_token %}
@@ -85,6 +82,7 @@
                                 </button>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <style>

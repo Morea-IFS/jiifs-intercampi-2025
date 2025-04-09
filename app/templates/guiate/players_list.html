@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-    <title>JIIFS ADMIN</title>
+    <title>JIFS ADMIN</title>
 </head>
 <body>
     <main>
@@ -34,6 +34,7 @@
                                 <th>DATA NASC.</th>
                                 <th>FOTO</th>
                                 <th>BOLETIM</th>
+                                <th>RG</th>
                                 {% if user.is_staff %}
                                 <th>EDITAR</th>
                                 {% endif %}
@@ -51,6 +52,7 @@
                                 <td>{{i.player.date_nasc}}</td>
                                 <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 <td>{% if i.player.bulletin %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                                <td>{% if i.player.rg %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 {% if user.is_staff %}
                                 <td>
                                     <a href="{% url 'player_edit' i.player.id %}">
@@ -61,7 +63,7 @@
                                 <td>
                                     <form method="POST" action="">
                                         {% csrf_token %}
-                                        <button name="player_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                        <button data-confirm="Você realmente deseja excluir este atleta?" name="player_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
                                             <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                         </button>
                                     </form>

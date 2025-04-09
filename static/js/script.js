@@ -100,7 +100,7 @@ function trocarTextoLabel() {
 
     // Se um arquivo for selecionado, muda o texto do label
     if (input.files.length > 0) {
-        label.innerHTML = "Imagem carregada";
+        label.innerHTML = "Imagem anexada";
     } else {
         // Se nenhum arquivo estiver selecionado, volta para o texto padrão
         label.innerHTML = "Adicione uma imagem";
@@ -113,10 +113,23 @@ function trocarTextoBELabel() {
 
     // Se um arquivo for selecionado, muda o texto do label
     if (input.files.length > 0) {
-        label.innerHTML = "Boletim escolar selecionado";
+        label.innerHTML = "Boletim escolar anexado";
     } else {
         // Se nenhum arquivo estiver selecionado, volta para o texto padrão
         label.innerHTML = "Clique aqui e adicione o boletim escolar";
+    }
+}
+
+function trocarTextoRGLabel() {
+    const label = document.getElementById("label-general-register");
+    const input = document.getElementById("general-register");
+
+    // Se um arquivo for selecionado, muda o texto do label
+    if (input.files.length > 0) {
+        label.innerHTML = "RG anexado";
+    } else {
+        // Se nenhum arquivo estiver selecionado, volta para o texto padrão
+        label.innerHTML = "Clique aqui e anexe o rg";
     }
 }
 

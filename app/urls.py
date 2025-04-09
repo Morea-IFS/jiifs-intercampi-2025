@@ -5,13 +5,13 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('' , views.login, name = "home_public"),
+    path('home' , views.login, name = "home_public"),
     path('placar' , views.scoreboard_public, name="scoreboard_public"),
     path('scoreboard_projector', views.scoreboard_projector, name="scoreboard_projector"),
     path('sobre', views.about_us, name="about_us"),
     path('login' , views.login, name = "login"),
     path('logout', views.sair, name='logout'),
-    path('morea', views.index, name = "Home"),
+    path('', views.home_admin, name = "Home"),
     path('manage/player', views.player_manage, name = "player_manage"),
     path('edit/player/<int:id>', views.player_edit, name = "player_edit"),
     path('manage/team', views.team_manage, name = "team_manage"),
