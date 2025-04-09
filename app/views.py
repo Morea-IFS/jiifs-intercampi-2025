@@ -707,8 +707,11 @@ def voluntary_edit(request, id):
     try:
         voluntary = get_object_or_404(Voluntary, id=id)
         users = User.objects.all()
+        user = User.objects.get(id=request.user.id)
+        if user.is_staff: types = Type_service.choices
+        else: types = Type_service.choices[:-1]
         if request.method == 'GET':
-            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':Type_service.choices})
+            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':types})
         elif 'excluir' in request.POST:
             if voluntary.photo:
                 voluntary.photo.delete()
