@@ -67,9 +67,10 @@ class Type_Banner(models.IntegerChoices):
 
 class Type_service(models.IntegerChoices):
     voluntary = 0, "Voluntario"
-    organization = 2, "Organização"
-    technician = 1, "Técnico"
-    head_delegation = 3,"Chefe de delegação"
+    technician = 1, "Técnico de modalidade esportiva"
+    organization = 2, "Apoio"
+    trainee = 3, "Estagiario"
+    head_delegation = 4,"Chefe de delegação"
 
 class Settings_access(models.Model):
     start = models.DateTimeField()
@@ -77,6 +78,13 @@ class Settings_access(models.Model):
 
     def __str__(self):    
         return f"{self.start} | {self.end}"
+
+class Help(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=500)
+
+    def __str__(self):    
+        return f"{self.title} | {self.description}"
 
 class Player(models.Model):
     name = models.CharField(max_length=100)

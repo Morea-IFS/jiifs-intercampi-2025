@@ -74,7 +74,7 @@ def draw_circular_image(c, image_path, center_x, center_y, diameter):
     )
     c.restoreState()
     
-def generate_badges(players, user_l, t):
+def generate_badges(players, user_l, t, namebadge):
     buffer = BytesIO() 
     print("P: ",players)
     if t == '2':
@@ -135,8 +135,7 @@ def generate_badges(players, user_l, t):
             )
 
         c.save()
-        namebadge = f'CAMPUS_{user.player.get_campus_display()}_atletas'
-        arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{user.id}.pdf"
+        arquivo_saida = f"CRACHA_{unidecode(namebadge)}.pdf"
     else:
         w, h = A4
         nametag_width = (w - 3 * 20) / 2
@@ -194,8 +193,7 @@ def generate_badges(players, user_l, t):
             )
 
         c.save()
-        namebadge = f'CAMPUS_{user.get_campus_display().upper()}_{user.get_type_voluntary_display().upper()}'
-        arquivo_saida = f"CRACHA_{unidecode(namebadge)}_{user.id}.pdf"
+        arquivo_saida = f"CRACHA_{unidecode(namebadge)}.pdf"
     buffer.seek(0)
     badge = Badge.objects.create(user=user_l)
     badge.name = namebadge

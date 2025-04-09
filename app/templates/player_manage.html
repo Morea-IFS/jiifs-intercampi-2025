@@ -2,16 +2,11 @@
 {% load static %}
 
 {% block head %}
-<title>JIIFS ADMIN</title>
+<title>JIFS ADMIN</title>
 {% endblock head %}
 
 {% block navbar %}
-<a href="{% url 'Home' %}">
-    <button class="side-bar-buttons-items">HOME</button>
-</a>
-<a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">MENU</button>
-</a>
+
 {% endblock navbar %}
 
 {% block content %}
@@ -21,7 +16,7 @@
             <h1>GERENCIAMENTO DOS JOGADORES</h1>
         </div>
         <div class="all-manage">
-            <input type="search" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os jogadores" />
+            <input type="search" class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os jogadores" />
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
@@ -73,7 +68,7 @@
                     </style>
                     <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <<h2>NENHUM JOGADOR FOI ENCONTRADO <br> <span style="font-size: 20px;">Realize o cadastro dos seus jogadores!</span></h2>
+                        <<h2>NENHUM JOGADOR FOI ENCONTRADO</h2>
                     </div>
                     {% endfor %}
                 </table>

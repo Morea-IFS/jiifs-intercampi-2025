@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from .models import Sexo_types, Settings_access,Campus_types, Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
+from .models import Sexo_types, Settings_access,Campus_types, Help,Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
 from django.db.models import Count, Q
 from .decorators import time_restriction
 from django.contrib import messages
@@ -27,6 +27,14 @@ def index(request):
         
 def page_in_erro404(request):
     return render(request, 'error_404.html', status=404)
+
+def about_us(request):
+    return render(request, 'about_us.html')
+
+@login_required(login_url="login")
+def home_admin(request):
+    help = Help.objects.all()
+    return render(request, 'home_admin.html',{'help':help})
 
 def login(request):
     try:
@@ -231,9 +239,6 @@ def home_public(request):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return render(request, 'home_public.html')
-
-def about_us(request):
-    return render(request, 'about_us.html')
 
 @login_required(login_url="login")
 def attachments(request):
@@ -627,12 +632,13 @@ def technician_edit(request, id):
 def voluntary_manage(request):
     try:
         user = User.objects.get(id=request.user.id)
+        type_service = Type_service.choices.pop()
         if request.user.is_staff:
             qnt = 20
             voluntary = Voluntary.objects.all().order_by('-type_voluntary','campus')
         else:
             qnt = 15
-            voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus')
+            voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus').exclude(type_voluntary=type_service[0])
         page = request.GET.get('page', 1) 
         
         paginator = Paginator(voluntary, qnt) 
@@ -664,21 +670,26 @@ def voluntary_manage(request):
 def voluntary_register(request):
     user = User.objects.get(id=request.user.id)
     if request.method == 'GET':
-        return render(request, 'voluntary_register.html',{'campus':Campus_types.choices, 'types':Type_service.choices})
+        users = User.objects.all()
+        if user.is_staff: types = Type_service.choices
+        else: types = Type_service.choices[:-1]
+        return render(request, 'voluntary_register.html',{'campus':Campus_types.choices, 'types':types, 'users':users})
     else:
         try:
             name = request.POST.get('name')
             registration = request.POST.get('registration')
             type_voluntary = request.POST.get('type_voluntary')
             photo = request.FILES.get('photo')
+            if request.POST.get('user'): admin = User.objects.get(id=request.POST.get('user')) 
+            else: admin = user
             if request.user.is_staff:
                 campus_id = request.POST.get('campus')
             else:
                 campus_id = Technician.objects.get(user=user).campus
             if photo:
-                voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=user, photo=photo, campus=campus_id)
+                voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=admin, photo=photo, campus=campus_id)
             else:
-                voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=user, campus=campus_id)
+                voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=admin, campus=campus_id)
             voluntary.save()
             messages.success(request, "Parabéns, você cadastrou mais um membro da equipe do JIFS 2025!")
             return redirect('voluntary_manage')
@@ -695,8 +706,9 @@ def voluntary_register(request):
 def voluntary_edit(request, id):
     try:
         voluntary = get_object_or_404(Voluntary, id=id)
+        users = User.objects.all()
         if request.method == 'GET':
-            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'campus':Campus_types.choices, 'types':Type_service.choices})
+            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':Type_service.choices})
         elif 'excluir' in request.POST:
             if voluntary.photo:
                 voluntary.photo.delete()
@@ -706,6 +718,7 @@ def voluntary_edit(request, id):
             print(request.POST)
             voluntary.name = request.POST.get('name')
             voluntary.registration = request.POST.get('registration')
+            voluntary.admin = User.objects.get(id=request.POST.get('user')) 
             voluntary.type_voluntary = request.POST.get('type_voluntary')
             if request.user.is_staff:
                 voluntary.campus = request.POST.get('campus')
@@ -1758,14 +1771,16 @@ def generator_badge(request):
                     if len(players) == 0:
                         messages.error(request, "Não tem nenhum técnico cadastrado!")
                         return redirect('badge')
-                    generate_badges(players, user, '2')
+                    namebadge = 'campus-modalidade-jifs'
+                    generate_badges(players, user, '2',namebadge)
                 else:
                     if team_badge == 'all_player':
                         players = Player_team_sport.objects.all()
                         if len(players) == 0:
                             messages.error(request, "Não tem nenhum atleta cadastrado!")
                             return redirect('badge')
-                        generate_badges(players, user, '2')
+                        namebadge = 'atletas-jifs'
+                        generate_badges(players, user, '2',namebadge)
                     elif team_badge == 'all_voluntary':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=0)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=0, admin=user)
@@ -1773,28 +1788,40 @@ def generator_badge(request):
                             messages.error(request, "Não tem nenhum voluntario cadastrado!")
                             return redirect('badge')
                         print("a: ",voluntary)
-                        generate_badges(voluntary, user, '1')
+                        namebadge = 'voluntarios-jifs'
+                        generate_badges(voluntary, user, '1',namebadge)
                     elif team_badge == 'all_organization':
-                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=1)
-                        else: voluntary = Voluntary.objects.filter(type_voluntary=1, admin=user)
-                        if len(voluntary) == 0:
-                            messages.error(request, "Não tem nenhum membro da organização cadastrado!")
-                            return redirect('badge')
-                        generate_badges(voluntary, user, '4')
-                    elif team_badge == 'all_technician':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=2)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=2, admin=user)
                         if len(voluntary) == 0:
-                            messages.error(request, "Não tem nenhum técnico cadastrado!")
+                            messages.error(request, "Não tem nenhum membro do apoio cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '3')
-                    elif team_badge == 'all_head':
+                        namebadge = 'apoio-jifs'
+                        generate_badges(voluntary, user, '4',namebadge)
+                    elif team_badge == 'all_trainee':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=3)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=3, admin=user)
                         if len(voluntary) == 0:
+                            messages.error(request, "Não tem nenhum estagiario cadastrado!")
+                            return redirect('badge')
+                        namebadge = 'estagiario-jifs'
+                        generate_badges(voluntary, user, '4',namebadge)
+                    elif team_badge == 'all_technician':
+                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=1)
+                        else: voluntary = Voluntary.objects.filter(type_voluntary=1, admin=user)
+                        if len(voluntary) == 0:
+                            messages.error(request, "Não tem nenhum técnico cadastrado!")
+                            return redirect('badge')
+                        namebadge = 'tecnico-modalidade-jifs'
+                        generate_badges(voluntary, user, '3',namebadge)
+                    elif team_badge == 'all_head':
+                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=4)
+                        else: voluntary = Voluntary.objects.filter(type_voluntary=4, admin=user)
+                        if len(voluntary) == 0:
                             messages.error(request, "Não tem nenhum chefe de delegação cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '3')
+                        namebadge = 'chefe-delegacao-jifs'
+                        generate_badges(voluntary, user, '3',namebadge)
                     else:
                         for choice in Sport_types.choices:
                             if choice[1] == team_badge:
@@ -1804,8 +1831,8 @@ def generator_badge(request):
                         if len(players) == 0:
                             messages.error(request, "Não tem nenhum atleta cadastrado!")
                             return redirect('badge')
-                        generate_badges(players, user, '2')
-                    
+                        namebadge = f'atletas-{team_badge}-jifs'
+                        generate_badges(players, user, '2',namebadge)
                 return redirect('badge')
             return redirect('badge')
     except Exception as e:
@@ -2276,6 +2303,7 @@ def players_team(request, team_name, team_sexo, sport_name):
                 cpf = cpf.replace("-","").replace(".","")
                 photo = request.FILES.get('photo')
                 bulletin = request.FILES.get('bulletin')
+                rg = request.FILES.get('rg')
                 print(team_sport.team.campus)
                 print("printe: ",len(Player_team_sport.objects.filter(team_sport=team_sport)))
                 number_players = len(Player_team_sport.objects.filter(team_sport=team_sport))
@@ -2291,13 +2319,13 @@ def players_team(request, team_name, team_sexo, sport_name):
                         return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
                 if request.POST.get('sexo'):
                     sexo = request.POST.get('sexo')
-                    if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                    if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
+                        player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, rg=rg, photo=photo, admin=user)
                     else:
-                        player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                        player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
                 else:
                     if not Player.objects.filter(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
+                        player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, rg=rg, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
                     else:
                         player = Player.objects.get(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
                 if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
