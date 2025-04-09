@@ -7,12 +7,7 @@
 {% endblock head %}
 
 {% block navbar %}
-<a href="{% url 'Home' %}">
-    <button class="side-bar-buttons-items">HOME</button>
-</a>
-<a href="{% url 'manage' %}">
-    <button class="side-bar-buttons-items">GERENCIAMENTO</button>
-</a>
+
 {% endblock navbar %}
 
 {% block content %}
@@ -25,7 +20,7 @@
             {% csrf_token %}
             <div class="block-inputs-form">
                 <div>
-                    <select id="team-badges" name="team-badge" required style="min-width: 40vw;">
+                    <select id="team-badges" name="team-badge" required style="min-width: 40vw; background-color: var(--global-nav-color);">
                         <option selected disabled>Selecione o tipo de crachá</option required>
                             <optgroup label="Gerais">
                                 {% if user.is_staff %}

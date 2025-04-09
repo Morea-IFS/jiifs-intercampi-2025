@@ -38,7 +38,8 @@
                         {% if allowed %}
                         <th>EDITAR</th>
                         {% endif %}
-                        <th>DELETAR</th>
+                        {% if user.is_staff %} <th>DELETAR</th> {% endif %}
+                        
                     </tr>
                     {% for voluntary in voluntary %}
                     <tr>
@@ -56,6 +57,7 @@
                             </a>
                         </td>
                         {% endif %}
+                        {% if user.is_staff %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
@@ -64,6 +66,7 @@
                                 </button>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <style>

@@ -1766,14 +1766,16 @@ def generator_badge(request):
                     if len(players) == 0:
                         messages.error(request, "Não tem nenhum técnico cadastrado!")
                         return redirect('badge')
-                    generate_badges(players, user, '2')
+                    namebadge = 'campus-modalidade-jifs'
+                    generate_badges(players, user, '2',namebadge)
                 else:
                     if team_badge == 'all_player':
                         players = Player_team_sport.objects.all()
                         if len(players) == 0:
                             messages.error(request, "Não tem nenhum atleta cadastrado!")
                             return redirect('badge')
-                        generate_badges(players, user, '2')
+                        namebadge = 'atletas-jifs'
+                        generate_badges(players, user, '2',namebadge)
                     elif team_badge == 'all_voluntary':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=0)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=0, admin=user)
@@ -1781,35 +1783,40 @@ def generator_badge(request):
                             messages.error(request, "Não tem nenhum voluntario cadastrado!")
                             return redirect('badge')
                         print("a: ",voluntary)
-                        generate_badges(voluntary, user, '1')
+                        namebadge = 'voluntarios-jifs'
+                        generate_badges(voluntary, user, '1',namebadge)
                     elif team_badge == 'all_organization':
-                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=1)
-                        else: voluntary = Voluntary.objects.filter(type_voluntary=1, admin=user)
+                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=2)
+                        else: voluntary = Voluntary.objects.filter(type_voluntary=2, admin=user)
                         if len(voluntary) == 0:
                             messages.error(request, "Não tem nenhum membro do apoio cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '4')
+                        namebadge = 'apoio-jifs'
+                        generate_badges(voluntary, user, '4',namebadge)
                     elif team_badge == 'all_trainee':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=3)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=3, admin=user)
                         if len(voluntary) == 0:
                             messages.error(request, "Não tem nenhum estagiario cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '4')
+                        namebadge = 'estagiario-jifs'
+                        generate_badges(voluntary, user, '4',namebadge)
                     elif team_badge == 'all_technician':
-                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=2)
-                        else: voluntary = Voluntary.objects.filter(type_voluntary=2, admin=user)
+                        if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=1)
+                        else: voluntary = Voluntary.objects.filter(type_voluntary=1, admin=user)
                         if len(voluntary) == 0:
                             messages.error(request, "Não tem nenhum técnico cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '3')
+                        namebadge = 'tecnico-modalidade-jifs'
+                        generate_badges(voluntary, user, '3',namebadge)
                     elif team_badge == 'all_head':
                         if user.is_staff: voluntary = Voluntary.objects.filter(type_voluntary=4)
                         else: voluntary = Voluntary.objects.filter(type_voluntary=4, admin=user)
                         if len(voluntary) == 0:
                             messages.error(request, "Não tem nenhum chefe de delegação cadastrado!")
                             return redirect('badge')
-                        generate_badges(voluntary, user, '3')
+                        namebadge = 'chefe-delegacao-jifs'
+                        generate_badges(voluntary, user, '3',namebadge)
                     else:
                         for choice in Sport_types.choices:
                             if choice[1] == team_badge:
@@ -1819,7 +1826,8 @@ def generator_badge(request):
                         if len(players) == 0:
                             messages.error(request, "Não tem nenhum atleta cadastrado!")
                             return redirect('badge')
-                        generate_badges(players, user, '2')
+                        namebadge = f'atletas-{team_badge}-jifs'
+                        generate_badges(players, user, '2',namebadge)
                 return redirect('badge')
             return redirect('badge')
     except Exception as e:

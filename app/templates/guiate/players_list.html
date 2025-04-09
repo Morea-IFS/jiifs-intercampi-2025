@@ -63,7 +63,7 @@
                                 <td>
                                     <form method="POST" action="">
                                         {% csrf_token %}
-                                        <button name="player_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                        <button data-confirm="Você realmente deseja excluir este atleta?" name="player_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
                                             <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                         </button>
                                     </form>
