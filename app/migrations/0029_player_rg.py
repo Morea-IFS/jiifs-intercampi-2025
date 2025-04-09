@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0027_alter_team_photo'),
+        ('app', '0028_alter_terms_use_options_terms_use_accepted_and_more.py'),
     ]
 
     operations = [
