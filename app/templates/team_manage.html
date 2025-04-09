@@ -32,10 +32,11 @@
         {% endif %}
 
         <div class="all-manage">
+            {% if user.is_staff %}
             <form style="display: flex; justify-content: center;  width: 100%;" name="search-form" method="GET" action="{% url 'team_manage' %}">
-                <input type="search" name="search" placeholder="Pesquisar modalidades..." value="{{ search_query }}">
+                <input type="search" class="hidden" name="search" placeholder="Pesquisar modalidades..." value="{{ search_query }}">
             </form>
-            
+            {% endif %}
 
             <section class="all-table">
                 <table id="search-table">
@@ -99,7 +100,7 @@
                 </table>
             </section>
 
-            <section class="pagination">
+            <section class="pagination hidden">
                 <div class="pagination-info">
                     <p>Página {{ team_sports.number }} de {{ team_sports.paginator.num_pages }}</p>
                 </div>

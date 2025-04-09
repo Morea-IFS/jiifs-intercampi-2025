@@ -29,7 +29,9 @@
         <br><br>
         {% endif %}
         <div class="all-manage">
+            {% if user.is_staff %}
             <input type="search"class="hidden" id="search-input" onkeyup="search_table()" placeholder="Pesquisar os voluntários" />
+            {% endif %}
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
@@ -81,7 +83,7 @@
                     {% endfor %}
                 </table>
             </section>
-            <section class="pagination">
+            <section class="pagination hidden">
                 <div class="pagination-info">
                     <p>Página {{ voluntary.number }} de {{ voluntary.paginator.num_pages }}</p>
                 </div>
