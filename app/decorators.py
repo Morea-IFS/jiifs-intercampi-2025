@@ -9,6 +9,7 @@ def time_restriction(redirect_page="manage"):
     def decorator(view_func):
         @wraps(view_func)
         def wrapper(request, *args, **kwargs):
+            print('bloqueio')
             brasilia_tz = pytz.timezone('America/Sao_Paulo')
             now = datetime.now(brasilia_tz)
             

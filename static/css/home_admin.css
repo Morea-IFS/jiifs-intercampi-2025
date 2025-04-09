@@ -17,9 +17,10 @@
     --red-live: #FF3232;
     --pink-feminine: #FF32AA;
     --blue-links: #3A7BD5;
+    --width: 70vw;
 }
 .video-container {
-  width: 70vw;
+  width: var(--width);
   height: 39.3vw;
 }
   
@@ -33,7 +34,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: var(--global-nav-color);
-    max-width: 70vw;
+    max-width: var(--width);
     width: 100%;
     height: 405px;
     border-radius: 16px;
@@ -173,7 +174,7 @@ h3{
     font-size: 24px;
 }
 .sub-title-about{
-    color: var(--global-header-color);;
+    color: var(--global-header-color);
 }
 .content-of-person p{
     color: var(--white-rgba);
@@ -194,6 +195,59 @@ a {
     color: var(--white);
     font-weight: 600;
     font-size: 24px;
+}
+
+.about-help{
+    width: var(--width);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 3em;
+    
+}
+details{
+    align-items: flex-start;
+    color: var(--global-header-color);
+}
+summary{
+    padding-bottom: 10em;
+}
+details[open] > summary {
+    border: 0px;
+    font-weight: 750;
+    
+}
+details[open] {
+    border-bottom: 1px solid var(--global-header-color);
+}
+details > summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px;
+    font-weight: 600;
+    font-size: 24px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    border-bottom: 1px solid var(--global-header-color);
+    transition: all 0.3s ease;
+    list-style: none; 
+}
+summary::-webkit-details-marker {
+    display: none; 
+}
+details summary i {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+details[open] summary i {
+    transform: rotate(270deg);
+}
+details > p {
+    font-size: 16px;
+    padding: 4px;
+    margin: 0;
 }
 
 @media screen and (max-width:1000px) {

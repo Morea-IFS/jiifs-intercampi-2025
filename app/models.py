@@ -79,6 +79,13 @@ class Settings_access(models.Model):
 
     def __str__(self):    
         return f"{self.start} | {self.end}"
+    
+class Help(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=500)
+
+    def __str__(self):    
+        return f"{self.title} | {self.description}"
 
 class Player(models.Model):
     name = models.CharField(max_length=100)

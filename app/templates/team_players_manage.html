@@ -35,7 +35,9 @@
                         {% if user.is_staff %}
                         <th>EDITAR</th>
                         {% endif %}
+                        {% if allowed %}
                         <th>REMOVER</th>
+                        {% endif %}
                     </tr>
                     {% for i in player_team_sport %}
                     <tr>
@@ -65,6 +67,7 @@
                             </a>
                         </td>
                         {% endif %}
+                        {% if allowed %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
@@ -73,6 +76,7 @@
                                 </button>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </table>

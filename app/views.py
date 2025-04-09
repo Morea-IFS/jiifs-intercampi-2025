@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from .models import Sexo_types, Settings_access,Campus_types, Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
+from .models import Sexo_types, Settings_access,Campus_types, Help,Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
 from django.db.models import Count, Q
 from .decorators import time_restriction
 from django.contrib import messages
@@ -31,8 +31,10 @@ def page_in_erro404(request):
 def about_us(request):
     return render(request, 'about_us.html')
 
+@login_required(login_url="login")
 def home_admin(request):
-    return render(request, 'home_admin.html')
+    help = Help.objects.all()
+    return render(request, 'home_admin.html',{'help':help})
 
 def login(request):
     try:
