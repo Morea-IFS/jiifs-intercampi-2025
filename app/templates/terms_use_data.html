@@ -1,0 +1,58 @@
+{% load static %}
+ <!DOCTYPE html>
+ <html lang="pt-BR">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>JIIFS ADMIN</title>
+     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+     <link rel="stylesheet" href="{% static 'css/termos.css' %}">
+     <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}">
+ </head>
+ 
+ <body>
+     <main>
+         <div class="all">
+             <div class="container">
+                 <h1 class="title">Dados do Chefe de Delegação</h1>
+                 <div class="content" style="flex-direction: column; align-items: center; width: 100%; gap: 5em;">
+                     <form method="post" name="boss-data" id="boss-data" class="form-checkbox" style="width: 100%;" enctype="multipart/form-data">
+                         {% csrf_token %}
+ 
+                         <label for="name" style="width: 100%; text-align: left;">Nome:</label>
+                         <input type="text" name="name" id="name" required
+                             style="width: 100%; padding: 0.8em; margin-bottom: 1.5em; border-radius: 0.5em; border: 1px solid var(--global-third-color); outline-color: var(--global-primary-color);">
+ 
+                         <label for="siape" style="width: 100%; text-align: left;">Siape:</label>
+                         <input type="text" name="siape" id="siape" required
+                             style="width: 100%; padding: 0.8em; margin-bottom: 2em; border-radius: 0.5em; border: 1px solid var(--global-third-color); outline-color: var(--global-primary-color);">
+                         <label for="photo" class="button-accept" style="display: inline-block; cursor: pointer; text-align: center;">
+                             <i class="fas fa-upload" style="margin-right: 8px;"></i>Selecione sua Fotografia
+                         </label>
+                         <input type="file" name="photo" id="photo" required style="display: none;">                    
+                         
+                         <div style="display: flex; justify-content: center; gap: 2em; margin-top: 10em;">
+                             <a href="{% url 'upload_document' %}" class="button-accept" style="text-align: center; text-decoration: none;">Voltar</a>
+                             <button type="submit" class="button-accept">Avançar</button>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </main>
+     <script src="{% static 'js/script.js' %}"></script>
+     <script>
+         const inputFile = document.getElementById('photo');
+         const label = document.querySelector('label[for="photo"]');
+ 
+         inputFile.addEventListener('change', function () {
+             if (this.files && this.files.length > 0) {
+                 label.innerHTML = `<i class="fas fa-file-alt" style="margin-right: 8px;"></i> ${this.files[0].name}`;
+             }
+         });
+     </script>
+ </body>
+ 
+ </html>

@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIIFS ADMIN</title>
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/termos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}">
+</head>
+
+<body>
+    <main>
+        <div class="all">
+            <div>
+                <div class="theme-mode-button" id="theme-toggle">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </div>
+            </div>
+            <div class="container">
+                <h1 class="title">Termos de Uso</h1>
+                <div class="content">
+                    <p>Leia atentamente os termos de uso antes de utilizar o sistema.</p>
+                </div>
+                <div class="terms-content">
+                    <p><em>Última atualização: 19 de março de 2025</em></p>
+                    <p>Eu, {{user.username}}, gestor do campus, declaro que aceitamos participar do JIFS, respeitando e seguindo o regulamento geral e o regulamento específico da competição.</p>
+                </div>
+                <form method="post" class="form-checkbox">
+                    {% csrf_token %}
+                    <label class="label-checkbox">
+                        <input class="checkbox" type="checkbox" name="accept" id="accept" required>
+                        <p>Aceitar os Termos de Uso</p>
+                    </label>
+                    <button class="button-accept" type="submit">Aceitar</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

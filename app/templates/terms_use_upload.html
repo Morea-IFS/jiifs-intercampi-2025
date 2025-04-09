@@ -1,0 +1,50 @@
+{% load static %}
+ <!DOCTYPE html>
+ <html lang="pt-BR">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>JIFS ADMIN</title>
+     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+     <link rel="stylesheet" href="{% static 'css/termos.css' %}">
+     <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}">
+ </head>
+ <body>
+     <main>
+         <div class="all">
+             <div>
+                 <div class="theme-mode-button" id="theme-toggle">
+                     <i class="fas fa-sun" id="theme-icon"></i>
+                 </div>
+             </div>
+             <div class="container" style="min-height: 38em;">
+                 <h1 class="title">Envio de Documento</h1>
+                 <div class="content">
+                     <p style="text-align: justify;">Faça o envio do documento oficial assinado pelo diretor geral para continuar o processo.</p>
+                 </div>
+                 <form method="post" enctype="multipart/form-data" class="form-checkbox" style="height: 22em; justify-content: flex-end; gap: 10em;">
+                     {% csrf_token %}
+                     <label for="document" class="button-accept" style="display: inline-block; cursor: pointer; text-align: center;">
+                         <i class="fas fa-upload" style="margin-right: 8px;"></i> Escolher Documento
+                     </label>
+                     <input type="file" name="document" id="document" required style="display: none;">                    
+                     <button class="button-accept" type="submit">Avançar</button>
+                 </form>
+             </div>
+         </div>
+     </main>
+     <script src="{% static 'js/script.js' %}"></script>
+     <script>
+         const inputFile = document.getElementById('document');
+         const label = document.querySelector('label[for="document"]');
+     
+         inputFile.addEventListener('change', function () {
+             if (this.files && this.files.length > 0) {
+                 label.innerHTML = `<i class="fas fa-file-alt" style="margin-right: 8px;"></i> ${this.files[0].name}`;
+             }
+         });
+     </script>
+     
+ </body>
+ </html>

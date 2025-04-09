@@ -15,4 +15,6 @@ media/bulletins/*
 media/rg/*
 media/attachments/*
 media/photo_voluntary/*
+media/document_boss/*
+media/photo_boss/*
 .env
