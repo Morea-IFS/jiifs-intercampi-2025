@@ -121,5 +121,7 @@ class BannerAdmin(admin.ModelAdmin):
     search_fields = ('id','name','status')
 
 @admin.register(Terms_Use)
-class Terms_UseAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'date_accept_local')
+class TermsUseAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'name', 'siape', 'document', 'photo', 'accepted', 'accepted_at')
+    search_fields = ('usuario', 'name', 'siape')
+    list_filter = ('accepted',)

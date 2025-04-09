@@ -90,12 +90,12 @@ label, .title {
 }
 
 .label-checkbox {
-    display: block;
+    display: flex;
     margin: 1em;
 }
 
 .checkbox {
-    margin-right: 2em;
+    margin-right: 1em;
 }
 
 .button-accept {

@@ -279,8 +279,13 @@ class Banner(models.Model):
         return f"{self.id} | {self.name} | {self.status}"
 
 class Terms_Use(models.Model):
-    usuario = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-    date_accept = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='document_boss/', null=True, blank=True)
+    photo = models.FileField(upload_to='photo_boss/', null=True, blank=True)
+    name = models.CharField(max_length=255, blank=True)
+    siape = models.EmailField(blank=True)
+    accepted = models.BooleanField(default=False)
+    accepted_at = models.DateTimeField(null=True, blank=True)
 
     @property
     def date_accept_local(self):
@@ -288,6 +293,10 @@ class Terms_Use(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.date_accept_local.strftime('%d/%m/%Y %H:%M:%S')}"
+    
+    class Meta:
+        verbose_name = "Terms_Use"
+        verbose_name_plural = "Terms_uses"
     
 class Bolletin(models.Model):
     title = models.CharField(max_length=255)

@@ -18,10 +18,18 @@ import time, pytz
 from django.core.files.base import ContentFile
 from weasyprint import HTML
 from django.utils import timezone
+from .decorators import terms_accept_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-# Create your views here.
+def has_accepted_terms(user):
+    try:
+        termo = Terms_Use.objects.get(usuario=user)
+        return bool(termo.name and termo.siape and termo.document and termo.photo and termo.accepted)
+    except Terms_Use.DoesNotExist:
+        return False
+
 @login_required(login_url="login")
+@terms_accept_required
 def index(request):
     return render (request, 'index.html')
         
@@ -32,6 +40,7 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 @login_required(login_url="login")
+@terms_accept_required
 def home_admin(request):
     help = Help.objects.all()
     return render(request, 'home_admin.html',{'help':help})
@@ -63,16 +72,19 @@ def login(request):
         return redirect('login')
 
 @login_required(login_url="login")
+@terms_accept_required
 def sair(request):
     logout(request)
     return redirect('home_public')
 
 @login_required(login_url="login")
+@terms_accept_required
 def manage(request):
     messages.info(request, "Você está na área de gerenciamento! sistema morea sports")
     return render(request, 'manage.html')
 
 @login_required(login_url="login")
+@terms_accept_required
 def timer_page(request, id):
     match =  Match.objects.get(id=id)
     pauses = Time_pause.objects.filter(match=match)
@@ -241,11 +253,13 @@ def home_public(request):
         return render(request, 'home_public.html')
 
 @login_required(login_url="login")
+@terms_accept_required
 def attachments(request):
     attachments = Attachments.objects.all()
     return render(request, 'attachments.html', {'attachments': attachments})
 
 @login_required(login_url="login")
+@terms_accept_required
 def player_manage(request):
     if request.user.is_staff: player = Player.objects.all()
     else: player = Player.objects.filter(admin__id=request.user.id)
@@ -269,6 +283,7 @@ def player_manage(request):
 
 
 @login_required(login_url="login")
+@terms_accept_required
 def player_edit(request, id):
     try:
         campus = Campus_types.choices
@@ -297,6 +312,7 @@ def player_edit(request, id):
 
 
 @login_required(login_url="login")
+@terms_accept_required
 def team_manage(request):
     try:
         user = User.objects.get(id=request.user.id)
@@ -331,6 +347,7 @@ def team_manage(request):
         return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus': campus, 'allowed': allowed_pages(user) })
     
 @login_required(login_url="login")
+@terms_accept_required
 def team_edit(request, id):
     team_sport = get_object_or_404(Team_sport, id=id)
     sport = Sport_types.choices
@@ -357,6 +374,7 @@ def team_edit(request, id):
     return redirect('team_manage') 
 
 @login_required(login_url="login")
+@terms_accept_required
 def team_players_manage(request, id):
     try:
         team = get_object_or_404(Team_sport, id=id)
@@ -378,6 +396,7 @@ def team_players_manage(request, id):
         return redirect('team_players_manage', team.id)
 
 @login_required(login_url="login")
+@terms_accept_required
 def add_player_team(request, id):
     team = get_object_or_404(Team_sport, id=id)
     players = Player.objects.all()
@@ -399,6 +418,7 @@ def add_player_team(request, id):
         return redirect('team_players_manage', id=team.id)
 
 @login_required(login_url="login")
+@terms_accept_required
 def matches_manage(request):
     try:
         matchs = Match.objects.all().prefetch_related('teams__team')
@@ -431,6 +451,7 @@ def matches_manage(request):
         return redirect('matches_manage')
 
 @login_required(login_url="login")
+@terms_accept_required
 def matches_edit(request, id):
     try:
         match = get_object_or_404(Match, id=id)
@@ -490,6 +511,7 @@ def matches_edit(request, id):
     return redirect('matches_manage')
 
 @login_required(login_url="login")
+@terms_accept_required
 def matches_register(request):
     team = Team.objects.all()
     sport = Sport_types.choices
@@ -543,6 +565,7 @@ def matches_register(request):
         return redirect('matches_register')
 
 @login_required(login_url="login")
+@terms_accept_required
 def games(request):
     matchs = Match.objects.all().prefetch_related('teams__team').order_by('time_match')
     context = [
@@ -557,6 +580,7 @@ def games(request):
     return render(request, 'games.html',{'context': context})
 
 @login_required(login_url="login")
+@terms_accept_required
 def technician_manage(request):
     technician = Technician.objects.all()
     if request.method == "GET":
@@ -578,6 +602,7 @@ def technician_manage(request):
 
 
 @login_required(login_url="login")
+@terms_accept_required
 def technician_register(request):
     campus = Campus_types.choices
     if request.method == 'GET':
@@ -606,6 +631,7 @@ def technician_register(request):
         return redirect('technician_register')
 
 @login_required(login_url="login")
+@terms_accept_required
 def technician_edit(request, id):
     try:
         technician = get_object_or_404(Technician, id=id)
@@ -629,6 +655,7 @@ def technician_edit(request, id):
     return redirect('technician_manage')
     
 @login_required(login_url="login")
+@terms_accept_required
 def voluntary_manage(request):
     try:
         user = User.objects.get(id=request.user.id)
@@ -667,6 +694,7 @@ def voluntary_manage(request):
 
 @time_restriction("voluntary_manage")
 @login_required(login_url="login")
+@terms_accept_required
 def voluntary_register(request):
     user = User.objects.get(id=request.user.id)
     if request.method == 'GET':
@@ -703,6 +731,7 @@ def voluntary_register(request):
 
 @time_restriction("voluntary_manage")
 @login_required(login_url="login")
+@terms_accept_required
 def voluntary_edit(request, id):
     try:
         voluntary = get_object_or_404(Voluntary, id=id)
@@ -730,6 +759,7 @@ def voluntary_edit(request, id):
     return redirect('voluntary_manage')
 
 @login_required(login_url="login")
+@terms_accept_required
 def general_data(request, id):
     try:
         match = get_object_or_404(Match, id=id)
@@ -839,6 +869,7 @@ def general_data(request, id):
         return redirect('games')
 
 @login_required(login_url="login")
+@terms_accept_required
 def players_in_teams(request, id):
     try:
         match = get_object_or_404(Match, id=id)
@@ -894,6 +925,7 @@ def players_in_teams(request, id):
     return redirect('games')
 
 @login_required(login_url="login")
+@terms_accept_required
 def players_match(request, id):
     team_match = get_object_or_404(Team_match, id=id)
     player_match = Player_match.objects.filter(team_match=team_match)
@@ -941,6 +973,7 @@ def players_match(request, id):
         return redirect('players_match', team_match.id)
 
 @login_required(login_url="login")
+@terms_accept_required
 def add_players_match(request, id):
     team_match = get_object_or_404(Team_match, id=id)
     players = Player.objects.all()
@@ -974,6 +1007,7 @@ def add_players_match(request, id):
         return redirect('players_match', id)
 
 @login_required(login_url="login")
+@terms_accept_required
 def projector_manage(request):
     config = Config.objects.filter()
     if request.method == "GET":
@@ -990,6 +1024,7 @@ def projector_manage(request):
         return redirect('projector_manage')
           
 @login_required(login_url="login")
+@terms_accept_required
 def settings_manage(request):
     config = Config.objects.filter()
     if request.method == "GET":
@@ -1006,6 +1041,7 @@ def settings_manage(request):
         return redirect('settings_manage')
 
 @login_required(login_url="login")
+@terms_accept_required
 def banner_register(request):
     if request.method == "GET":
         return render(request, 'banner_register.html')
@@ -1019,6 +1055,7 @@ def banner_register(request):
         return redirect('banner_register')
 
 @login_required(login_url="login")
+@terms_accept_required
 def banner_manage(request):
     banner = Banner.objects.filter()
     if request.method == "GET":
@@ -1046,19 +1083,66 @@ def banner_manage(request):
         except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return redirect('banner_manage')
 
-@login_required
-def termos_uso(request):
-    if Terms_Use.objects.filter(usuario=request.user).exists():
-        return redirect('Home')
+@login_required(login_url="login")
+def upload_document(request):
+    try:
+        termo = Terms_Use.objects.get(usuario=request.user)
+    except Terms_Use.DoesNotExist:
+        termo = Terms_Use(usuario=request.user)
 
-    if request.method == "POST":
-        if 'accept' in request.POST:
-            Terms_Use.objects.create(usuario=request.user)
-            return redirect('Home') 
+    if request.method == 'POST':
+        document = request.FILES.get('document')
+        if document:
+            termo.document = document
+            termo.save()
+            return redirect('boss_data')
 
-    return render(request, "termos_uso.html")
+    return render(request, 'terms_use_upload.html')
 
-@login_required(login_url="login")   
+
+@login_required(login_url="login")
+def boss_data(request):
+    try:
+        termo = Terms_Use.objects.get(usuario=request.user)
+        if not termo.document:
+            return redirect('upload_document')
+    except Terms_Use.DoesNotExist:
+        return redirect('upload_document')
+
+    if request.method == 'POST':
+        nome = request.POST.get('name')
+        siape = request.POST.get('siape')
+
+        if nome and siape:
+            termo.name = nome
+            termo.siape = siape
+            termo.save()
+            return redirect('terms_use')
+
+    return render(request, 'terms_use_data.html')
+
+
+@login_required(login_url="login")
+def terms_use(request):
+    try:
+        termo = Terms_Use.objects.get(usuario=request.user)
+        if not termo.document:
+            return redirect('upload_document')
+        if not (termo.name and termo.siape):
+            return redirect('boss_data')
+    except Terms_Use.DoesNotExist:
+        return redirect('upload_document')
+
+    if request.method == 'POST':
+        if request.POST.get('accept') == 'on':
+            termo.accepted = True
+            termo.save()
+            return redirect('Home')
+
+    return render(request, 'terms_use.html')
+
+@login_required(login_url="login")
+@terms_accept_required   
 def projector_register(request):
     if request.method == "GET":
         return render(request,'projector_register.html')
@@ -1082,6 +1166,7 @@ def projector_register(request):
         return redirect('projector_register')
 
 @login_required(login_url="login")
+@terms_accept_required
 def settings_register(request):
     if request.method == "GET":
         return render(request,'settings_register.html')
@@ -1105,6 +1190,7 @@ def settings_register(request):
         return redirect('settings_register')
 
 @login_required(login_url="login")
+@terms_accept_required
 def scoreboard(request):
     try:
         if Match.objects.filter(status=1):
@@ -1458,6 +1544,7 @@ def scoreboard(request):
     return redirect('games')
 
 @login_required(login_url="login")
+@terms_accept_required
 def settings(request):
     return render(request, 'settings.html')
 
@@ -1735,6 +1822,7 @@ def scoreboard_projector(request):
         return render(request, 'scoreboard_projector.html')
 
 @login_required(login_url="login")
+@terms_accept_required
 def generator_badge(request):
     try:
         if request.user.is_staff:
@@ -1840,6 +1928,7 @@ def generator_badge(request):
     return redirect('badge')
 
 @login_required(login_url="login")
+@terms_accept_required
 def generator_certificate(request):
     try:
         user = User.objects.get(id=request.user.id)
@@ -1902,6 +1991,7 @@ def generator_certificate(request):
     return redirect('certificate')
 
 @login_required(login_url="login")
+@terms_accept_required
 def generator_bolletin(request):
     try:
         if request.method == "POST":
@@ -1936,6 +2026,7 @@ def generator_bolletin(request):
     return redirect('bolletin')
 
 @login_required(login_url="login")
+@terms_accept_required
 def generator_data(request):
     try:
         user = User.objects.get(id=request.user.id)
@@ -2069,6 +2160,7 @@ def generator_data(request):
 
     
 @login_required(login_url="login")
+@terms_accept_required
 def generator_data2(request):
     try:
         user = User.objects.get(id=request.user.id)
@@ -2160,6 +2252,7 @@ def generator_data2(request):
     
 @time_restriction("team_manage")
 @login_required(login_url="login")
+@terms_accept_required
 def register_team(request):
     sport = Sport_types.choices
     nomes = [nome for _, nome in sport]
@@ -2175,7 +2268,8 @@ def register_team(request):
 
     
 @time_restriction("team_manage")
-@login_required(login_url="login")  
+@login_required(login_url="login")
+@terms_accept_required  
 def team_sexo(request, sport_name):
     try:
         sport_team = {label: value for value, label in Sport_types.choices}
@@ -2235,6 +2329,7 @@ def team_sexo(request, sport_name):
     
 @time_restriction("team_manage")
 @login_required(login_url="login")
+@terms_accept_required
 def players_team(request, team_name, team_sexo, sport_name):
     try:
         user = User.objects.get(id=request.user.id)
@@ -2345,6 +2440,7 @@ def players_team(request, team_name, team_sexo, sport_name):
     return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
 
 @login_required(login_url="login")
+@terms_accept_required
 def players_list(request, team_name, team_sexo, sport_name):
     try:
         print("aaaaaaaaaaaaa")
@@ -2385,7 +2481,8 @@ def players_list(request, team_name, team_sexo, sport_name):
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
 
-@login_required(login_url="login") 
+@login_required(login_url="login")
+@terms_accept_required 
 def dashboard(request):
     return render(request, 'guiate/dashboard.html', {'players': Player_team_sport.objects.all()})
 
