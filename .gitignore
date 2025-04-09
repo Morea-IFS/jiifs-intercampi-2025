@@ -14,4 +14,6 @@ media/photo_technician/*
 media/bulletins/*
 media/attachments/*
 media/photo_voluntary/*
+media/document_boss/*
+media/photo_boss/*
 .env
