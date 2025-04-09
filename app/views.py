@@ -1112,12 +1112,17 @@ def boss_data(request):
     if request.method == 'POST':
         nome = request.POST.get('name')
         siape = request.POST.get('siape')
+        photo = request.FILES.get('photo')
 
-        if nome and siape:
+        if nome and siape and photo:
             termo.name = nome
             termo.siape = siape
+            termo.photo = photo
             termo.save()
             return redirect('terms_use')
+        else:
+            messages.error(request, 'Você precisa preencher todas as informações!')
+            return redirect('boss_data')
 
     return render(request, 'terms_use_data.html')
 
@@ -1136,6 +1141,7 @@ def terms_use(request):
     if request.method == 'POST':
         if request.POST.get('accept') == 'on':
             termo.accepted = True
+            termo.accepted_at = timezone.now()
             termo.save()
             return redirect('Home')
 

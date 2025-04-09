@@ -285,14 +285,16 @@ class Terms_Use(models.Model):
     name = models.CharField(max_length=255, blank=True)
     siape = models.EmailField(blank=True)
     accepted = models.BooleanField(default=False)
-    accepted_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)  # data do aceite
 
     @property
     def date_accept_local(self):
-        return localtime(self.date_accept)
+        if self.accepted_at:
+            return localtime(self.accepted_at).strftime('%d/%m/%Y %H:%M:%S')
+        return "Ainda não aceitou"
 
     def __str__(self):
-        return f"{self.usuario} - {self.date_accept_local.strftime('%d/%m/%Y %H:%M:%S')}"
+        return f"{self.usuario} - {self.date_accept_local}"
     
     class Meta:
         verbose_name = "Terms_Use"
