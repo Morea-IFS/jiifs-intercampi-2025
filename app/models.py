@@ -283,7 +283,7 @@ class Terms_Use(models.Model):
     document = models.FileField(upload_to='document_boss/', null=True, blank=True)
     photo = models.FileField(upload_to='photo_boss/', null=True, blank=True)
     name = models.CharField(max_length=255, blank=True)
-    siape = models.EmailField(blank=True)
+    siape = models.CharField(max_length=255, blank=True)
     accepted = models.BooleanField(default=False)
     accepted_at = models.DateTimeField(null=True, blank=True)  # data do aceite
 
