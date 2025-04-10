@@ -736,24 +736,28 @@ def voluntary_edit(request, id):
     try:
         voluntary = get_object_or_404(Voluntary, id=id)
         users = User.objects.all()
+        user = User.objects.get(id=request.user.id)
+        if user.is_staff: types = Type_service.choices
+        else: types = Type_service.choices[:-1]
         if request.method == 'GET':
-            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':Type_service.choices})
+            return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':types})
         elif 'excluir' in request.POST:
             if voluntary.photo:
                 voluntary.photo.delete()
             voluntary.delete()
             return redirect('voluntary_manage')
         else:
-            print(request.POST)
+            print(request.POST, request.FILES)
             voluntary.name = request.POST.get('name')
             voluntary.registration = request.POST.get('registration')
             voluntary.admin = User.objects.get(id=request.POST.get('user')) 
             voluntary.type_voluntary = request.POST.get('type_voluntary')
             if request.user.is_staff:
                 voluntary.campus = request.POST.get('campus')
-            voluntary.save()
             if request.FILES.get('photo'):
                 if voluntary.photo: voluntary.photo.delete()
+                voluntary.photo = request.FILES.get('photo')
+            voluntary.save()
             return redirect('voluntary_manage')
     except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('voluntary_manage')
