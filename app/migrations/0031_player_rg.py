@@ -16,4 +16,5 @@ class Migration(migrations.Migration):
             field=models.FileField(default=1, upload_to='rg/'),
             preserve_default=False,
         ),
+
     ]
