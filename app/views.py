@@ -2093,7 +2093,7 @@ def generator_data(request):
             elif 'all_eqp' in request.POST:
                 name_html = 'data-base-eqp'
                 name_pdf = 'dados_equipe_jifs'
-                cont['infor'] = "comissão técnica do jifs 2025"
+                cont['infor'] = "equipe do jifs 2025"
                 if user.is_staff: voluntary = Voluntary.objects.all().order_by('campus','-type_voluntary')
                 else: voluntary = Voluntary.objects.filter(admin=user).order_by('campus','-type_voluntary')
                 if len(voluntary) == 0:
