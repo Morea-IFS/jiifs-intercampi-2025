@@ -58,7 +58,7 @@ def login(request):
                     auth_login(request, user)
                     if Technician.objects.filter(user=user):
                         technician = Technician.objects.get(user=user)
-                        messages.success(request, f"Seja bem vindo campus {technician.get_campus_display()}! para navegar acesse gerenciamento.")
+                        messages.success(request, f"Seja bem vindo campus {technician.get_campus_display()}! para navegar acesse menu.")
                     else:
                         messages.success(request, f"Seja bem vindo ao sistema novamente {user.username}!")
                     return redirect('Home')
@@ -80,7 +80,7 @@ def sair(request):
 @login_required(login_url="login")
 @terms_accept_required
 def manage(request):
-    messages.info(request, "Você está na área de gerenciamento! sistema morea sports")
+    messages.info(request, "Você está na área do menu! sistema morea sports")
     return render(request, 'manage.html')
 
 @login_required(login_url="login")
@@ -680,7 +680,7 @@ def voluntary_manage(request):
             if not voluntary:
                 print("Não há nenhum voluntário cadastrado!")
             if not len(messages.get_messages(request)) == 1:
-                messages.info(request, "Aqui você cadastrará o chefe de delegação, equipe de organizaçao, técnicos e voluntarios!")
+                messages.info(request, "Aqui você cadastrará a equipe de organizaçao, técnicos, voluntarios e muito mais!")
             return render(request, 'voluntary_manage.html', {'voluntary': voluntary_paginated, 'allowed': allowed_pages(user)})
         else:
             voluntary_id = request.POST.get('voluntary_delete')
@@ -719,7 +719,7 @@ def voluntary_register(request):
             else:
                 voluntary = Voluntary.objects.create(type_voluntary=type_voluntary, name=name, registration=registration, admin=admin, campus=campus_id)
             voluntary.save()
-            messages.success(request, "Parabéns, você cadastrou mais um membro da equipe do JIFS 2025!")
+            messages.success(request, "Parabéns, você cadastrou mais um membro da comissão técnica!")
             return redirect('voluntary_manage')
         except (TypeError, ValueError):
             messages.error(request, 'Um valor foi informado incorretamente!')
