@@ -24,7 +24,7 @@ class Sport_types(models.IntegerChoices):
     race = 6, "100 M"
     high_jump = 7, "Salto em distância"
     launch_dart = 8, "Lançamento de dardo"
-    pitch_weight = 9, "Lançamento de peso"
+    pitch_weight = 9, "Arremesso de peso"
 
 class Campus_types(models.IntegerChoices):
     aracaju = 0, "Aracaju"
