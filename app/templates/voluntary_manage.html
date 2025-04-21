@@ -37,8 +37,8 @@
                         <th>FOTO</th>
                         {% if allowed %}
                         <th>EDITAR</th>
+                        <th>DELETAR</th> 
                         {% endif %}
-                        {% if user.is_staff %} <th>DELETAR</th> {% endif %}
                     </tr>
                     {% for voluntary in voluntary %}
                     <tr>
@@ -55,8 +55,6 @@
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
-                        {% endif %}
-                        {% if user.is_staff %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
