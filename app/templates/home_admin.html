@@ -34,6 +34,21 @@
         </iframe>
     </div>
     <br><br><br>
+    <h1 class="sub-title-about">Perguntas frequentes</h1>
+    <section class="about-help">
+        <details>
+            <summary><i class="fas fa-chevron-right"></i>POR ONDE EU POSSO COMEÇAR?</summary>
+            <p>Para iniciar, clique no botão <b>Menu</b>. Você será direcionado para o local onde poderá manipular o nosso sistema. <br> Após acessar o menu, você pode cadastrar as modalidades em que seu campus irá participar e cadastrar os atletas na área <b>MODALIDADES</b>,<br> ou pode cadastrar as pessoas que irão compor a sua equipe técnica na área <b>COMISSÃO TÉCNICA</b>.</p>
+        </details>
+        {% for i in help %}
+        <details>
+            <summary><i class="fas fa-chevron-right"></i>{{i.title}}</summary>
+            <p>{{i.description|safe}}</p>
+        </details>
+        {% endfor %}
+    </section>
+        
+    <br><br><br>
     <section class="about-members">
         <div class="advisors">
             <h1 class="sub-title-about">Orientadores</h1>
@@ -68,7 +83,7 @@
                 </div>
                 <div class="member">
                     <div class="photo-person">
-                        <img src="static/images/person.png" alt="Foto do Membro"/>
+                        <img src="static/images/perfil-fabio-nunes.jpg" alt="Foto do Membro"/>
                     </div>
                     <div class="content-of-person">
                         <h3>Fabio Nunes</h3>

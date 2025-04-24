@@ -22,7 +22,8 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Insira o nome"
                     required>
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
-                    placeholder="Matricula ou siape" required>
+                    placeholder="Matricula, siape ou CPF." required>
+                    <p style="color: red; font-size: 15px;">*Matricula para aluno, siape para servidores e CPF para estagiário ou servidor sem siape.</p>
                     <select name="type_voluntary" required>
                         <option selected disabled>Selecione a função</option required>
                         {% for value, name in types %}
