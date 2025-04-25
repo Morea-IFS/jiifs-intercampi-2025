@@ -59,11 +59,9 @@ function loadTheme() {
     if (storedTheme === "light-mode") {
         body.classList.add("light-mode");
         themeIcon.classList.add("fa-sun");
-        console.log("Modo claro carregado");
     } else {
         body.classList.add("dark-mode");
         themeIcon.classList.add("fa-moon");
-        console.log("Modo escuro carregado (padrão)");
     }
 }
 
