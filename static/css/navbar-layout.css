@@ -114,6 +114,7 @@ a {
 }
 
 .logos-items {
+    filter: invert(100%);
     height: 60px;
 }
 
