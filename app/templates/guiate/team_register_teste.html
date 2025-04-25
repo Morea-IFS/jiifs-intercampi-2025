@@ -69,7 +69,11 @@
     </div>
     <div style="display: flex; justify-content: center; margin-bottom: 2em;">
         <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: #AB0000;">
+            {% if button_return_manage %}
+            <a href="{% url 'manage' %}">VOLTAR</a>
+            {% else  %}
             <a href="{% url 'team_manage' %}">VOLTAR</a>
+            {% endif  %}
         </button>
     </div>
 </body>

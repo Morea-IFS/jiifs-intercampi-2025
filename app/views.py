@@ -322,7 +322,7 @@ def team_manage(request):
         else: 
             team_sports = Team_sport.objects.filter(admin__id=user.id).order_by('team__campus', 'sport', '-sexo')
             campus = Technician.objects.get(user__id=user.id)
-            
+            if len(team_sports) == 0: return redirect('guiate_register_team')
         page = request.GET.get('page', 1) 
         paginator = Paginator(team_sports, 10) 
 
@@ -2265,14 +2265,16 @@ def register_team(request):
     nomes = [nome for _, nome in sport]
     if Technician.objects.filter(user__id=request.user.id).exists(): 
         technician = Technician.objects.get(user__id=request.user.id)
+        team_sport = Team_sport.objects.filter(admin=User.objects.get(id=request.user.id))
         context = {'sport': nomes,'technician':technician}
+        if len(team_sport) == 0:
+            context['button_return_manage'] = True
     else: 
         context = {'sport': nomes}
     if request.method == 'GET':
         return render(request, 'guiate/team_register_teste.html', context)
     else:
         return redirect('guiate_register_team')
-
     
 @time_restriction("team_manage")
 @login_required(login_url="login")
