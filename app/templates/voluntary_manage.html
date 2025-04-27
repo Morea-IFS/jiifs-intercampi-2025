@@ -51,17 +51,21 @@
                         <td>{% if voluntary.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         {% if allowed %}
                         <td>
+                            {% if not voluntary.type_voluntary == 4 or user.is_staff %}
                             <a href="{% url 'voluntary_edit' voluntary.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
+                            {% endif %}
                         </td>
                         <td>
+                            {% if not voluntary.type_voluntary == 4 or user.is_staff %}
                             <form method="POST" action="">
                                 {% csrf_token %}
                                 <button data-confirm="Você realmente deseja excluir este membro da comissão técnica" name="voluntary_delete" value="{{voluntary.id}}" style="background-color: transparent; border: none;">
                                     <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
                                 </button>
                             </form>
+                            {% endif %}
                         </td>
                         {% endif %}
                     </tr>

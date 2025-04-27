@@ -665,7 +665,7 @@ def voluntary_manage(request):
             voluntary = Voluntary.objects.all().order_by('-type_voluntary','campus')
         else:
             qnt = 15
-            voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus').exclude(type_voluntary=type_service[0])
+            voluntary = Voluntary.objects.filter(admin__id=request.user.id).order_by('-type_voluntary','campus')
         page = request.GET.get('page', 1) 
         
         paginator = Paginator(voluntary, qnt) 
@@ -1816,8 +1816,6 @@ def scoreboard_projector(request):
                 'name_scoreboard': name_scoreboard,
                 
             }
-            print(events)
-            print(context)
             return render(request, 'scoreboard_projector.html', context)
         else:
             return render(request, 'scoreboard_projector.html')
@@ -1845,7 +1843,7 @@ def generator_badge(request):
                 'sport': sport,
                 'badge': badge,
             }
-            return render(request, 'generator/badge.html', context)
+            return render(request, 'badge.html', context)
         else:
             if 'badge_delete' in request.POST:
                 badge_delete = request.POST.get('badge_delete')
@@ -1951,7 +1949,7 @@ def generator_certificate(request):
                 'sport': sport,
                 'certificate': certificate,
             }
-            return render(request, 'generator/certificate.html', context)
+            return render(request, 'certificate.html', context)
         else:
             if 'certificate_delete' in request.POST:
                 certificate_delete = request.POST.get('certificate_delete')
@@ -2027,7 +2025,7 @@ def generator_bolletin(request):
 
             HTML(string=html_string).write_pdf(response)
             return response
-        return render(request, 'generator/bolletin.html')
+        return render(request, 'bolletin.html')
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('bolletin')
@@ -2048,7 +2046,7 @@ def generator_data(request):
             }
             
             print(context)
-            return render(request, 'generator/data.html', context)
+            return render(request, 'data.html', context)
         else:
             cont = {
                 'now': timezone.now(),
@@ -2165,98 +2163,6 @@ def generator_data(request):
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('data')
 
-    
-@login_required(login_url="login")
-@terms_accept_required
-def generator_data2(request):
-    try:
-        user = User.objects.get(id=request.user.id)
-        if request.method == "GET":
-            if request.user.is_staff: team_sport = Team_sport.objects.filter(players__isnull=False).distinct().order_by('team__campus','sport','-sexo')
-            else: team_sport = Team_sport.objects.all().filter(admin=user).order_by('team__campus','sport','-sexo')
-            context = {
-                'sexo': Sexo_types.choices,
-                'team_sport': team_sport,
-            }
-            print(context)
-            return render(request, 'generator/data2.html', context)
-        else:
-            print(request.POST)
-            data = request.POST.get('data')
-            players = None
-            teams = None
-            user = User.objects.get(id=request.user.id)
-            if data:
-                if data == 'all_player' or data == 'all_sexo_masc' or data == 'all_sexo_fem' or data == 'all_sexo_mis' or data == 'all_campus': pass
-                if data == 'all_player':
-                    if user.is_staff: players = Player_team_sport.objects.all()
-                    else: players = Player_team_sport.objects.filter(admin=user)
-                elif data == 'all_sexo_masc':
-                    if user.is_staff: players = Player_team_sport.objects.filter(player__sexo=0)
-                    else: players = Player_team_sport.objects.filter(player__sexo=0, admin=user)
-                elif data == 'all_sexo_fem':
-                    if user.is_staff: players = Player_team_sport.objects.filter(player__sexo=1)
-                    else: players = Player_team_sport.objects.filter(player__sexo=1, admin=user)
-                elif data == 'all_sexo_mis':
-                    if user.is_staff: players = Player_team_sport.objects.filter(team_sport__sexo=3)
-                    else: players = Player_team_sport.objects.filter(team_sport__sexo=3, admin=user)
-                elif data == 'all_campus':
-                    if user.is_staff: teams = Team_sport.objects.all()
-                    else: teams = Team_sport.objects.filter(admin=user)
-                else:
-                    if user.is_staff: players = Player_team_sport.objects.filter(team_sport__sport=data)
-                    else: players = Player_team_sport.objects.filter(team_sport__sport=data)
-            else: 
-                messages.error(request, 'Nenhum dado foi encontrado.')
-                return redirect('data')
-            logo_morea = request.build_absolute_uri('/static/images/generators/logo-morea-black.svg')
-            logo_ifs = request.build_absolute_uri('/static/images/generators/logo-ifs-black.svg')
-            logo_jifs = request.build_absolute_uri('/static/images/generators/logo-jifs-2025.svg')
-            if players and teams == None:
-                cont = {
-                    'now': timezone.now(),
-                    'user': user,
-                    'players': players,
-                    'logo_morea':logo_morea,
-                    'logo_jifs':logo_jifs,
-                    'logo_ifs':logo_ifs
-                }
-                html_string = render_to_string('generator/data-base.html', cont)
-
-                # Gerar o PDF
-                response = HttpResponse(content_type='application/pdf')
-                response['Content-Disposition'] = 'attachment; filename="players.pdf"'
-
-                HTML(string=html_string).write_pdf(response)
-
-            elif teams and players == None:
-                cont = {
-                    'now': timezone.now(),
-                    'user': user,
-                    'teams': teams,
-                    'logo_morea':logo_morea,
-                    'logo_jifs':logo_jifs,
-                    'logo_ifs':logo_ifs
-                }
-                html_string = render_to_string('generator/data-base-campus.html', cont)
-
-                # Gerar o PDF
-                response = HttpResponse(content_type='application/pdf')
-                response['Content-Disposition'] = 'attachment; filename="campus.pdf"'
-
-                HTML(string=html_string).write_pdf(response)
-            else:
-                messages.error(request, 'Nenhum dado foi encontrado.')
-                return redirect('data')
-            return response
-    except (TypeError, ValueError):
-        messages.error(request, 'Um valor foi informado incorretamente!')
-    except IntegrityError as e:
-        messages.error(request, 'Algumas informações não foram preenchidas :(')
-    except Exception as e:
-        messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-    return redirect('data')
-    
 @time_restriction("team_manage")
 @login_required(login_url="login")
 @terms_accept_required
