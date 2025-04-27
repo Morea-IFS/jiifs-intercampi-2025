@@ -105,6 +105,7 @@ label, .title {
     border: none;
     border-radius: 1em;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .button-accept:hover {

@@ -285,6 +285,8 @@ class Terms_Use(models.Model):
     photo = models.FileField(upload_to='photo_boss/', null=True, blank=True)
     name = models.CharField(max_length=255, blank=True)
     siape = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(max_length=255, blank=True)
+    phone = models.CharField(max_length=255, blank=True)
     accepted = models.BooleanField(default=False)
     accepted_at = models.DateTimeField(null=True, blank=True)  # data do aceite
 

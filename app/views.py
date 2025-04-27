@@ -1113,11 +1113,15 @@ def boss_data(request):
     if request.method == 'POST':
         nome = request.POST.get('name')
         siape = request.POST.get('siape')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
         photo = request.FILES.get('photo')
 
-        if nome and siape and photo:
+        if nome and siape and photo and email and phone:
             termo.name = nome
             termo.siape = siape
+            termo.email = email
+            termo.phone = phone
             termo.photo = photo
             termo.save()
             return redirect('terms_use')
@@ -1134,7 +1138,7 @@ def terms_use(request):
         termo = Terms_Use.objects.get(usuario=request.user)
         if not termo.document:
             return redirect('upload_document')
-        if not (termo.name and termo.siape):
+        if not (termo.name and termo.siape and termo.email and termo.phone and termo.photo):
             return redirect('boss_data')
     except Terms_Use.DoesNotExist:
         return redirect('upload_document')
