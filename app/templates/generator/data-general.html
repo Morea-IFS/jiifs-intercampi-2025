@@ -3,152 +3,157 @@
 <html>
 <head>
     <style>
-        body { font-family: Arial, sans-serif; margin: 1cm; page-break-before: avoid;}
-        h1, h2 { text-align: center; }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; word-wrap: break-word; font-size: 13px; }
-        td{ white-space: pre-wrap; }
-        th { background-color: #f2f2f2; }
-
-        /* Força quebra de página antes do elemento */
-        .page-break { page-break-before: always; }
-
-        /* Evita quebra de página dentro da tabela */
-        table { page-break-inside: avoid; }
-
-
-        .header-page {
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-bottom: 20px;
+        :root{
+            --teste_a: #cbcaca;
+            --teste_b: #eaeaea;
         }
-        .aa {
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-bottom: 20px;
+        body { font-family: Arial, sans-serif; page-break-before: avoid;}
+        table { 
+            width: 80vw; 
+            border-collapse: collapse; 
+            table-layout: fixed; 
+            page-break-inside: auto; 
+            break-inside: auto; 
         }
-        .center{
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            word-wrap: break-word; 
+            font-size: 13px; 
+        }
+        td { white-space: pre-wrap; text-align: start;}
+        th { background-color: #f2f2f2; text-align: center;}
+
+        tr { 
+            page-break-inside: avoid; 
+            break-inside: avoid; 
+            page-break-after: auto; 
+        }
+
+        thead { 
+            display: table-header-group; /* Mantém o cabeçalho fixo */
+        }
+
+        tfoot { 
+            display: table-footer-group; 
+        }
+
+        .header-data {
+            width: 80vw;
+            height: 6.5em;
+            border: 1.5px solid black;
             text-align: center;
         }
-        .b{
-            width: 9.5em;
-            height: 9.5em;
-            border: 2px solid #0051ff;;
-            border-radius: 15px;
-            padding: 10px;
+        .logo-ifs {
+            width: 8em;
+            position: absolute;
+            padding-left: 0.5em;
+            padding-top: 0.8em;
         }
-        .ab{
-            width: 100%;
-            height: 65%;
-        }
-        .ab p{
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 4.5em;
-            color: black;
-            font-weight: 700;
-
-        }
-        .ba{
-            width: 100%;
-            height: 35%;
-
-        }
-        .ba p{
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 15px;
-            color: black;
-            font-weight: 400;
-
+        .logo-morea {
+            width: 5em;
+            position: absolute;
+            right: 2em;
+            padding-top: 0.8em;
         }
     </style>
 </head>
 <body>
 
-    <h2>JIIFS - MOREA SPORTS</h2>
-    <h2>Relatório dados gerais</h2>
-    {% if infor %}<p>{{infor}}</p>{% endif %}
-
-    <div class="aa">
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_players}}</p>
-            </div>
-            <div class="ba center">
-                <p>Núm. total de atletas</p>
-            </div>
-        </div>
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_players_fem}}</p>
-            </div>
-            <div class="ba center">
-                <p>atletas: feminino</p>
-            </div>
-        </div>            
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_players_masc}}</p>
-            </div>
-            <div class="ba center">
-                <p>atletas: masculino</p>
-            </div>
-
-        </div>            
+    <div class="header-data">
+        <img class="logo-ifs" src="{{logo_ifs }}" alt="">
+        <img class="logo-morea" src="{{logo_morea }}" alt="">
+        <p>INSTITUTO FEDERAL DE SERGIPE</p>
+        <p><b>RELATÓRIO DADOS GERAIS JIFS</b></p>
+        <p style="font-size: 12px;">Gerado por {{ user.username }} em {{ now }}</p>
     </div>
-    <p>Aqui estão alguns dados referentes a quantidade de atletas que irão participar do jiifs e a quantidade de atletas do sexo feminino e masculino.</p>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 75%;">NOME</th>
+                <th style="width: 25%;">QUANTIDADE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>QUANTIDADE DE ATLETAS: </td>
+                <td style="text-align: center;">{{qnt_players}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE ATLETAS DO SEXO FEMININO: </td>
+                <td style="text-align: center;">{{qnt_players_fem}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE ATLETAS DO SEXO MASCULINO: </td>
+                <td style="text-align: center;">{{qnt_players_masc}}</td>
+            </tr>
+            <tr>
+                <td>PORCENTAGEM DE ATLETAS DO SEXO FEMININO: </td>
+                <td style="text-align: center;">{{porcent_fem |floatformat:2}}%</td>
+            </tr>
+            <tr>
+                <td>PORCENTAGEM DE ATLETAS DO SEXO MASCULINO: </td>
+                <td style="text-align: center;">{{porcent_masc |floatformat:2}}%</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE VOLUNTÁRIOS: </td>
+                <td style="text-align: center;">{{ qnt_voluntary_0}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE TÉCNICOS DE MODALIDADE ESPORTIVA: </td>
+                <td style="text-align: center;">{{ qnt_voluntary_1}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE MEMBROS DO APOIO: </td>
+                <td style="text-align: center;">{{ qnt_voluntary_2}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE ESTÁGIARIO: </td>
+                <td style="text-align: center;">{{ qnt_voluntary_3}}</td>
+            </tr>
+            <tr>
+                <td>QUANTIDADE DE CHEFES DE DELEGAÇÃO: </td>
+                <td style="text-align: center;">{{ qnt_voluntary_4}}</td>
+            </tr>
 
-    <div class="aa">
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_teams}}</p>
-            </div>
-            <div class="ba center">
-                <p>total de equipes</p>
-            </div>
+            {% for campus, players_total, players_fem, players_masc, qnt_v_0, qnt_v_1, qnt_v_2, qnt_v_3, qnt_v_4 in campi %}
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>ATLETAS DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ players_total }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>ATLETAS DO SEXO FEMININO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ players_fem }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>ATLETAS DO SEXO MASCULINO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ players_masc }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>VOLUNTÁRIOS DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ qnt_v_0 }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>TÉCNICOS DE MODALIDADE ESPORTIVA DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ qnt_v_1 }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>MEMBROS DO APOIO DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ qnt_v_2 }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>ESTÁGIARIOS DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ qnt_v_3 }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>CHEFE(S) DE DELEGAÇÃO DO CAMPUS {{campus | upper}}: </td>
+                <td style="text-align: center;">{{ qnt_v_4 }}</td>
+            </tr>
+            {% endfor %}
 
-        </div>
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_voluntary}}</p>
-            </div>
-            <div class="ba center">
-                <p>total de voluntarios</p>
-            </div>
-        </div>
-        <div class="b">
-            <div class="ab center">
-                <p>{{qnt_campus}}</p>
-            </div>
-            <div class="ba center">
-                <p>campus inscritos</p>
-            </div>
-        </div>
-
-    </div>
-    <p>Aqui temos a quantidade total de equipes, considera-se equipe a relação campus x modalidade, exemplo: aracaju voleibol feminino, aracaju futsal masculino. Também temos a quantidade de voluntarios e os campus inscritos.</p>
-    <p>Esse ano {{porcent_fem}}% dos atletas são do sexo feminino e {{porcent_masc}}% do sexo masculino</p>
-    {% for c, n, pf, pm, v in campi %}
-    <div style="display: flex;">
-    <h2 style="color: #0051ff;">{{c|upper}}</h2>
-    </div>
-    <div style="width: 13em; height: 0.2em; background-color: #0051ff;; border-radius: 10px;"></div>
-    
-    <p style="font-size: 18px;">O campus {{c}} tem um número total de {{n}} atletas sendo {{pf}} do sexo feminino e {{pm}} do sexo masculino.</p>
-    {% if v == 1 %} <p>Além disso, há {{v}} voluntario nesse campus!</p> {% elif v > 1 %} <p>Além disso, há {{v}} voluntarios nesse campus!</p> {% endif %}
-    {% endfor %}
-    
-    <!-- Forçando uma nova página -->
-    <div class="page-break"></div>
-
-    <h2>JIFS - MOREA <br> 2025</h2>
-    <p style="text-align: center;">Esse relatório foi gerado automaticamente por {{ user.username }}.</p>
-    <p style="text-align: center;">Gerado em: {{ now }}</p>
+        </tbody>
+    </table>
+</table>
 </body>
 </html>

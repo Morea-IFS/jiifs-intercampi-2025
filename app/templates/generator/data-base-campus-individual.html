@@ -3,6 +3,7 @@
 <html>
 <head>
     <style>
+        
         body { font-family: Arial, sans-serif; page-break-before: avoid; }
         h1, h2 { text-align: center; }
         table { 
@@ -31,7 +32,7 @@
         thead { 
             display: table-header-group;
         }
-        
+
         .header-data {
             width: 80vw;
             height: 6.5em;
@@ -50,6 +51,7 @@
             right: 2em;
             padding-top: 0.8em;
         }
+
     </style>
 </head>
 <body>
@@ -57,35 +59,33 @@
         <img class="logo-ifs" src="{{logo_ifs }}" alt="">
         <img class="logo-morea" src="{{logo_morea }}" alt="">
         <p>INSTITUTO FEDERAL DE SERGIPE</p>
-        <p><b>RELATÓRIO DE ATLETAS JIFS</b></p>
+        <p><b>RELATÓRIO ATLETAS {{campus |upper}} JIFS</b></p>
         <p style="font-size: 12px;">Gerado por {{ user.username }} em {{ now }}</p>
     </div>
     <br><br>
     <table>
-        <tr>
-            <th style="width: 38%;">Nome</th>
-            <th style="width: 12%;">CPF</th>
-            <th style="width: 11%;">Matrícula</th>
-            <th style="width: 10.5%;">Campus</th>
-            <th style="width: 4%;">Sexo</th>
-            <th style="width: 9%;">Data Nasc.</th>
-        </tr>
-        {% for i in players %}
-        <tr>
-            <td>{{ i.player.name|upper }}</td>
-            <td>{{ i.player.cpf|slice:":3" }}.{{ i.player.cpf|slice:"3:6" }}.{{ i.player.cpf|slice:"6:9" }}-{{ i.player.cpf|slice:"9:" }}</td>
-            <td>{{ i.player.registration|upper }}</td>
-            <td>{{ i.player.get_campus_display | truncatechars:10 }}</td>
-            <td>{% if i.player.sexo == 0 %} M {% elif i.player.sexo == 1 %} F {% else %} - {% endif %}</td>
-            <td>{{ i.player.date_nasc|date:"d/m/Y" }}</td>
-        </tr>
-        {% endfor %}
-
-        <!-- Exemplo de dados fictícios -->
-
+        <thead>
+            <tr>
+                <th style="width: 38%;">Nome</th>
+                <th style="width: 12%;">CPF</th>
+                <th style="width: 11%;">Matrícula</th>
+                <th style="width: 10.5%;">Campus</th>
+                <th style="width: 4%;">Sexo</th>
+                <th style="width: 9%;">Data Nasc.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in players %}
+            <tr>
+                <td>{{ i.player.name|upper }}</td>
+                <td>{{ i.player.cpf|slice:":3" }}.{{ i.player.cpf|slice:"3:6" }}.{{ i.player.cpf|slice:"6:9" }}-{{ i.player.cpf|slice:"9:" }}</td>
+                <td>{{ i.player.registration|upper }}</td>
+                <td>{{ i.player.get_campus_display | truncatechars:10 }}</td>
+                <td>{% if i.player.sexo == 0 %} M {% elif i.player.sexo == 1 %} F {% else %} - {% endif %}</td>
+                <td>{{ i.player.date_nasc|date:"d/m/Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-
-    <!-- Forçando uma nova página -->
-    <div class="page-break"></div>
 </body>
 </html>
