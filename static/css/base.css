@@ -15,7 +15,9 @@
         --error: #f24d4c;
         --warning: #e9bd0c;
         --info: #3498db;
+        --light: #bdbdbd;
 }
+
 .light-mode {
 
     /* VARIAVEIS / CORES */

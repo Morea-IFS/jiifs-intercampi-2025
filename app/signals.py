@@ -268,7 +268,14 @@ def validate_team_sport(instance):
     if Player_team_sport.objects.filter(team_sport=team_sport).exists():
         players_numbers = len(Player_team_sport.objects.filter(team_sport=team_sport))
         match team_sport.sport:
-            case 0 | 1 | 2| 3 :
+            case 0:
+                if players_numbers >= 5 and players_numbers <= 12:
+                    team_sport.status = True
+                    team_sport.save()
+                else:
+                    team_sport.status = False
+                    team_sport.save()
+            case 1 | 2| 3 :
                 if players_numbers >= 6 and players_numbers <= 12:
                     team_sport.status = True
                     team_sport.save()

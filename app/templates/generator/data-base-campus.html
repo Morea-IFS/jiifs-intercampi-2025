@@ -3,52 +3,89 @@
 <html>
 <head>
     <style>
-        body { font-family: Arial, sans-serif; margin: 1cm; page-break-before: avoid; }
-        h1 { text-align: center; }
-        h2 { text-align: left; }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; word-wrap: break-word; font-size: 13px; }
-        td{ white-space: pre-wrap; }
+        body { font-family: Arial, sans-serif; page-break-before: avoid; }
+        h1, h2 { text-align: center; }
+        .title-campi{
+            font-size: 20px;
+        }
+        table { 
+            width: 80vw; 
+            border-collapse: collapse; 
+            table-layout: fixed; 
+            page-break-inside: auto; 
+            break-inside: auto; 
+        }
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: center; 
+            word-wrap: break-word; 
+            font-size: 10px; 
+        }
+        td { white-space: pre-wrap; }
         th { background-color: #f2f2f2; }
 
-        .page-break { page-break-before: always; }
-
-        table { page-break-inside: avoid; }
-
-        .header-page {
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-bottom: 20px;
+        tr { 
+            page-break-inside: avoid; 
+            break-inside: avoid; 
+            page-break-after: auto; 
         }
+
+        thead { 
+            display: table-header-group;
+        }
+
+        .header-data {
+            width: 80vw;
+            height: 6.5em;
+            border: 1.5px solid black;
+            text-align: center;
+        }
+        .logo-ifs {
+            width: 8em;
+            position: absolute;
+            padding-left: 0.5em;
+            padding-top: 0.8em;
+        }
+        .logo-morea {
+            width: 5em;
+            position: absolute;
+            right: 2em;
+            padding-top: 0.8em;
+        }
+
     </style>
 </head>
 <body>
-
-    <h1>Relatório <br> {{infor}}</h1>
-
-    {% for i in teams %}    
-    <div style="display: flex;">
-    <h2 style="color: #0051ff;">CAMPUS <span style="color: #080072;">{{i.team.get_campus_display|upper}} </span> {{ i.get_sport_display|upper }} {{ i.get_sexo_display|upper }}</h2>
+    <div class="header-data">
+        <img class="logo-ifs" src="{{logo_ifs }}" alt="">
+        <img class="logo-morea" src="{{logo_morea }}" alt="">
+        <p>INSTITUTO FEDERAL DE SERGIPE</p>
+        <p><b>RELATÓRIO DE ATLETAS JIFS</b></p>
+        <p style="font-size: 12px;">Gerado por {{ user.username }} em {{ now }}</p>
     </div>
-    <div style="width: 13em; height: 0.2em; background-color: #0051ff;; border-radius: 10px;"></div>
     <br>
+    {% for i in teams %}    
+    <div style="display: flex; width: 100vw; justify-content: center;">
+    <p class="title-campi">CAMPUS <b>{{i.team.get_campus_display|upper}}</b> {{ i.get_sport_display|upper }} {{ i.get_sexo_display|upper }}</p>
+    </div>
     {% if i.players.all %}
     <table>
         <tr>
-            <th style="width: 48%;">Nome</th>
-            <th style="width: 8.6%;">Gênero</th>
-            <th style="width: 9.5%;">Campus</th>
-            <th style="width: 14%;">Matrícula</th>
-            <th style="width: 12%;">Data Nasc.</th>
+            <th style="width: 38%;">Nome</th>
+            <th style="width: 12%;">CPF</th>
+            <th style="width: 11%;">Matrícula</th>
+            <th style="width: 10.5%;">Campus</th>
+            <th style="width: 4%;">Sexo</th>
+            <th style="width: 9%;">Data Nasc.</th>
         </tr>
         {% for j in i.players.all %}
         <tr>
             <td>{{ j.player.name|upper }}</td>
-            <td>{{ j.player.get_sexo_display | truncatechars:5 }}</td>
-            <td>{{ j.player.get_campus_display | truncatechars:7 }}</td>
+            <td>{{ i.player.cpf|slice:":3" }}.{{ i.player.cpf|slice:"3:6" }}.{{ i.player.cpf|slice:"6:9" }}-{{ i.player.cpf|slice:"9:" }}</td>
             <td>{{ j.player.registration|upper }}</td>
+            <td>{{ j.player.get_campus_display | truncatechars:10 }}</td>
+            <td>{% if j.player.sexo == 0 %} M {% elif j.player.sexo == 1 %} F {% else %} - {% endif %}</td>
             <td>{{ j.player.date_nasc|date:"d/m/Y" }}</td>
         </tr>
         {% endfor %}
@@ -58,11 +95,5 @@
     <p>Não há atletas cadastrados ainda.</p>
     {% endif %}
     {% endfor %}
-
-    <div class="page-break"></div>
-
-    <h2>JIFS - MOREA <br> 2025</h2>
-    <p style="text-align: center;">Esse relatório foi gerado automaticamente por {{ user.username }}.</p>
-    <p style="text-align: center;">Gerado em: {{ now }}</p>
 </body>
 </html>

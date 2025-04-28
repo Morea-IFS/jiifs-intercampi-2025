@@ -6,8 +6,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/guiate-team.css' %}" />
     <title>JIFS ADMIN</title>
 </head>
@@ -23,16 +23,7 @@
             <span class="btn-text">Dados gerais</span>
         </button>
 
-        <a href="{% url 'bolletin' %}" class="sport-btn">
-            <div style="display: flex; justify-content: center; align-items: center; width: 3.2em; height: 3.2em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-file" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
-            <span class="btn-text">Criar bolletin</span>
-        </a>
         {% endif %}
-
-        <button name="all_campus" type="submit" class="sport-btn">
-            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
-            <span class="btn-text">Dados do campus</span>
-        </button>
 
         <button name="all_players" type="submit" class="sport-btn">
             <div style="display: flex; justify-content: center; align-items: center; width: 3.2em; height: 3.2em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-person" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
@@ -51,8 +42,69 @@
 
         <button name="all_eqp" type="submit" class="sport-btn">
             </i><div style="display: flex; justify-content: center; align-items: center; width: 3.2em; height: 3.2em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-person-digging" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
-            <span class="btn-text">Equipe</span>
+            <span class="btn-text">Comissão Técnica</span>
         </button>
+
+        {% if user.is_staff %}
+
+        <button name="campus_in" value="4" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Lagarto</span>
+        </button>
+
+        <button name="campus_in" value="0" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Aracaju</span>
+        </button>
+
+        <button name="campus_in" value="8" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Socorro</span>
+        </button>
+
+        <button name="campus_in" value="7" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus São Cristovão</span>
+        </button>
+
+        <button name="campus_in" value="9" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Tobias Barreto</span>
+        </button>
+
+        <button name="campus_in" value="5" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Poço Redondo</span>
+        </button>
+
+        <button name="campus_in" value="1" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Estância</span>
+        </button>
+
+        <button name="campus_in" value="3" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Itabaiana</span>
+        </button>
+
+        <button name="campus_in" value="2" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Glória</span>
+        </button>
+
+        <button name="campus_in" value="6" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Campus Propriá</span>
+        </button>
+        
+        {% else %}
+
+        <button name="all_campus" type="submit" class="sport-btn">
+            <div style="display: flex; justify-content: center; align-items: center; width: 3.5em; height: 3.5em; padding: 12px; background-color: white; border-radius: 100%;"><i class="icon fas fa-school" style="color: #369637; font-size: 1.8em; display: flex; justify-content: center;"></i></div>
+            <span class="btn-text">Dados do campus</span>
+        </button>
+
+        {% endif %}
 
         {% if 0 in sports %}
         <button name="all_players_sport" value="0" type="submit" class="sport-btn">
