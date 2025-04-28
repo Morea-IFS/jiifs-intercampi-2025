@@ -1148,6 +1148,16 @@ def terms_use(request):
             termo.accepted = True
             termo.accepted_at = timezone.now()
             termo.save()
+
+            Voluntary.objects.create(
+                name=termo.name,
+                photo=termo.photo,
+                campus=Technician.objects.get(user=request.user).campus,
+                registration=termo.siape,
+                admin=request.user,
+                type_voluntary=4
+            )
+
             return redirect('Home')
 
     return render(request, 'terms_use.html')
