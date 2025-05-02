@@ -44,6 +44,7 @@ urlpatterns = [
     path('termos/', views.terms_use, name='terms_use'),
     path('erro404', views.page_in_erro404),
     path('manage', views.manage, name="manage"),
+    path('termslist', views.terms_list, name="terms_list"),
 
     path('register_team', views.register_team, name="guiate_register_team"),
     path('team/<str:sport_name>', views.team_sexo, name="guiate_team"),

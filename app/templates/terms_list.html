@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <div class="block1">
+        <div class="title">
+            <h1>USUÁRIOS E CHEFES DE DELEGAÇÕES</h1>
+        </div>
+        <br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden">
+                        <th>NOME</th>
+                        <th>EMAIL</th>
+                        <th>SIAPE</th>
+                        <th>PHONE</th>
+                        <th>FOTO</th>
+                        <th>STATUS</th>
+                        <th>TERMO</th>
+                    </tr>
+                    {% for i in terms %}
+                    <tr>
+                        <td>
+                            <a href="">{{ i.name }}</a>
+                        </td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.siape}}</td>
+                        <td>{{i.phone}}</td>
+                        <td>{% if i.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>{% if i.accepted %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>
+                            <a href="{{ i.document.url }}" download="{{ i.document.name }}">
+                                <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
+                    </tr>
+
+
+                    {% empty %}
+                    <style>
+                        .hidden {
+                            display: none;
+                        }
+                    </style>
+                    <img style="width: 18em;" class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
+                    <div class="title2">
+                        <h2>NÃO HÁ NENHUM TERMO ASSINADO</h2>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+                <a href="{% url 'manage' %}">VOLTAR</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

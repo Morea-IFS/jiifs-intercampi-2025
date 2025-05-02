@@ -14,7 +14,7 @@ from .forms import Terms_UseForm
 from datetime import date, datetime
 from reportlab.pdfgen import canvas
 from .generators import generate_certificates, generate_badges, generate_events, generate_timer
-import time, pytz
+import time, pytz, os
 from django.core.files.base import ContentFile
 from weasyprint import HTML
 from django.utils import timezone
@@ -708,6 +708,9 @@ def voluntary_register(request):
             registration = request.POST.get('registration')
             type_voluntary = request.POST.get('type_voluntary')
             photo = request.FILES.get('photo')
+            if photo: 
+                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                if status: return redirect('voluntary_register')
             if request.POST.get('user'): admin = User.objects.get(id=request.POST.get('user')) 
             else: admin = user
             if request.user.is_staff:
@@ -753,7 +756,10 @@ def voluntary_edit(request, id):
         if request.user.is_staff:
             voluntary.admin = User.objects.get(id=request.POST.get('user'))
             voluntary.campus = request.POST.get('campus')
-        if request.FILES.get('photo'):
+        photo = request.FILES.get('photo')
+        if photo: 
+            status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+            if status: return redirect('voluntary_edit', id)
             if voluntary.photo: voluntary.photo.delete()
             voluntary.photo = request.FILES.get('photo')
         voluntary.save()
@@ -1161,6 +1167,10 @@ def terms_use(request):
             return redirect('Home')
 
     return render(request, 'terms_use.html')
+
+def terms_list(request):
+    terms = Terms_Use.objects.all()
+    return render(request, 'terms_list.html', {'terms': terms})
 
 @login_required(login_url="login")
 @terms_accept_required   
@@ -2259,35 +2269,50 @@ def team_sexo(request, sport_name):
 @login_required(login_url="login")
 @terms_accept_required
 def players_team(request, team_name, team_sexo, sport_name):
-    try:
-        user = User.objects.get(id=request.user.id)
-        sport_team = {label: value for value, label in Sport_types.choices}
-        sexo_team = {label: value for value, label in Sexo_types.choices}
-        sport = sport_team[sport_name]
-        sexo = sexo_team[team_sexo]
-        team_sport = Team_sport.objects.get(team__name=team_name, sexo=sexo, sport=sport)
-        players = Player.objects.all()
-        if request.method == 'GET':
-            if not players: messages.info(request, "Não tem nenhum jogador cadastrado no sistema!")
-            return render(request, 'guiate/player_team_teste.html', {'players': players,'team_sport': team_sport}) 
-        else:
-            if 'Cancelar' in request.POST:
-                if Player_team_sport.objects.filter(team_sport=team_sport).exists():
-                    player_t_s = Player_team_sport.objects.filter(team_sport=team_sport)
-                    for i in player_t_s:
-                        i.delete()
-                team_sport.delete()
-                if not Team_sport.objects.filter(team=team_sport.team.id):
-                    Team.objects.get(id=team_sport.team.id).delete()
-                messages.success(request, "Processo finalizado!")
-                return redirect('team_manage')
-            elif 'qe' in request.POST: 
-                qe = request.POST.get('qe')
-                print(qe)
+    user = User.objects.get(id=request.user.id)
+    sport_team = {label: value for value, label in Sport_types.choices}
+    sexo_team = {label: value for value, label in Sexo_types.choices}
+    sport = sport_team[sport_name]
+    sexo = sexo_team[team_sexo]
+    team_sport = Team_sport.objects.get(team__name=team_name, sexo=sexo, sport=sport)
+    players = Player.objects.all()
+    if request.method == 'GET':
+        if not players: messages.info(request, "Não tem nenhum jogador cadastrado no sistema!")
+        return render(request, 'guiate/player_team_teste.html', {'players': players,'team_sport': team_sport}) 
+    else:
+        if 'Cancelar' in request.POST:
+            if Player_team_sport.objects.filter(team_sport=team_sport).exists():
+                player_t_s = Player_team_sport.objects.filter(team_sport=team_sport)
+                for i in player_t_s:
+                    i.delete()
+            team_sport.delete()
+            if not Team_sport.objects.filter(team=team_sport.team.id):
+                Team.objects.get(id=team_sport.team.id).delete()
+            messages.success(request, "Processo finalizado!")
+            return redirect('team_manage')
+        elif 'qe' in request.POST: 
+            qe = request.POST.get('qe')
+            print(qe)
 
-                if qe.isdigit() and len(Player.objects.filter(registration=int(qe))) == 1:
-                    print("uaaia")
-                    player = Player.objects.get(registration=int(qe))
+            if qe.isdigit() and len(Player.objects.filter(registration=int(qe))) == 1:
+                print("uaaia")
+                player = Player.objects.get(registration=int(qe))
+                if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
+                    Player_team_sport.objects.create(player=player, team_sport=team_sport)        
+                    messages.success(request, f"O atleta {player.name} foi cadastrado na modalidade com sucesso!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+                else:
+                    messages.info(request, f"O atleta {player.name} já está cadastrado, tá?!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+            else:
+                if user.is_staff: player_s = Player.objects.filter(name__icontains=qe)
+                else: player_s = Player.objects.filter(name__icontains=qe, admin=user)
+                if len(player_s) > 1: 
+                    messages.error(request, f"{len(player_s)} atletas foram encontrados, seja mais preciso ou tente pela matricula!")
+                elif len(player_s) == 1:
+                    print("uai")
+                    if user.is_staff: player = Player.objects.get(id=player_s.first().id)
+                    else: player = Player.objects.get(id=player_s.first().id, admin=user)
                     if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
                         Player_team_sport.objects.create(player=player, team_sport=team_sport)        
                         messages.success(request, f"O atleta {player.name} foi cadastrado na modalidade com sucesso!")
@@ -2296,76 +2321,62 @@ def players_team(request, team_name, team_sexo, sport_name):
                         messages.info(request, f"O atleta {player.name} já está cadastrado, tá?!")
                         return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
                 else:
-                    if user.is_staff: player_s = Player.objects.filter(name__icontains=qe)
-                    else: player_s = Player.objects.filter(name__icontains=qe, admin=user)
-                    if len(player_s) > 1: 
-                        messages.error(request, f"{len(player_s)} atletas foram encontrados, seja mais preciso ou tente pela matricula!")
-                    elif len(player_s) == 1:
-                        print("uai")
-                        if user.is_staff: player = Player.objects.get(id=player_s.first().id)
-                        else: player = Player.objects.get(id=player_s.first().id, admin=user)
-                        if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
-                            Player_team_sport.objects.create(player=player, team_sport=team_sport)        
-                            messages.success(request, f"O atleta {player.name} foi cadastrado na modalidade com sucesso!")
-                            return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-                        else:
-                            messages.info(request, f"O atleta {player.name} já está cadastrado, tá?!")
-                            return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-                    else:
-                        messages.error(request, "O atleta não foi encontrado!")
-            elif 'name' in request.POST:
-                name = request.POST.get('name')
-                date_nasc = datetime.strptime(request.POST.get('date'), "%Y-%m-%d")
-                date_today = date.today()
-                if date_today.year - date_nasc.year > 19:
-                    messages.error(request, "O atleta não pode ser cadastrado por conta da idade :(")
-                    print("O atleta não pode ser cadastrado por conta da idade :(")
-                    return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-                registration = request.POST.get('registration')
-                cpf = request.POST.get('cpf')
-                cpf = cpf.replace("-","").replace(".","")
-                photo = request.FILES.get('photo')
-                bulletin = request.FILES.get('bulletin')
-                rg = request.FILES.get('rg')
-                print(team_sport.team.campus)
-                print("printe: ",len(Player_team_sport.objects.filter(team_sport=team_sport)))
-                number_players = len(Player_team_sport.objects.filter(team_sport=team_sport))
-                if team_sport.sport == 0 or team_sport.sport == 1 or team_sport.sport == 2 or team_sport.sport == 3:
-                    if number_players >= 12:
-                        messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
-                        print("O seu campus atingiu o limite de atletas nessa modalidade!")
-                        return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+                    messages.error(request, "O atleta não foi encontrado!")
+        elif 'name' in request.POST:
+            name = request.POST.get('name')
+            date_nasc = datetime.strptime(request.POST.get('date'), "%Y-%m-%d")
+            date_today = date.today()
+            if (date_today.year - date_nasc.year) > 19:
+                messages.error(request, "O atleta não pode ser cadastrado por conta da idade :(")
+                print("O atleta não pode ser cadastrado por conta da idade :(")
+                return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+            registration = request.POST.get('registration')
+            cpf = request.POST.get('cpf')
+            cpf = cpf.replace("-","").replace(".","")
+            photo = request.FILES.get('photo')
+            if photo: 
+                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg,','.jpeg','.pdf','docx'], rg, 'O RG anexado não é faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+            print(team_sport.team.campus)
+            print("printe: ",len(Player_team_sport.objects.filter(team_sport=team_sport)))
+            number_players = len(Player_team_sport.objects.filter(team_sport=team_sport))
+            if team_sport.sport == 0 or team_sport.sport == 1 or team_sport.sport == 2 or team_sport.sport == 3:
+                if number_players >= 12:
+                    messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
+                    print("O seu campus atingiu o limite de atletas nessa modalidade!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            else:
+                if number_players >= 4:
+                    messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
+                    print("O seu campus atingiu o limite de atletas nessa modalidade!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            if request.POST.get('sexo'):
+                sexo = request.POST.get('sexo')
+                if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
+                    player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, rg=rg, photo=photo, admin=user)
                 else:
-                    if number_players >= 4:
-                        messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
-                        print("O seu campus atingiu o limite de atletas nessa modalidade!")
-                        return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
-                if request.POST.get('sexo'):
-                    sexo = request.POST.get('sexo')
-                    if not Player.objects.filter(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, rg=rg, photo=photo, admin=user)
-                    else:
-                        player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
+                    player = Player.objects.get(name=name, sexo=sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
+            else:
+                if not Player.objects.filter(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
+                    player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, rg=rg, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
                 else:
-                    if not Player.objects.filter(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user).exists():
-                        player = Player.objects.create(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, rg=rg, cpf=cpf, date_nasc=date_nasc, bulletin=bulletin, registration=registration, photo=photo, admin=user)
-                    else:
-                        player = Player.objects.get(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
-                if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
-                    Player_team_sport.objects.create(player=player, team_sport=team_sport)        
-                    messages.success(request, "O jogador foi cadastrado no sistema com sucesso!!")
-                    print("O jogador foi cadastrado no sistema com sucesso!!")
-                else:
-                    messages.info(request, "O jogador já está cadastrado nessa modalidade, tá?!")
-                return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-            return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
-    except (TypeError, ValueError):
-        messages.error(request, 'Um valor foi informado incorretamente!')
-    except IntegrityError as e:
-        messages.error(request, 'Algumas informações não foram preenchidas :(')
-    except Exception as e:
-        messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-    return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+                    player = Player.objects.get(name=name, sexo=team_sport.sexo, campus=team_sport.team.campus, cpf=cpf, date_nasc=date_nasc, registration=registration, admin=user)
+            if not Player_team_sport.objects.filter(player=player, team_sport=team_sport):          
+                Player_team_sport.objects.create(player=player, team_sport=team_sport)        
+                messages.success(request, "O jogador foi cadastrado no sistema com sucesso!!")
+                print("O jogador foi cadastrado no sistema com sucesso!!")
+            else:
+                messages.info(request, "O jogador já está cadastrado nessa modalidade, tá?!")
+            return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+        return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
 
 @login_required(login_url="login")
 @terms_accept_required
@@ -2431,3 +2442,11 @@ def allowed_pages(user):
     else:
         allowed = False
     return allowed
+
+def type_file(request, rest, file, text):
+    ext = os.path.splitext(file.name)[1].lower()
+    print(file, " : ", ext)
+    if ext not in rest:
+        messages.error(request, text)
+        return True
+    return False
