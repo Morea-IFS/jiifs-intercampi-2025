@@ -587,7 +587,7 @@ def technician_manage(request):
         if not technician:
             print("Não há nenhum gestor cadastrado!")
             messages.info(request, "Não há nenhum gestor cadastrado!")
-        return render(request, 'technician_manage.html', {'technician': technician})
+        return render(request, 'settings/technician_manage.html', {'technician': technician})
     else:
         try:
             technician_id = request.POST.get('technician_delete')
@@ -606,7 +606,7 @@ def technician_manage(request):
 def technician_register(request):
     campus = Campus_types.choices
     if request.method == 'GET':
-        return render(request, 'technician_register.html',{'campus':campus})
+        return render(request, 'settings/technician_register.html',{'campus':campus})
     else:
         try:
             name = request.POST.get('name')
@@ -636,7 +636,7 @@ def technician_edit(request, id):
     try:
         technician = get_object_or_404(Technician, id=id)
         if request.method == 'GET':
-            return render(request, 'technician_edit.html', {'technician': technician,'sexo':Sexo_types.choices, 'campus':Campus_types.choices})            
+            return render(request, 'settings/technician_edit.html', {'technician': technician,'sexo':Sexo_types.choices, 'campus':Campus_types.choices})            
         else:
             if request.POST.get('name'):
                 technician.name = request.POST.get('name')
@@ -1051,7 +1051,7 @@ def settings_manage(request):
 @terms_accept_required
 def banner_register(request):
     if request.method == "GET":
-        return render(request, 'banner_register.html')
+        return render(request, 'settings/banner_register.html')
     else:
         name = request.POST.get('name')
         image = request.FILES.get('banner')
@@ -1066,7 +1066,7 @@ def banner_register(request):
 def banner_manage(request):
     banner = Banner.objects.filter()
     if request.method == "GET":
-        return render(request, 'banner_manage.html',{'banner': banner})
+        return render(request, 'settings/banner_manage.html',{'banner': banner})
     else:
         try:
             if 'banner_delete' in request.POST:
@@ -1168,9 +1168,114 @@ def terms_use(request):
 
     return render(request, 'terms_use.html')
 
-def terms_list(request):
-    terms = Terms_Use.objects.all()
-    return render(request, 'terms_list.html', {'terms': terms})
+@login_required(login_url="login")  
+def settings(request):
+    return render(request, 'settings.html')
+
+@login_required(login_url="login")
+def chefe_manage(request):
+    if request.method == "GET":
+        terms = Terms_Use.objects.all()
+        return render(request, 'settings/chefe_manage.html',{'terms': terms})
+    else:
+        try:
+            terms_delete = request.POST.get('terms_delete')
+            term_del = Terms_Use.objects.get(id=terms_delete)
+            term_del.delete()
+            messages.success(request, "Excluido com sucesso!")
+            return redirect('chefe_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('chefe_manage')
+
+@login_required(login_url="login")
+def faq_manage(request):
+    if request.method == "GET":
+        help = Help.objects.all()
+        return render(request, 'settings/faq_manage.html',{'help': help})
+    else:
+        try:
+            faq_delete = request.POST.get('faq_delete')
+            faq = Help.objects.get(id=faq_delete)
+            faq.delete()
+            messages.success(request, "Excluido com sucesso!")
+            return redirect('faq_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('faq_manage')
+    
+@login_required(login_url="login")
+def anexo_manage(request):
+    if request.method == "GET":
+        atack = Attachments.objects.all().order_by('-id')
+        return render(request, 'settings/anexo_manage.html',{'atack': atack})
+    else: 
+        try:
+            atack_delete = request.POST.get('atack_delete')
+            atack = Attachments.objects.get(id=atack_delete)
+            atack.delete()
+            messages.success(request, "Excluido com sucesso!")
+            return redirect('anexo_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('anexo_manage')
+    
+@login_required(login_url="login")
+def enrollment_manage(request):
+    if request.method == "GET":
+        date_list = Settings_access.objects.all().order_by('-id')
+        return render(request, 'settings/enrollment_manage.html',{'date_list': date_list})
+    else:
+        try:
+            date_delete = request.POST.get('date_delete')
+            settings_access = Settings_access.objects.get(id=date_delete)
+            settings_access.delete()
+            messages.success(request, "Excluido com sucesso!")
+            return redirect('enrollment_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('enrollment_manage')
+    
+@login_required(login_url="login")
+def faq_register(request):
+    if request.method == "GET":
+        return render(request, 'settings/faq_register.html')
+    else:
+        try:
+            title_faq = request.POST.get('title_faq')
+            details_faq = request.POST.get('details_faq')
+            Help.objects.create(title=title_faq, description=details_faq)
+            messages.success(request, "Parabéns, foi cadastrado com sucesso!")
+            return redirect('faq_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('faq_manage')
+    
+@login_required(login_url="login") 
+def anexo_register(request):
+    if request.method == "GET":
+        return render(request, 'settings/anexo_register.html')
+    else:
+        try:
+            title_atack = request.POST.get('title_atack')
+            file_atack = request.FILES.get('file_atack')
+            print(file_atack)
+            print(request.POST, request.FILES)
+            Attachments.objects.create(name=title_atack, user=request.user, file=file_atack)
+            messages.success(request, "Parabéns, foi cadastrado com sucesso!")
+            return redirect('anexo_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('anexo_manage')
+    
+@login_required(login_url="login")
+def enrollment_register(request):
+    if request.method == "GET":
+        return render(request, 'settings/enrollment_register.html')
+    else:
+        try:
+            start = request.POST.get('date_start')
+            end = request.POST.get('date_end')
+            print(f'i: {start} - f: {end}')
+            Settings_access.objects.create(start=start, end=end)
+            messages.success(request, "Parabéns, foi cadastrado com sucesso!")
+            return redirect('enrollment_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('enrollment_manage')
 
 @login_required(login_url="login")
 @terms_accept_required   
@@ -1573,11 +1678,6 @@ def scoreboard(request):
         messages.error(request, "Por favor, adicione as informações do config, elas são importantes para o placar do projetor!")
         return redirect('games')
     return redirect('games')
-
-@login_required(login_url="login")
-@terms_accept_required
-def settings(request):
-    return render(request, 'settings.html')
 
 def scoreboard_public(request):
     try:
@@ -2080,6 +2180,15 @@ def generator_data(request):
                     qnt_voluntary_4 = Voluntary.objects.filter(type_voluntary=4, campus=i[0]).count()
                     cont['campi'].append([campus_name, players_total, players_fem, players_masc,qnt_voluntary_0,qnt_voluntary_1,qnt_voluntary_2,qnt_voluntary_3,qnt_voluntary_4])
         
+            elif 'enrollment' in request.POST:
+                name_html = 'data-base-enrollment'
+                name_pdf = 'relatório de inscrições'
+                teams = Team_sport.objects.prefetch_related('players').all().order_by('team__campus','sport','-sexo')
+                if len(teams) == 0:
+                    messages.error(request, "Não há equipes em modalidades ou atletas cadastrados.")
+                    return redirect('data')
+                cont['teams'] = teams
+
             elif 'all_campus' in request.POST:
                 name_html = 'data-base-campus'
                 name_pdf = 'dados_campus'

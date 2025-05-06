@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <div class="block1" style="justify-content: start;">
+        <div class="title">
+            <h1>ANEXOS</h1>
+        </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+            <a href="{% url 'anexo_register' %}">CADASTRO DE ANEXOS</a>
+        </button>
+        <br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden_atack">
+                        <th>NOME</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in atack %}
+                    <tr>
+                        <td>{{i.name}}</td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <button data-confirm="Você realmente deseja excluir o arquivo?" name="atack_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden_atack{
+                            display: none;
+                        }
+                    </style>
+                    <div style="font-size: 16px; color: white; font-weight: 600; padding: 2em;">
+                        <br>
+                        <p>ANEXOS INEXISTENTES.</p>
+                        <br>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+                <a href="{% url 'settings' %}">VOLTAR</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

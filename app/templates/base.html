@@ -42,6 +42,11 @@
                         <a href="{% url 'attachments' %}">
                             <button class="side-bar-buttons-items">ANEXOS</button>
                         </a>
+                        {% if user.is_staff %}
+                        <a href="{% url 'settings' %}">
+                            <button class="side-bar-buttons-items">SETTINGS</button>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="side-bar-bottom">

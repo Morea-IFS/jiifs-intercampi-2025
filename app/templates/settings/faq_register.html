@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <section class="block1">
+        <div class="title">
+            <h1>ADICIONAR FAQ</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form" >
+                {% csrf_token %}
+                <label for="">TÍTULO</label>
+                <input name="title_faq" type="text" placeholder="title" required>
+                <label for="atack">DESCRIÇÃO</label>
+                <textarea name="details_faq"></textarea>
+                <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 1.2em;">
+                    CONFIRMAR
+                </button>
+            </div>
+        </form>
+        <button class="side-bar-buttons- custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'faq_manage' %}">VOLTAR</a>
+        </button>
+    </section>
+</div>
+{% endblock content %}

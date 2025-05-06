@@ -13,15 +13,15 @@
 
 {% block content %}
 <div class="all-block">
-    <div class="block1">
+    <div class="block1" style="justify-content: start;">
         <div class="title">
-            <h1>USUÁRIOS E CHEFES DE DELEGAÇÕES</h1>
+            <h1>CHEFES DE DELEGAÇÃO</h1>
         </div>
         <br><br>
         <div class="all-manage">
             <section class="all-table">
                 <table id="search-table">
-                    <tr class="hidden">
+                    <tr class="hidden_user">
                         <th>NOME</th>
                         <th>EMAIL</th>
                         <th>SIAPE</th>
@@ -29,6 +29,7 @@
                         <th>FOTO</th>
                         <th>STATUS</th>
                         <th>TERMO</th>
+                        <th>DELETAR</th>
                     </tr>
                     {% for i in terms %}
                     <tr>
@@ -45,24 +46,29 @@
                                 <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
                             </a>
                         </td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <button data-confirm="Você realmente deseja excluir os termos de uso do usuario?" name="terms_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                </button>
+                            </form>
+                        </td>
                     </tr>
-
-
                     {% empty %}
                     <style>
-                        .hidden {
+                        .hidden_user{
                             display: none;
                         }
                     </style>
-                    <img style="width: 18em;" class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
-                    <div class="title2">
-                        <h2>NÃO HÁ NENHUM TERMO ASSINADO</h2>
+                    <div style="font-size: 16px; color: white; font-weight: 600; padding: 2em;">    
+                        <p>NENHUM USUARIO ACEITOU OS TERMOS</p>
                     </div>
                     {% endfor %}
                 </table>
             </section>
-            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
-                <a href="{% url 'manage' %}">VOLTAR</a>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+                <a href="{% url 'settings' %}">VOLTAR</a>
             </button>
         </div>
     </div>
