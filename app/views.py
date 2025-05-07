@@ -262,7 +262,7 @@ def attachments(request):
 @terms_accept_required
 def player_manage(request):
     if request.method == "GET":
-        player = Player.objects.all()
+        player = Player.objects.all().order_by('-id')
         page = request.GET.get('page', 1) 
         paginator = Paginator(player, 20) 
         try:
@@ -277,13 +277,25 @@ def player_manage(request):
             if 'player_delete' in request.POST:
                 player_id = request.POST.get('player_delete')
                 player_delete = Player.objects.get(id=player_id)
-                player_delete.photo.delete()
+                status = verificar_foto(str(player_delete.photo))
+                if status:
+                    player_delete.photo.delete()
                 player_delete.delete()
                 messages.success(request, "Atleta removido com sucesso!")
             return redirect('player_manage')
         except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return redirect('player_manage')
 
+def verificar_foto(url_name):
+    print("url: ", url_name)
+    list = ['person.png','team.png']
+    url = url_name.split('/')
+    delete_photo = url[len(url) - 1]
+    print("foto a deletar: ", delete_photo)
+    if delete_photo in list:
+        return False
+    else:
+        return True
 
 @login_required(login_url="login")
 @terms_accept_required
@@ -302,7 +314,12 @@ def player_edit(request, id):
             player.cpf = request.POST.get('cpf')
             photo = request.FILES.get('photo')
             if photo:
-                player.photo = photo
+                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                if status:
+                    status_photo = verificar_foto(str(player.photo))
+                    if status_photo:
+                        player.photo.delete()
+                    player.photo = photo
             campus_id = request.POST.get('campus')
             if campus_id:
                 player.campus = campus_id
@@ -648,7 +665,10 @@ def technician_edit(request, id):
             technician.siape = request.POST.get('siape')
             technician.campus = request.POST.get('campus')
             if request.FILES.get('photo'):
-                if technician.photo: technician.photo.delete()
+                if technician.photo: 
+                    status = verificar_foto(str(technician.photo))
+                    if status:
+                        technician.photo.delete()
                 technician.photo = request.FILES.get('photo')
             technician.save()
             technician.user.save()
@@ -748,7 +768,9 @@ def voluntary_edit(request, id):
         return render(request, 'voluntary_edit.html', {'voluntary': voluntary, 'users': users,'campus':Campus_types.choices, 'types':types})
     elif 'excluir' in request.POST:
         if voluntary.photo:
-            voluntary.photo.delete()
+            status = verificar_foto(str(voluntary.photo))
+            if status:
+                voluntary.photo.delete()
         voluntary.delete()
         return redirect('voluntary_manage')
     else:
@@ -763,7 +785,10 @@ def voluntary_edit(request, id):
         if photo: 
             status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
             if status: return redirect('voluntary_edit', id)
-            if voluntary.photo: voluntary.photo.delete()
+            if voluntary.photo: 
+                status_photo = verificar_foto(str(voluntary.photo))
+                if status_photo:
+                    voluntary.photo.delete()
             voluntary.photo = request.FILES.get('photo')
         voluntary.save()
         return redirect('voluntary_manage')

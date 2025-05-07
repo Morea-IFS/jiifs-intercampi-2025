@@ -28,14 +28,7 @@
                         <th>DATA NASC.</th>
                         <th>EDITAR</th>
                         {% if user.is_staff %}
-                        <th>
-                            <form method="POST" action="">
-                                {% csrf_token %}
-                                <button name="player_delete_all" style="background-color: transparent; border: none;">
-                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
-                                </button>
-                            </form>
-                        </th>
+                        <th>DELETAR</th>
                         {% endif %}
                     </tr>
                     {% for player in player %}
