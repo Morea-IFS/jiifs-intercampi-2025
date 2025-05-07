@@ -261,15 +261,19 @@ def attachments(request):
 @login_required(login_url="login")
 @terms_accept_required
 def player_manage(request):
-    if request.user.is_staff: player = Player.objects.all()
-    else: player = Player.objects.filter(admin__id=request.user.id)
     if request.method == "GET":
-        if not player:
-            print("Não há nenhum jogador cadastrado!")
-        return render(request, 'player_manage.html', {'player': player})
+        player = Player.objects.all()
+        page = request.GET.get('page', 1) 
+        paginator = Paginator(player, 20) 
+        try:
+            player_paginated = paginator.page(page)
+        except PageNotAnInteger:
+            player_paginated = paginator.page(1)
+        except EmptyPage:
+            player_paginated = paginator.page(paginator.num_pages)
+        return render(request, 'player_manage.html', {'player': player_paginated})
     else:
         try:
-            print(request.POST)
             if 'player_delete' in request.POST:
                 player_id = request.POST.get('player_delete')
                 player_delete = Player.objects.get(id=player_id)
@@ -277,9 +281,8 @@ def player_manage(request):
                 player_delete.delete()
                 messages.success(request, "Atleta removido com sucesso!")
             return redirect('player_manage')
-        except Exception as e:
-            messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-            return redirect('player_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('player_manage')
 
 
 @login_required(login_url="login")

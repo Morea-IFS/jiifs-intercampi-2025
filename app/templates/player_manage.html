@@ -20,6 +20,7 @@
             <section class="all-table">
                 <table id="search-table">
                     <tr class="hidden">
+                        <th>ID</th>
                         <th>NOME</th>
                         <th>MATRICULA</th>
                         <th>CAMPUS</th>
@@ -39,6 +40,7 @@
                     </tr>
                     {% for player in player %}
                     <tr>
+                        <td>{{ player.id }}</td>
                         <td>{{ player.name }}</td>
                         <td>{{player.registration}}</td>
                         <td>{{player.get_campus_display}}</td>
@@ -66,12 +68,30 @@
                             display: none;
                         }
                     </style>
-                    <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <<h2>NENHUM JOGADOR FOI ENCONTRADO</h2>
+                        <h2>NENHUM JOGADOR FOI ENCONTRADO</h2>
                     </div>
                     {% endfor %}
                 </table>
+            </section>
+            <section class="pagination hidden">
+                <div class="pagination-info">
+                    <p>Página {{ player.number }} de {{ player.paginator.num_pages }}</p>
+                </div>
+                
+                <div class="pagination-buttons">
+                    {% if player.has_previous %}
+                        <button class="pagination-button">
+                            <a href="?page={{ player.previous_page_number }}" class="pagination-link">Anterior</a>
+                        </button>
+                    {% endif %}
+                    
+                    {% if player.has_next %}
+                        <button class="pagination-button">
+                            <a href="?page={{ player.next_page_number }}" class="pagination-link">Próxima</a>
+                        </button>
+                    {% endif %}
+                </div>
             </section>
             <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 20px; margin-bottom: 5vw; padding: 5px; padding-left: 10px; padding-right: 10px; border: 0; border-radius: 7px; font-weight: 600;">
                 <a href="{% url 'manage' %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
