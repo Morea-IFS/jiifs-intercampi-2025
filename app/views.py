@@ -43,7 +43,8 @@ def about_us(request):
 @terms_accept_required
 def home_admin(request):
     help = Help.objects.all()
-    return render(request, 'home_admin.html',{'help':help})
+    ins = Settings_access.objects.all().last()
+    return render(request, 'home_admin.html',{'help':help,'ins':ins})
 
 def login(request):
     try:
@@ -365,7 +366,11 @@ def team_manage(request):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return render(request, 'team_manage.html', {'team_sports': team_sports, 'campus': campus, 'allowed': allowed_pages(user) })
-    
+
+@login_required(login_url="login") 
+def theme_manage(request):
+    return render(request, 'settings/theme.html')
+
 @login_required(login_url="login")
 @terms_accept_required
 def team_edit(request, id):
@@ -2472,6 +2477,7 @@ def players_team(request, team_name, team_sexo, sport_name):
             cpf = cpf.replace("-","").replace(".","")
             photo = request.FILES.get('photo')
             if photo: 
+                print(photo)
                 status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
                 if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
             bulletin = request.FILES.get('bulletin')
@@ -2584,6 +2590,7 @@ def type_file(request, rest, file, text):
     ext = os.path.splitext(file.name)[1].lower()
     print(file, " : ", ext)
     if ext not in rest:
+        print("erro")
         messages.error(request, text)
         return True
     return False

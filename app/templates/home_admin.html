@@ -12,7 +12,12 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="all-block center-top" style="flex-direction: column; display: flex; align-items: center;">
+<div class="all-block" style="flex-direction: column; display: flex; align-items: center;">
+    {% if ins %}
+    <div class="notices">
+        <marquee>O período de inscrições do JIFS vai até dia {{ins.end}}, não deixe para última hora!</marquee>
+    </div>
+    {% endif %}
     <section class="about-morea">
         <div class="content">
             <h1>Mais Um Projeto <span class="stroke-morea">MOREA</span></h1>

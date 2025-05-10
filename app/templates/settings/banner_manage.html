@@ -36,7 +36,7 @@
                         <td>{{ banner.name }}</td>
                         <td>{% if banner.image %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         <td><form method="POST" action="">{% csrf_token %}<button name="banner_update" value="{{banner.id}}" style="background-color: transparent; padding: 5px; border-radius: 10px; color: black;">{{ banner.get_status_display.upper}}</button></form></td>
-                        <td><form method="POST" action="">{% csrf_token %}<button name="banner_delete" value="{{banner.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                        <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir?" name="banner_delete" value="{{banner.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
                     </tr>
                     {% empty %}
                     <style>

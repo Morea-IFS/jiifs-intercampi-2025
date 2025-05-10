@@ -24,6 +24,20 @@
   height: 39.3vw;
 
 }
+.notices{
+    width: 100%;
+    height: 5em;
+    background-color: var(--global-nav-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid var(--global-third-color);
+}
+.notices marquee{
+    font-size: 23px;
+    color: var(--global-color-white);
+    font-weight: 600;
+}
 
 .video-container iframe {
    width: 100%;
@@ -31,6 +45,7 @@
 }
 
 .about-morea {
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
