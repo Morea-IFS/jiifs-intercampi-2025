@@ -27,51 +27,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Light mode and dark mode Script
-const themeToggle = document.getElementById("theme-toggle");
-const themeIcon = document.getElementById("theme-icon");
 const body = document.body;
 
-// Alterna entre modo claro e escuro
-function toggleTheme() {
-    const isLightMode = body.classList.contains("light-mode");
+const themeLG = document.getElementById("theme-light-green");
+const themeLB = document.getElementById("theme-light");
+const themeN = document.getElementById("theme-night");
+const themeC = document.getElementById("theme-colors");
 
-    if (isLightMode) {
-        body.classList.remove("light-mode");
-        body.classList.add("dark-mode");
-        themeIcon.classList.remove("fa-sun");
-        themeIcon.classList.add("fa-moon");
-        localStorage.setItem("theme", "dark");
-    } else {
-        body.classList.remove("dark-mode");
-        body.classList.add("light-mode");
-        themeIcon.classList.remove("fa-moon");
-        themeIcon.classList.add("fa-sun");
-        localStorage.setItem("theme", "light-mode");
-    }
+if (themeLG) themeLG.addEventListener("click", themeGreen);
+if (themeLB) themeLB.addEventListener("click", themeBlue);
+if (themeN) themeN.addEventListener("click", themeNight);
+if (themeC) themeC.addEventListener("click", themeColors);
 
-    console.log(`Modo ${isLightMode ? "escuro" : "claro"} ativado`);
+function themeNight() {
+    body.classList.remove("light-mode");
+    body.classList.remove("light-mode-green");
+    body.classList.remove("light-mode-colors");
+    body.classList.add("dark-mode");
+    localStorage.setItem("theme", "dark");
+}
+
+function themeBlue() {
+    body.classList.remove("dark-mode");
+    body.classList.remove("light-mode-green");
+    body.classList.remove("light-mode-colors");
+    body.classList.add("light-mode");
+    localStorage.setItem("theme", "light-mode");
+}
+
+function themeColors() {
+    body.classList.remove("dark-mode");
+    body.classList.remove("light-mode-green");
+    body.classList.remove("light-mode");
+    body.classList.add("light-mode-colors");
+    localStorage.setItem("theme", "colors-mode");
+}
+
+function themeGreen() {
+    body.classList.remove("dark-mode");
+    body.classList.remove("light-mode");
+    body.classList.remove("light-mode-colors");
+    body.classList.add("light-mode-green");
+    localStorage.setItem("theme", "green-mode");
 }
 
 // Aplica o tema salvo no localStorage ou usa escuro por padrão
 function loadTheme() {
     const storedTheme = localStorage.getItem("theme");
 
-    if (storedTheme === "light-mode") {
-        body.classList.add("light-mode");
-        themeIcon.classList.add("fa-sun");
-    } else {
+    if (storedTheme === "dark") {
         body.classList.add("dark-mode");
-        themeIcon.classList.add("fa-moon");
+    } else if(storedTheme === "green-mode"){
+        body.classList.add("light-mode-green");
+    } else if(storedTheme === "colors-mode"){
+        body.classList.add("light-mode-colors");
+    }  else {
+        body.classList.add("light-mode");
     }
 }
 
 // Carrega o tema ao iniciar
 loadTheme();
-
-// Evento de clique para alternar
-themeToggle.addEventListener("click", toggleTheme);
-
-
 
 function trocarTextoLabel() {
     const label = document.getElementById("label-foto");

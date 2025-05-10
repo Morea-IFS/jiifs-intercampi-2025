@@ -27,12 +27,12 @@
                     <label for="fotos" id="label-foto" class="custom-file-button">Adicione o banner</label>
                     <input required type="file" name="banner" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" required>
                 </div>
-                <div>
-                    <input class="input-confirm" type="submit" value="Confirmar"></input>
-                </div>
+                <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 1.2em;">
+                    CONFIRMAR
+                </button>
             </div>
         </form>
-        <button class="side-bar-buttons-items2" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
             <a href="{% url 'banner_manage' %}">VOLTAR</a>
         </button>
     </section>

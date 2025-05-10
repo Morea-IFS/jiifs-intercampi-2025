@@ -13,7 +13,7 @@
 
 {% block content %}
 <div class="all-block">
-    <div class="block1">
+    <div class="block1" style="justify-content: start;">
         <div class="title">
             <h1>GERENCIAMENTO DOS GESTORES</h1>
         </div>
@@ -61,7 +61,6 @@
                             display: none;
                         }
                     </style>
-                    <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
                         <h2>NÃO HÁ NENHUM GESTOR CADASTRADO <br> <span style="font-size: 20px;">Os gestores tem acesso ao sistema!</span></h2>
                     </div>
@@ -69,7 +68,7 @@
                 </table>
             </section>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
-                <a href="{% url 'manage' %}">VOLTAR</a>
+                <a href="{% url 'settings' %}">VOLTAR</a>
             </button>
         </div>
     </div>

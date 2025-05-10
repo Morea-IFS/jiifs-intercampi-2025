@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+<link rel="stylesheet" href="{% static 'css/theme.css' %}">
+{% endblock head %}
+
+{% block navbar %}
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block block-org">
+    <h1>ESCOLHA O TEMA</h1>
+    <div class="all-container">
+        <div class="link-nav" id="theme-night">
+            <p>MODO ESCURO</p>
+            <i class="fa-solid fa-palette"></i>
+        </div>
+        <div class="link-nav" id="theme-light">
+            <p>MODO CLARO</p>
+            <i class="fa-solid fa-palette"></i>
+        </div>
+        <div class="link-nav" id="theme-light-green">
+            <p>MODO CLARO VERDE</p>
+            <i class="fa-solid fa-palette"></i>
+        </div>
+        <div class="link-nav" id="theme-colors">
+            <p>MODO ROXO</p>
+            <i class="fa-solid fa-palette"></i>
+        </div>
+    </div>
+    <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <a href="{% url 'settings' %}">VOLTAR</a>
+    </button>
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock content %}

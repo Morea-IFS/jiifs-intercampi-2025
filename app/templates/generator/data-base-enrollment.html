@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; page-break-before: avoid; }
+        h1, h2 { text-align: center; }
+        .title-campi{
+            font-size: 20px;
+        }
+        table { 
+            width: 80vw; 
+            border-collapse: collapse; 
+            table-layout: fixed; 
+            page-break-inside: auto; 
+            break-inside: auto; 
+        }
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: center; 
+            word-wrap: break-word; 
+            font-size: 10px; 
+        }
+        td { white-space: pre-wrap; }
+        th { background-color: #f2f2f2; }
+
+        tr { 
+            page-break-inside: avoid; 
+            break-inside: avoid; 
+            page-break-after: auto; 
+        }
+
+        thead { 
+            display: table-header-group;
+        }
+
+        .header-data {
+            width: 80vw;
+            height: 6.5em;
+            border: 1.5px solid black;
+            text-align: center;
+        }
+        .logo-ifs {
+            width: 8em;
+            position: absolute;
+            padding-left: 0.5em;
+            padding-top: 0.8em;
+        }
+        .logo-morea {
+            width: 5em;
+            position: absolute;
+            right: 2em;
+            padding-top: 0.8em;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header-data">
+        <img class="logo-ifs" src="{{logo_ifs }}" alt="">
+        <img class="logo-morea" src="{{logo_morea }}" alt="">
+        <p>INSTITUTO FEDERAL DE SERGIPE</p>
+        <p><b>RELATÓRIO DE INSCRIÇÕES JIFS</b></p>
+        <p style="font-size: 12px;">Gerado por {{ user.username }} em {{ now }}</p>
+    </div>
+    <br>
+    {% for i in teams %}    
+    <div style="display: flex; width: 100vw; justify-content: center;">
+    <p class="title-campi">CAMPUS <b>{{i.team.get_campus_display|upper}}</b> {{ i.get_sport_display|upper }} {{ i.get_sexo_display|upper }}</p>
+    </div>
+    {% if i.players.all %}
+    <table>
+        <tr>
+            <th style="width: 60%;">Nome</th>
+            <th style="width: 20%;">Matrícula</th>
+            <th style="width: 20%;">Campus</th>
+        </tr>
+        {% for j in i.players.all %}
+        <tr>
+            <td>{{ j.player.name|upper }}</td>
+            <td>{{ j.player.registration|upper }}</td>
+            <td>{{ j.player.get_campus_display }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    {% else %}
+    <p>Não há atletas cadastrados ainda.</p>
+    {% endif %}
+    {% endfor %}
+</body>
+</html>

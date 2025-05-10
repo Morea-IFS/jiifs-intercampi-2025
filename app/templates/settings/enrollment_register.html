@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <section class="block1">
+        <div class="title">
+            <h1>PERÍODO DE INSCRIÇÃO</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form" >
+                {% csrf_token %}
+                <label for="">INICIO</label>
+                <input name="date_start" type="datetime-local" required value="{{order.pick_up_datetime|date:'Y-m-d'}}T{{order.pick_up_datetime|time:'H:i:s'}}">
+                <label for="">FINAL</label>
+                <input name="date_end" type="datetime-local" required value="{{order.pick_up_datetime|date:'Y-m-d'}}T{{order.pick_up_datetime|time:'H:i:s'}}">
+                <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 1.2em;">
+                    CONFIRMAR
+                </button>
+            </div>
+        </form>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+            <a href="{% url 'enrollment_manage' %}">VOLTAR</a>
+        </button>
+    </section>
+</div>
+{% endblock content %}

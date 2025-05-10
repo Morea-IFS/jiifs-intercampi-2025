@@ -24,20 +24,70 @@
     --light: #d6d6d6;
     --global-color-white: #dddddd;
     --global-color-manage: #CBCBCB;
-    --global-color-green: #009700;
+    --global-color-green: #00477a;
     --global-primary-color: #8b8b8b;
     --global-nav-color: #000086;
     --global-nav-links-color: #323e73;
     --global-secondary-color: #3C3D3C;
-    --global-header-color: #0008ff;
+    --global-header-color: #00477a;
     --global-third-color: #ffffff;
     --global-fourth-color: #c3c3c3;
     --global-fifth-color: #d8d8d8;
     --global-sixth-color: #B4B4B4;
     --global-seventh-color: #AB0000;
-    --global-eighth-color: #149400;
+    --global-eighth-color: #00477a;;
     --global-ninth-color: #0205b5;
     --global-tenth-color: #2727c2;
+    --global-eleventh-color: #004903;
+    --global-twelfth-color: #2B2C2F;
+    --global-thirteenth-color: #03009F;
+    --global-fourteenth-color: #3C3D3C;
+}
+
+.light-mode-green{
+        /* VARIAVEIS / CORES */
+    --light: #d6d6d6;
+    --global-color-white: #dddddd;
+    --global-color-manage: #CBCBCB;
+    --global-color-green: #009700;
+    --global-primary-color: #8b8b8b;
+    --global-nav-color: #193c02;
+    --global-nav-links-color: #0b4f00;
+    --global-secondary-color: #3C3D3C;
+    --global-header-color: #16a700;
+    --global-third-color: #ffffff;
+    --global-fourth-color: #c3c3c3;
+    --global-fifth-color: #d8d8d8;
+    --global-sixth-color: #7a0b0b;
+    --global-seventh-color: #AB0000;
+    --global-eighth-color: #149400;
+    --global-ninth-color: #004903;
+    --global-tenth-color: #0b4f00;
+    --global-eleventh-color: #004903;
+    --global-twelfth-color: #2B2C2F;
+    --global-thirteenth-color: #03009F;
+    --global-fourteenth-color: #3C3D3C;
+}
+
+.light-mode-colors{
+        /* VARIAVEIS / CORES */
+    --light: #d6d6d6;
+    --global-color-white: #dddddd;
+    --global-color-manage: #CBCBCB;
+    --global-color-green: #9000f6;
+    --global-primary-color: #8b8b8b;
+    --global-nav-color: #29006f;
+    --global-nav-links-color: #000063;
+    --global-secondary-color: #3C3D3C;
+    --global-header-color: #1E3231;
+    --global-third-color: #ffffff;
+    --global-fourth-color: #c3c3c3;
+    --global-fifth-color: #d8d8d8;
+    --global-sixth-color: #B4B4B4;
+    --global-seventh-color: #AB0000;
+    --global-eighth-color: #9000f6;
+    --global-ninth-color: #1E3231;
+    --global-tenth-color: #29006f;
     --global-eleventh-color: #004903;
     --global-twelfth-color: #2B2C2F;
     --global-thirteenth-color: #03009F;
@@ -101,8 +151,9 @@
 }
 
 .custom-buttons-sport-nav{
+    width: auto;
     background-color: var(--global-tenth-color); 
-    margin-top: 20px; 
+    margin: 20px; 
     padding: 5px; 
     padding-left: 10px; 
     padding-right: 10px; 

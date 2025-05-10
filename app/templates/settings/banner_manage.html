@@ -13,7 +13,7 @@
 
 {% block content %}
 <div class="all-block">
-    <div class="block1">
+    <div class="block1" style="justify-content: start;">
         <div class="title">
             <h1>BANNERS</h1>
         </div>
@@ -36,7 +36,7 @@
                         <td>{{ banner.name }}</td>
                         <td>{% if banner.image %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                         <td><form method="POST" action="">{% csrf_token %}<button name="banner_update" value="{{banner.id}}" style="background-color: transparent; padding: 5px; border-radius: 10px; color: black;">{{ banner.get_status_display.upper}}</button></form></td>
-                        <td><form method="POST" action="">{% csrf_token %}<button name="banner_delete" value="{{banner.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                        <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir?" name="banner_delete" value="{{banner.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
                     </tr>
                     {% empty %}
                     <style>
@@ -44,15 +44,14 @@
                             display: none;
                         }
                     </style>
-                    <img class="image-no-players" src="{% static 'images/setup-animate.svg' %}">
                     <div class="title2">
-                        <h2>NÃO HÁ NENHUM BANNER CADASTRADO! <br> <span style="font-size: 20px;">Os banners sõa utilizados no placar do projetor.!</span></h2>
+                        <h2>NÃO HÁ NENHUM BANNER CADASTRADO!</h2>
                     </div>
                     {% endfor %}
                 </table>
             </section>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
-                <a href="/manage">VOLTAR</a>
+                <a href="{% url 'settings' %}">VOLTAR</a>
             </button>
         </div>
     </div>

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <div class="block1" style="justify-content: start;">
+        <div class="title">
+            <h1>CHEFES DE DELEGAÇÃO</h1>
+        </div>
+        <br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden_user">
+                        <th>NOME</th>
+                        <th>EMAIL</th>
+                        <th>SIAPE</th>
+                        <th>PHONE</th>
+                        <th>FOTO</th>
+                        <th>STATUS</th>
+                        <th>TERMO</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in terms %}
+                    <tr>
+                        <td>
+                            <a href="">{{ i.name }}</a>
+                        </td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.siape}}</td>
+                        <td>{{i.phone}}</td>
+                        <td>{% if i.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>{% if i.accepted %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>
+                            <a href="{{ i.document.url }}" download="{{ i.document.name }}">
+                                <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <button data-confirm="Você realmente deseja excluir os termos de uso do usuario?" name="terms_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden_user{
+                            display: none;
+                        }
+                    </style>
+                    <div style="font-size: 16px; color: white; font-weight: 600; padding: 2em;">    
+                        <p>NENHUM USUARIO ACEITOU OS TERMOS</p>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+                <a href="{% url 'settings' %}">VOLTAR</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}
