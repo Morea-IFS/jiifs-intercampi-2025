@@ -14,6 +14,7 @@
 <div class="all-block block-org">
     <h1>CONFIGURAÇÕES</h1>
     <div class="all-container">
+        {% if user.is_staff %}
         <div class="link-nav">
             <a href="{% url 'chefe_manage' %}">
                 <p>CHEFES DE DELEGAÇÃO</p>
@@ -50,6 +51,7 @@
                 <i class="fa-solid fa-film"></i>
             </a>
         </div>
+        {% endif %}
         <div class="link-nav">
             <a href="{% url 'theme' %}">
                 <p>TEMAS</p>

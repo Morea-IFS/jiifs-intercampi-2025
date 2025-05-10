@@ -24,6 +24,7 @@
     --light: #d6d6d6;
     --global-color-white: #dddddd;
     --global-color-manage: #CBCBCB;
+    --global-link-hover: #00477a;
     --global-color-green: #00477a;
     --global-primary-color: #8b8b8b;
     --global-nav-color: #000086;
@@ -35,7 +36,7 @@
     --global-fifth-color: #d8d8d8;
     --global-sixth-color: #B4B4B4;
     --global-seventh-color: #AB0000;
-    --global-eighth-color: #00477a;;
+    --global-eighth-color: #00477a;
     --global-ninth-color: #0205b5;
     --global-tenth-color: #2727c2;
     --global-eleventh-color: #004903;
@@ -49,6 +50,7 @@
     --light: #d6d6d6;
     --global-color-white: #dddddd;
     --global-color-manage: #CBCBCB;
+    --global-link-hover: #009700;
     --global-color-green: #009700;
     --global-primary-color: #8b8b8b;
     --global-nav-color: #193c02;
@@ -74,6 +76,7 @@
     --light: #d6d6d6;
     --global-color-white: #dddddd;
     --global-color-manage: #CBCBCB;
+    --global-link-hover: #9000f6;
     --global-color-green: #9000f6;
     --global-primary-color: #8b8b8b;
     --global-nav-color: #29006f;
@@ -99,6 +102,7 @@
     --light: #bdbdbd;
     --global-color-white: #f1f1f1;
     --global-color-manage: #3C3D3C;
+    --global-link-hover: #3C3D3C;
     --global-color-green: #009700;
     --global-primary-color: #e2e2e2;
     --global-secondary-color: #232323;

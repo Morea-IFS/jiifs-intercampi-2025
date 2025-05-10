@@ -2,13 +2,12 @@
 
 a {
     text-decoration: none;
-    text-align: center;
     font-size: 16px;
     width: 100%;
 }
 
 .invisible-side-bar {
-    min-width: 13em;
+    min-width: 15em;
     height: 100%;
 }
 
@@ -31,7 +30,7 @@ a {
     flex-direction: column;
     justify-content: space-evenly;
     background-color: var(--global-nav-color);
-    min-width: 13em;
+    min-width: 15em;
     position: fixed;
     overflow: auto;
     height: 100%;
@@ -53,36 +52,55 @@ a {
 
 
 .side-bar-logo {
-    height: 7em;
+    height: 8em;
 }
-
-.user-admin {
-    text-align: center;
+.user-account{
+    width: auto;
+    height: auto;
     padding: 5px;
-    color: white;
-    border-radius: 10px;
-    background-color: var( --global-nav-links-color);
+    padding-left: 10px;
+    padding-right: 10px;
     margin-inline: 16px;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    color: #ffffff;
 }
-
-.user-admin p {
+.user-account i {
+    font-size: 14px;
+}
+.user-account p {
     font-size: 16px;
 }
 
-.side-bar-buttons {
+.side-bar-buttons{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
+    text-align: start;
+    width: 72%;
+    gap: 10px;
 }
+.side-bar-buttons i{
+    padding-inline: 10px;
+}
+.side-bar-buttons a:hover{
+    background-color: var(--global-link-hover);
 
-.side-bar-buttons-items {
+    border-radius: 25px;
+}
+.side-bar-buttons button{
     border: none;
-    background-color: var( --global-nav-links-color);
-    padding-block: 0.7em;
-    width: 80%;
-    border-radius: 0.5em;
+    font-size: 14px;
+    padding-inline: 10px;
+    padding: 5px;
+    justify-content: space-between;
+    background-color: transparent;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.exit-hover:hover{
+    background-color: red !important;
 }
 
 .side-bar-register {
@@ -95,6 +113,25 @@ a {
     text-align: center;
     color: white;
 }
+.exit-sistem{
+    width: auto;
+    height: auto;
+    padding: 2px;
+    border-radius: 12px;
+    padding-inline: 10px;
+    border: 1.9px solid red;
+    background-color: red;
+}
+.exit-sistem i{
+    color: white;
+    font-size: 16px;
+}
+.exit-sistem a{
+    color: white;
+    font-size: 20px;    
+    font-weight: 500;
+}
+
 
 .side-bar-buttons-items2 {
     background-color: var(--global-eighth-color);
