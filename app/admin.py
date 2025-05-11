@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Certificate, Help, Settings_access, Badge, Bolletin, Section, Config, Volley_match, Attachments, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
+from . models import Certificate, Help, Settings_access, Statement, Statement_user, Badge, Bolletin, Section, Config, Volley_match, Attachments, Events, Player, Voluntary, Technician, Assistance, Penalties, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Banner, Terms_Use
 # Register your models here.
 
 @admin.register(Settings_access)
@@ -21,6 +21,17 @@ class BadgevAdmin(admin.ModelAdmin):
 class AttachmentsvAdmin(admin.ModelAdmin):
     list_display = ('id','name','user','file')
     search_fields = ('id','name','user','file')
+
+
+@admin.register(Statement)
+class StatementAdmin(admin.ModelAdmin):
+    list_display = ('id','name','image')
+    search_fields = ('id','name','image')
+
+@admin.register(Statement_user)
+class Statement_userAdmin(admin.ModelAdmin):
+    list_display = ('id','statement','user')
+    search_fields = ('id','statement','user')
 
 @admin.register(Help)
 class HelpAdmin(admin.ModelAdmin):

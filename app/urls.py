@@ -45,6 +45,8 @@ urlpatterns = [
     path('manage', views.manage, name="manage"),
     path('settings', views.settings, name="settings"),
 
+    path('manage/statement', views.statement_manage, name="statement_manage"),
+    path('register/statement', views.statement_register, name="statement_register"),
     path('chefe_manage', views.chefe_manage, name="chefe_manage"),
     path('theme', views.theme_manage, name="theme"),
     path('faq_manage', views.faq_manage, name="faq_manage"),

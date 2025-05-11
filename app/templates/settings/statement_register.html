@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <section class="block1">
+        <div class="title">
+            <h1>REGISTRAR NOVO AVISO</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form" >
+                <div>
+                    <input class="ff" type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Informe o nome do aviso"
+                        required>
+                    <input class="ff" disabled type="text" autocomplete="on" autocorrect="on" name="name" placeholder="">
+                    <label for="fotos" id="label-foto" class="custom-file-button">Adicione o aviso</label>
+                    <input required type="file" name="image" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" required>
+                </div>
+                <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 1.2em;">
+                    CONFIRMAR
+                </button>
+            </div>
+        </form>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'banner_manage' %}">VOLTAR</a>
+        </button>
+    </section>
+</div>
+{% endblock content %}

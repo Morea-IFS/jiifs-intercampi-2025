@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <div class="block1" style="justify-content: start;">
+        <div class="title">
+            <h1>AVISOS</h1>
+        </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+            <a href="{% url 'statement_register' %}">CADASTRO DE AVISOS</a>
+        </button>
+        <br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden">
+                        <th>NONE</th>
+                        <th>AVISO</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in statement %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{% if i.image %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir?" name="statement_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden {
+                            display: none;
+                        }
+                    </style>
+                    <div class="title2">
+                        <h2>NÃO HÁ NENHUM AVISO CADASTRADO!</h2>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <br><br>
+            <section class="all-table hidden">
+                <table id="search-table">
+                    <tr class="hidden2">
+                        <th>NOME</th>
+                        <th>IMAGEM</th>
+                        <th>USER</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in statement_user %}
+                    <tr>
+                        <td>{{ i.statement.name }}</td>
+                        <td>{% if i.statement.image %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
+                        <td>{{ i.user }}</td>
+                        <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir?" name="statement_user_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden2 {
+                            display: none;
+                        }
+                    </style>
+                    <div class="title2">
+                        <h2>NENHUM USUARIO ACEITOU O AVISO!</h2>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+                <a href="{% url 'settings' %}">VOLTAR</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

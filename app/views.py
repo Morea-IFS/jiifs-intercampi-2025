@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from .models import Sexo_types, Settings_access,Campus_types, Help,Badge, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
+from .models import Sexo_types, Settings_access,Campus_types, Help,Badge, Statement, Statement_user, Type_service, Certificate, Attachments, Config, Volley_match, Player, Sport_types, Technician, Voluntary, Penalties, Events, Time_pause, Team, Point, Team_sport, Player_team_sport, Match, Team_match, Player_match, Assistance,  Banner, Bolletin, Section, Terms_Use
 from django.db.models import Count, Q
 from .decorators import time_restriction
 from django.contrib import messages
@@ -42,9 +42,20 @@ def about_us(request):
 @login_required(login_url="login")
 @terms_accept_required
 def home_admin(request):
+    user = request.user
     help = Help.objects.all()
     ins = Settings_access.objects.all().last()
-    return render(request, 'home_admin.html',{'help':help,'ins':ins})
+    vistos = Statement_user.objects.filter(user=user).values_list('statement_id', flat=True)
+
+    statements_faltando = Statement.objects.exclude(id__in=vistos)
+
+    if statements_faltando.exists():
+        imagem_filter = statements_faltando.first()
+        imagem = Statement.objects.get(id=imagem_filter.id)
+        Statement_user.objects.create(user=user, statement=imagem)
+    else:
+        imagem = None
+    return render(request, 'home_admin.html',{'help':help,'ins':ins,'mensagem':'mensagem','imagem':imagem})
 
 def login(request):
     try:
@@ -1204,6 +1215,42 @@ def terms_use(request):
 @login_required(login_url="login")  
 def settings(request):
     return render(request, 'settings.html')
+
+@login_required(login_url="login")
+@terms_accept_required
+def statement_register(request):
+    if request.method == "GET":
+        return render(request, 'settings/statement_register.html')
+    else:
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        if not name or not image:
+            messages.eror(request, "Você precisa preencher todas as informações!")
+            return redirect('statement_register')
+        Statement.objects.create(name=name,image=image)
+        return redirect('statement_manage')
+
+@login_required(login_url="login")
+@terms_accept_required
+def statement_manage(request):
+    statement = Statement.objects.filter()
+    statement_user = Statement_user.objects.all().order_by('statement')
+    if request.method == "GET":
+        return render(request, 'settings/statement_manage.html',{'statement': statement,'statement_user': statement_user})
+    else:
+        try:
+            if 'statement_delete' in request.POST:
+                statement_id = request.POST.get('statement_delete')
+                statement_delete = Statement.objects.get(id=statement_id)
+                statement_delete.delete()
+                return redirect('statement_manage')
+            elif 'statement_user_delete' in request.POST:
+                statement_user_id = request.POST.get('statement_user_delete')
+                statement_user_delete = Statement_user.objects.get(id=statement_user_id)
+                statement_user_delete.delete()
+                return redirect('statement_manage')
+        except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+        return redirect('statement_manage')
 
 @login_required(login_url="login")
 def chefe_manage(request):
