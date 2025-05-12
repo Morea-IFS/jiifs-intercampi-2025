@@ -48,7 +48,7 @@ body {
 }
 
 .card-list .card-item .card-link:hover {
-  border-color: #009700;
+  border-color: var(--global-color-green);
 }
 
 .card-list .card-link .card-image {
@@ -60,7 +60,7 @@ body {
 }
 
 .card-list .card-link .badge {
-  color: #009700;
+  color: var(--global-color-green);
   width: 100%;
   text-align: center;
   text-transform: uppercase;
@@ -73,43 +73,43 @@ body {
 }
 
 .card-list .card-link .badge-return {
-  color: #009700;
+  color: var(--global-color-green);
   background: #ffffff;
 }
 
 .card-list .card-link .badge-player {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-team {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-match {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-technician {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-banner {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-badge {
   color: #ffffff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .badge-certificate {
   color: rgb(255, 255, 255);
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-list .card-link .card-title {
@@ -123,25 +123,25 @@ body {
   bottom: 5%;
   height: 35px;
   width: 35px;
-  color: #009700;
+  color: var(--global-color-green);
   background: none;
   cursor: pointer;
   border-radius: 50%;
-  border: 2px solid #009700;
+  border: 2px solid var(--global-color-green);
   transform: rotate(-45deg);
   transition: 0.4s ease;
 }
 
 .card-list .card-link:hover .card-button {
   color: #fff;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-wrapper .swiper-pagination-bullet {
   height: 13px;
   width: 13px;
   opacity: 0.5;
-  background: #009700;
+  background: var(--global-color-green);
 }
 
 .card-wrapper .swiper-pagination-bullet-active {
@@ -149,7 +149,7 @@ body {
 }
 
 .card-wrapper .swiper-slide-button {
-  color: #009700;
+  color: var(--global-color-green);
   margin-top: -35px;
 }
 

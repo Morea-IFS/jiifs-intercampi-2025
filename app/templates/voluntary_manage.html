@@ -43,7 +43,11 @@
                     {% for voluntary in voluntary %}
                     <tr>
                         <td>
+                            {% if not voluntary.type_voluntary == 4 or user.is_staff %}
                             <a href="{% url 'voluntary_edit' voluntary.id %}">{{ voluntary.name }}</a>
+                            {% else %}
+                            <a href="">{{ voluntary.name }}</a>
+                            {% endif %}
                         </td>
                         <td>{{voluntary.get_type_voluntary_display}}</td>
                         <td>{{voluntary.registration}}</td>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <div class="block1" style="justify-content: start;">
+        <div class="title">
+            <h1>PERÍODO DE INSCRIÇÃO</h1>
+        </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav">
+            <a href="{% url 'enrollment_register' %}">ADICIONAR PERÍODO DE INSCRIÇÃO</a>
+        </button>
+        <br><br>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden_date">
+                        <th>INICIO</th>
+                        <th>FIM</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in date_list %}
+                    <tr>
+                        <td>{{i.start}}</td>
+                        <td>{{i.end}}</td>
+                        <td>
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <button data-confirm="Você realmente deseja excluir o período de inscrição?" name="date_delete" value="{{i.id}}" style="background-color: transparent; border: none;">
+                                    <img src="{% static 'images/icon-trash.svg' %}" style="color: blue;" alt="">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden_date{
+                            display: none;
+                        }
+                    </style>
+                    <div style="font-size: 16px; color: white; font-weight: 600; padding: 2em;">
+                        <br>
+                        <p>PERÍODO DE INSCRIÇÃO INEXISTENTE.</p>
+                        <br>
+                    </div>
+                    {% endfor %}
+                </table>
+            </section>
+            <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin: 1.5em;">
+                <a href="{% url 'settings' %}">VOLTAR</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

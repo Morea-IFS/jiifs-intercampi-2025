@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <section class="block1">
+        <div class="title">
+            <h1>ADICIONAR BANNER</h1>
+        </div>
+        <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block-inputs-form" >
+                {% csrf_token %}
+                <label for="">TÍTULO</label>
+                <input name="title_atack" type="text" placeholder="title" required>
+                <label for="atack">ARQUIVO</label>
+                <input style="display: flex;" type="file" name="file_atack" accept=".pdf" required>
+                <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav" style="margin-top: 1.2em;">
+                    CONFIRMAR
+                </button>
+            </div>
+        </form>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+            <a href="{% url 'anexo_manage' %}">VOLTAR</a>
+        </button>
+    </section>
+</div>
+{% endblock content %}

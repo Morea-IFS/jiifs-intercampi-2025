@@ -3,47 +3,70 @@
 
 {% block head %}
 <title>JIFS ADMIN</title>
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
 {% endblock head %}
 
 {% block navbar %}
 
-
-<a href="{% url 'settings' %}">
-    <button class="side-bar-buttons-items">CONFIGURAÇÕES</button>
-</a>
 {% endblock navbar %}
 
-{% block register %}
-{% endblock register %}
-
 {% block content %}
-<div class="all-block">
-    <div class="block1">
-        <div class="title">
-            <h1>Configurações</h1>
+<div class="all-block block-org">
+    <h1>CONFIGURAÇÕES</h1>
+    <div class="all-container">
+        {% if user.is_staff %}
+        <div class="link-nav">
+            <a href="{% url 'chefe_manage' %}">
+                <p>CHEFES DE DELEGAÇÃO</p>
+                <i class="fa-regular fa-address-card"></i>
+            </a>
         </div>
-        <ul class="all-block-service-config">
-            <li>
-                <a href="{% url 'banner_manage' %}">
-                    <div class="block-service-config">
-                        <div class="service-icon">
-                            <i class="icon fas fa-video"></i>
-                        </div>
-                        <p>Banners</p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'projector_manage' %}">
-                    <div class="block-service-config">
-                        <div class="service-icon">
-                            <i class="icon fas fa-envelope"></i>
-                        </div>
-                        <p>Suportes</p>
-                    </div>
-                </a>
-            </li>
-        </ul>
+        <div class="link-nav">
+            <a href="{% url 'enrollment_manage' %}">
+                <p>PERÍODO DE INSCRIÇÃO</p>
+                <i class="fa-solid fa-calendar-days"></i>
+            </a>
+        </div>
+        <div class="link-nav">
+            <a href="{% url 'anexo_manage' %}">
+                <p>ANEXOS</p>
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>
+        </div>
+        <div class="link-nav">
+            <a href="{% url 'faq_manage' %}">
+                <p>FAQ</p>
+                <i class="fa-solid fa-circle-info"></i>
+            </a>
+        </div>
+        <div class="link-nav">
+            <a href="{% url 'technician_manage' %}">
+                <p>GESTORES</p>
+                <i class="fa-regular fa-circle-user"></i>
+            </a>
+        </div>
+        <div class="link-nav">
+            <a href="{% url 'banner_manage' %}">
+                <p>BANNER</p>
+                <i class="fa-solid fa-film"></i>
+            </a>
+        </div>
+        {% endif %}
+        <div class="link-nav">
+            <a href="{% url 'theme' %}">
+                <p>TEMAS</p>
+                <i class="fa-solid fa-palette"></i>
+            </a>
+        </div>
+        <div class="link-nav">
+            <a href="{% url 'statement_manage' %}">
+                <p>AVISOS</p>
+                <i class="fa-solid fa-bell"></i>
+            </a>
+        </div>
     </div>
+    <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color); margin-top: 40px;">
+        <a href="{% url 'Home' %}">VOLTAR</a>
+    </button>
 </div>
-{% endblock %}
+{% endblock content %}

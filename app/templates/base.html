@@ -23,24 +23,27 @@
                 <span class="line first-line"></span>
                 <span class="line second-line"></span>
             </div>
-            <div class="theme-mode-button" id="theme-toggle">
-                <i class="fas fa-sun" id="theme-icon"></i>
-            </div>
             <section class="side-bar">
+                <img class="side-bar-logo" src="{% static 'images/morea-sports-white.svg' %}" alt="Logo Placeholder" />
                 <div class="side-bar-top">
-                    <img class="side-bar-logo" src="{% static 'images/morea-sports.png' %}" alt="Logo Placeholder" />
                     <div class="side-bar-buttons">
                         <a href="{% url 'Home' %}">
-                            <button class="side-bar-buttons-items">HOME</button>
+                            <button class="side-bar-buttons-items"><i class="fa-solid fa-house"></i>INICIO</button>
                         </a>
                         <a href="{% url 'manage' %}">
-                            <button class="side-bar-buttons-items">MENU</button>
+                            <button class="side-bar-buttons-items"><i class="fa-solid fa-compass"></i>MENU</button>
                         </a>
                         {% block navbar %}
 
                         {% endblock navbar %}
                         <a href="{% url 'attachments' %}">
-                            <button class="side-bar-buttons-items">ANEXOS</button>
+                            <button class="side-bar-buttons-items"><i class="fa-solid fa-file-pdf"></i>ANEXOS</button>
+                        </a>
+                        <a href="{% url 'settings' %}">
+                            <button class="side-bar-buttons-items"><i class="fa-solid fa-gear"></i>CONFIG</button>
+                        </a> 
+                        <a class="exit-hover" href="{% url 'logout' %}">
+                            <button class="side-bar-buttons-items"><i class="fa-solid fa-right-from-bracket"></i>Sair</button>
                         </a>
                     </div>
                 </div>
@@ -49,15 +52,13 @@
                     {% endblock register %}
                     <div class="logos">
                         <a href="https://ifs.edu.br"><img class="logos-items" src="{% static 'images/logo-ifs-black.svg' %}" alt="Logo IFS" /></a>
-                        <a href="https://morea-ifs.org"><img class="logos-items" src="{% static 'images/logo-jiifs-2025.png' %}" alt="Logo Morea" /></a>
+                        <a href="https://morea-ifs.org"><img class="logos-items" src="{% static 'images/logo-jiifs-2025-black.png' %}" alt="Logo Morea" /></a>
                     </div>
-                    <div class="user-admin">
-                        <p>USUÁRIO: <br> {{ user.username }}</p>
+                    <div class="user-account">
+                        <p><i class="fa-solid fa-user"></i> {{ user.username }}</p>
                     </div>
-                    <button class="side-bar-buttons-items2">
-                        <a href="{% url 'logout' %}">Sair</a>
-                    </button>
                 </div>
+
             </section>
             {% block content %}
 

@@ -311,3 +311,11 @@ class Section(models.Model):
     bolletin = models.ForeignKey(Bolletin, on_delete=models.CASCADE)
     subtitle = models.CharField(max_length=500)
     contend = models.CharField(max_length=1500)
+
+class Statement(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    image = models.ImageField(upload_to='photos_config/', null=True, blank=True)
+
+class Statement_user(models.Model):
+    statement = models.ForeignKey(Statement, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
