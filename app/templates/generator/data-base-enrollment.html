@@ -72,15 +72,21 @@
     {% if i.players.all %}
     <table>
         <tr>
-            <th style="width: 60%;">Nome</th>
-            <th style="width: 20%;">Matrícula</th>
-            <th style="width: 20%;">Campus</th>
+            <th style="width: 38%;">Nome</th>
+            <th style="width: 11%;">Matrícula</th>
+            <th style="width: 10.5%;">Campus</th>
+            <th style="width: 12%;">CPF</th>
+            <th style="width: 4%;">Sexo</th>
+            <th style="width: 9%;">Data Nasc.</th>
         </tr>
         {% for j in i.players.all %}
         <tr>
             <td>{{ j.player.name|upper }}</td>
             <td>{{ j.player.registration|upper }}</td>
-            <td>{{ j.player.get_campus_display }}</td>
+            <td>{{ j.player.get_campus_display | truncatechars:10 }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
         </tr>
         {% endfor %}
 

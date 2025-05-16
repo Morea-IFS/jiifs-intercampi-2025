@@ -26,12 +26,11 @@
 }
 .notices{
     width: 100%;
-    height: 5em;
-    background-color: var(--global-nav-color);
+    height: 4em;
+    background-color: #00A3FF;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 2px solid var(--global-third-color);
 }
 .notices marquee{
     font-size: 23px;

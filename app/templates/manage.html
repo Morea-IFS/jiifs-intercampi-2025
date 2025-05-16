@@ -21,25 +21,11 @@
   <div class="container swiper">
     <div class="card-wrapper">
       <ul class="card-list swiper-wrapper">
-        <!--
-        <li class="card-item swiper-slide">
-          <a href="{% url 'Home' %}" class="card-link" style="background-color: #003cff;">
-            <img src="{% static 'images/door-open-solid.svg' %}" alt="Card Image" class="card-image" style="filter: invert();">
-            <p class="badge badge-return">VOLTAR</p>
-            {% if user.is_staff %}
-            <h2 class="card-title" style="color: #ffffff;">A pagina  que você está agora é utilizada para o gerenciamento de atletas, times, partidas, técnicos, banners, certificados e crachás! <span style="color: #2bff00e1;">clique aqui para sair</span></h2>
-            {% else %}
-            <h2 class="card-title" style="color: #ffffff;">Aqui você irá gerenciar o seu campus, atletas, chefe de delegação, técnicos, organização, voluntarios e crachás! <span style="color: #2bff00e1;">clique aqui para sair</span></h2>
-            {% endif %}
-            <button class="card-button material-symbols-rounded" style="color: #ffffff; border: 2px solid #ffffff;">arrow_forward</button>
-          </a>
-        </li>
-        -->
         <li class="card-item swiper-slide">
           <a href="{% url 'team_manage' %}" class="card-link">
             <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-team">MODALIDADES</p>
-            <h2 class="card-title">Aqui você poderá cadastrar e ver as modalidades em que o seu campus que está inscrito. Você também poderá cadastrar os seus jogadores!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar e visualizar as modalidades nas quais seu campus está inscrito. Também será possível cadastrar os seus jogadores!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -47,7 +33,7 @@
           <a href="{% url 'voluntary_manage' %}" class="card-link">
             <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-technician">COMISSÃO TÉCNICA</p>
-            <h2 class="card-title">Aqui você poderá cadastrar toda a sua comissão técnica, de voluntarios a estagiarios! Para posteriormente gerar os crachás na pagina 'crachá'</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar toda a sua comissão técnica, desde voluntários até estagiários. Posteriormente, será possível gerar os crachás na página "Crachá".</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -56,7 +42,8 @@
           <a href="{% url 'games' %}" class="card-link">
             <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-match">PARTIDAS</p>
-            <h2 class="card-title">Aqui você poderá cadastrar, editar e também ver as partidas que já foram cadastrados. Lembre que para iniciar uma partida você eve ir a área games!</h2>
+            <h2 class="card-title">Aqui você poderá cadastrar, editar e visualizar as partidas já registradas. Lembre-se de que, para iniciar uma partida, você deve acessar a área "Games"!</h2>
+
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -64,7 +51,7 @@
           <a href="{% url 'player_manage' %}" class="card-link">
             <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
             <p class="badge badge-team">ATLETAS</p>
-            <h2 class="card-title">Nesse local você poderá apenas ver os jogadores que você já adicionou em algum time, certo? aqui você também poderá editar as informações deles!</h2>
+            <h2 class="card-title">Neste local, você poderá visualizar os jogadores que já adicionou a algum time. Também poderá editar as informações deles!</h2>
             <button class="card-button material-symbols-rounded">arrow_forward</button>
           </a>
         </li>
@@ -74,7 +61,7 @@
         <a href="{% url 'badge' %}" class="card-link">
           <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
           <p class="badge badge-badge">CRACHÁ</p>
-          <h2 class="card-title">Aqui você poderá gerar os cracrás dos atletas, chefe de delegação, apoio, técnicos e voluntarios! ele gera de forma separada para maior organização! </h2>
+          <h2 class="card-title">Aqui você poderá gerar os crachás dos atletas, chefe de delegação, equipe de apoio, técnicos e voluntários. A geração é feita de forma separada para maior organização!</h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>
@@ -82,7 +69,7 @@
         <a href="{% url 'data' %}" class="card-link">
           <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
           <p class="badge badge-badge">RELATÓRIO</p>
-          <h2 class="card-title">Aqui você poderá gerar os dados referentes as modalidades do seu campus e aos jogadores, os dados serão em formato pdf, está certo?!</h2>
+          <h2 class="card-title">Aqui você poderá gerar relatórios com dados das modalidades do seu campus e dos jogadores. Os arquivos serão gerados em formato PDF, tudo certo?</h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>
@@ -91,7 +78,7 @@
         <a href="{% url 'certificate' %}" class="card-link">
           <img src="{% static 'images/logo-jiifs-2025.jpg' %}" alt="Card Image" class="card-image">
           <p class="badge badge-certificate">CERTIFICADO</p>
-          <h2 class="card-title">Aqui você poderá gerar o certificado de participação dos atletas! lembre sempre que ele gera o certificado dos atletas que estão em um time!</h2>
+          <h2 class="card-title">Aqui você poderá gerar os certificados de participação dos atletas. Lembre-se de que os certificados são gerados apenas para atletas que estão vinculados a um time!</h2>
           <button class="card-button material-symbols-rounded">arrow_forward</button>
         </a>
       </li>

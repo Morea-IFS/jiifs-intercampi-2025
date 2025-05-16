@@ -82,7 +82,7 @@
         {% for j in i.players.all %}
         <tr>
             <td>{{ j.player.name|upper }}</td>
-            <td>{{ i.player.cpf|slice:":3" }}.{{ i.player.cpf|slice:"3:6" }}.{{ i.player.cpf|slice:"6:9" }}-{{ i.player.cpf|slice:"9:" }}</td>
+            <td>{{ j.player.cpf|slice:":3" }}.{{ j.player.cpf|slice:"3:6" }}.{{ j.player.cpf|slice:"6:9" }}-{{ j.player.cpf|slice:"9:" }}</td>
             <td>{{ j.player.registration|upper }}</td>
             <td>{{ j.player.get_campus_display | truncatechars:10 }}</td>
             <td>{% if j.player.sexo == 0 %} M {% elif j.player.sexo == 1 %} F {% else %} - {% endif %}</td>

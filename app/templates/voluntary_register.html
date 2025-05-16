@@ -22,7 +22,7 @@
                     <input type="text" autocomplete="on" autocorrect="on" name="name" placeholder="Insira o nome"
                     required>
                     <input type="text" autocomplete="on" autocorrect="on" name="registration"
-                    placeholder="Matricula, siape ou CPF." required>
+                    placeholder="Matrícula, siape ou CPF." required>
                     <p style="color: red; font-size: 15px;">*Matricula para aluno, siape para servidores e CPF para estagiário ou servidor sem siape.</p>
                     <select name="type_voluntary" required>
                         <option selected disabled>Selecione a função</option required>
@@ -38,7 +38,7 @@
                         {% endfor %}
                     </select>
                     <select id="user_admin" name="user">
-                        <option selected disabled>Selecione o usuario admin</option>
+                        <option selected disabled>Selecione o usuário admin</option>
                         {% for i in users %}
                         <option value="{{i.id}}">{{i}}</option>
                         {% endfor %}
