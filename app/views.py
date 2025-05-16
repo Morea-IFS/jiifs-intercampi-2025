@@ -298,17 +298,6 @@ def player_manage(request):
         except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
         return redirect('player_manage')
 
-def verificar_foto(url_name):
-    print("url: ", url_name)
-    list = ['person.png','team.png']
-    url = url_name.split('/')
-    delete_photo = url[len(url) - 1]
-    print("foto a deletar: ", delete_photo)
-    if delete_photo in list:
-        return False
-    else:
-        return True
-
 @login_required(login_url="login")
 @terms_accept_required
 def player_edit(request, id):
@@ -325,9 +314,12 @@ def player_edit(request, id):
             player.registration = request.POST.get('registration')
             player.cpf = request.POST.get('cpf')
             photo = request.FILES.get('photo')
+            print("verifica:")
             if photo:
-                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                print("photo")
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
                 if status:
+                    print("status")
                     status_photo = verificar_foto(str(player.photo))
                     if status_photo:
                         player.photo.delete()
@@ -369,6 +361,21 @@ def team_manage(request):
         else:
             team_sport_id = request.POST.get('team_sport_delete')
             team_sport_delete = Team_sport.objects.get(id=team_sport_id)
+            players_team_sport = Player_team_sport.objects.filter(team_sport=team_sport_delete)
+            print(players_team_sport)
+            if players_team_sport:
+                for i in players_team_sport:
+                    i.delete()     
+                    print("apagado player somente do")
+                    if not Player_team_sport.objects.filter(player=i.player).exists():
+                        
+                        print("APAGANDO JOGADOR: ", i.player.name)
+                        status = verificar_foto(str(i.player.photo))
+                        if status:
+                            i.player.photo.delete()
+                        i.player.bulletin.delete()
+                        i.player.rg.delete()
+                        i.player.delete()     
             team_sport_delete.delete()
             if not Team_sport.objects.filter(team=team_sport_delete.team.id):
                 Team.objects.get(id=team_sport_delete.team.id).delete()
@@ -724,6 +731,9 @@ def voluntary_manage(request):
         else:
             voluntary_id = request.POST.get('voluntary_delete')
             voluntary_delete = Voluntary.objects.get(id=voluntary_id)
+            status = verificar_foto(str(voluntary_delete.photo))
+            if status:
+                voluntary_delete.photo.delete()
             voluntary_delete.delete()
             messages.success(request, f"{voluntary_delete.get_type_voluntary_display()} removido do sistema com sucesso!")
             return redirect('voluntary_manage')
@@ -748,7 +758,7 @@ def voluntary_register(request):
             type_voluntary = request.POST.get('type_voluntary')
             photo = request.FILES.get('photo')
             if photo: 
-                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
                 if status: return redirect('voluntary_register')
             if request.POST.get('user'): admin = User.objects.get(id=request.POST.get('user')) 
             else: admin = user
@@ -799,7 +809,7 @@ def voluntary_edit(request, id):
             voluntary.campus = request.POST.get('campus')
         photo = request.FILES.get('photo')
         if photo: 
-            status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+            status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
             if status: return redirect('voluntary_edit', id)
             if voluntary.photo: 
                 status_photo = verificar_foto(str(voluntary.photo))
@@ -1145,6 +1155,9 @@ def upload_document(request):
         document = request.FILES.get('document')
         if document:
             termo.document = document
+            if document: 
+                status = type_file(request, ['.pdf','.png','.jpg','.jpeg'], document, 'O documento anexado não é do tipo pdf, png, jpg ou jpeg, considere converte-lo nesses tipos.')
+                if status: return redirect('upload_document')
             termo.save()
             return redirect('boss_data')
 
@@ -1172,6 +1185,9 @@ def boss_data(request):
             termo.siape = siape
             termo.email = email
             termo.phone = phone
+            if photo: 
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                if status: return redirect('boss_data')
             termo.photo = photo
             termo.save()
             return redirect('terms_use')
@@ -2036,9 +2052,10 @@ def generator_badge(request):
     try:
         if request.user.is_staff:
             team_sport = Team_sport.objects.all()
+            badge = Badge.objects.all()
         else:
-            team_sport = Team_sport.objects.filter(admin__id=request.user.id).order_by('team','sport','-sexo')
-        badge = Badge.objects.filter(user=request.user.id)
+            badge = Badge.objects.filter(user=request.user.id)
+            team_sport = Team_sport.objects.filter(admin__id=request.user.id).order_by('team','sport','-sexo')     
         sport = Sport_types.choices
         user = User.objects.get(id=request.user.id)
         if request.method == "GET":
@@ -2055,20 +2072,15 @@ def generator_badge(request):
                 badge.file.delete()
                 badge.delete()
                 return redirect('badge')
-            elif 'badge_all_delete' in request.POST:
-                badge = Badge.objects.all()
-                for i in badge:
-                    i.file.delete()
-                    i.delete()
-                return redirect('badge')
             elif 'team-badge' in request.POST:
                 team_badge = request.POST.get('team-badge')
                 if team_badge.isdigit(): 
                     players = Player_team_sport.objects.filter(team_sport__id=team_badge)
+                    team_sport_badge = Team_sport.objects.get(id=team_badge)
                     if len(players) == 0:
                         messages.error(request, "Não tem nenhum técnico cadastrado!")
                         return redirect('badge')
-                    namebadge = 'campus-modalidade-jifs'
+                    namebadge = f'{ team_sport_badge.get_sport_display() }-{ team_sport_badge.team.get_campus_display() }-jifs'
                     generate_badges(players, user, '2',namebadge)
                 else:
                     if team_badge == 'all_player':
@@ -2205,8 +2217,10 @@ def generator_data(request):
     try:
         user = User.objects.get(id=request.user.id)
         if request.method == "GET":
-            if request.user.is_staff: team_sport = Team_sport.objects.filter(players__isnull=False).distinct().order_by('team__campus','sport','-sexo')
-            else: team_sport = Team_sport.objects.all().filter(players__isnull=False, admin=user).order_by('team__campus','sport','-sexo')
+            if request.user.is_staff: 
+                team_sport = Team_sport.objects.filter(players__isnull=False).distinct().order_by('team__campus','sport','-sexo')
+            else: 
+                team_sport = Team_sport.objects.all().filter(players__isnull=False, admin=user).order_by('team__campus','sport','-sexo')
             sports = [i.sport for i in team_sport]
             context = {
                 'sexo': Sexo_types.choices,
@@ -2295,8 +2309,8 @@ def generator_data(request):
                 name_html = 'data-base'
                 name_pdf = 'dados_atletas'
                 cont['infor'] = "atletas"
-                if user.is_staff: players = Player_team_sport.objects.all().order_by('player__campus','-player__sexo')
-                else: players = Player_team_sport.objects.filter(player__admin=user).order_by('player__campus','-player__sexo')
+                if user.is_staff: players = Player.objects.all().order_by('campus','-sexo')
+                else: players = Player.objects.filter(admin=user).order_by('campus','-sexo')
                 if len(players) == 0:
                     messages.error(request, "Não há atletas cadastrados.")
                     return redirect('data')  
@@ -2305,8 +2319,8 @@ def generator_data(request):
             elif 'all_players_fem' in request.POST:
                 name_html = 'data-base'
                 name_pdf = 'dados_atletas'
-                if user.is_staff: players = Player_team_sport.objects.filter(player__sexo=1).order_by('player__campus','-player__sexo')
-                else: players = Player_team_sport.objects.filter(player__sexo=1, player__admin=user).order_by('player__campus','-player__sexo')
+                if user.is_staff: players = Player.objects.filter(sexo=1).order_by('campus','-sexo')
+                else: players = Player.objects.filter(sexo=1, admin=user).order_by('campus','-sexo')
                 if len(players) == 0:
                     messages.error(request, "Não há atletas do sexo feminino cadastrados.")
                     return redirect('data')
@@ -2317,8 +2331,8 @@ def generator_data(request):
             elif 'all_players_masc' in request.POST:
                 name_html = 'data-base'
                 name_pdf = 'dados_atletas'
-                if user.is_staff: players = Player_team_sport.objects.filter(player__sexo=0).order_by('player__campus','-player__sexo')
-                else: players = Player_team_sport.objects.filter(player__sexo=0, player__admin=user).order_by('player__campus','-player__sexo')
+                if user.is_staff: players = Player.objects.filter(sexo=0).order_by('campus','-sexo')
+                else: players = Player.objects.filter(sexo=0, admin=user).order_by('campus','-sexo')
                 if len(players) == 0:
                     messages.error(request, "Não há atletas do sexo masculino cadastrados.")
                     return redirect('data')
@@ -2354,14 +2368,20 @@ def generator_data(request):
                     cont['teams'] = teams
                     cont['infor'] = f"atletas da modalidade {name_sport}"
                 else:
-                    name_html = 'data-base'
-                    players = Player_team_sport.objects.filter(team_sport__sport=data, team_sport__admin=user)
-                    if len(players) == 0:
-                        messages.error(request, f'Não há atletas cadastrados no {name_sport}.')
+                    name_html = 'data-base-campus'
+                    teams = Team_sport.objects.prefetch_related('players').filter(sport=data, admin=user).order_by('team__campus','sport','-sexo')
+                    if len(teams) == 0:
+                        messages.error(request, "Não há equipes em modalidades ou atletas cadastrados.")
                         return redirect('data')
-                    cont['players'] = players
-                    if players:
-                        cont['infor'] = f'atletas da modalidade {players[0].team_sport.get_sport_display()}'
+                    cont['teams'] = teams
+                    cont['infor'] = f"atletas da modalidade {name_sport}"
+                    #players = Player_team_sport.objects.filter(team_sport__sport=data, team_sport__admin=user)
+                    #if len(players) == 0:
+                    #    messages.error(request, f'Não há atletas cadastrados no {name_sport}.')
+                    #    return redirect('data')
+                    #cont['players'] = players
+                    #if players:
+                    #    cont['infor'] = f'atletas da modalidade {players[0].team_sport.get_sport_display()}'
             html_string = render_to_string(f'generator/{name_html}.html', cont)
 
             response = HttpResponse(content_type='application/pdf')
@@ -2430,10 +2450,10 @@ def team_sexo(request, sport_name):
                     else:
                         team = Team.objects.get(name=technician.get_campus_display(), campus=technician.campus)
                 else:
-                    if not Team.objects.filter(name='Reitoria', campus=0).exists():
-                        team = Team.objects.create(name='Reitoria', campus=0)
+                    if not Team.objects.filter(name='Reitoria', campus=10).exists():
+                        team = Team.objects.create(name='Reitoria', campus=10)
                     else:
-                        team = Team.objects.get(name='Reitoria', campus=0)
+                        team = Team.objects.get(name='Reitoria', campus=10)
             if not Team_sport.objects.filter(team=team, sport=sport, sexo=sexo).exists():
                 team_sport = Team_sport.objects.create(team=team, sport=int(sport), sexo=sexo, admin=User.objects.get(id=request.user.id))
                 messages.success(request, "O seu campus foi cadastrado em uma nova modalidade, parabens!")
@@ -2525,7 +2545,7 @@ def players_team(request, team_name, team_sexo, sport_name):
             photo = request.FILES.get('photo')
             if photo: 
                 print(photo)
-                status = type_file(request, ['.png','.jpg,','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la nesses tipos.')
                 if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
             bulletin = request.FILES.get('bulletin')
             if bulletin: 
@@ -2533,7 +2553,7 @@ def players_team(request, team_name, team_sexo, sport_name):
                 if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
             rg = request.FILES.get('rg')
             if rg: 
-                status = type_file(request, ['.png','.jpg,','.jpeg','.pdf','docx'], rg, 'O RG anexado não é faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não é faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
                 if status: return redirect('guiate_players_team', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
             print(team_sport.team.campus)
             print("printe: ",len(Player_team_sport.objects.filter(team_sport=team_sport)))
@@ -2589,7 +2609,13 @@ def players_list(request, team_name, team_sexo, sport_name):
                 print("eupa")
                 if not Player_team_sport.objects.filter(id=player_id).exists():
                     print("eupaESSS")
-                    Player.objects.get(id=player.player.id).delete()
+                    player_table = Player.objects.get(id=player.player.id)
+                    status = verificar_foto(str(player_table.photo))
+                    if status:
+                        player_table.photo.delete()
+                    player_table.bulletin.delete()
+                    player_table.rg.delete()
+                    player_table.delete()
                 messages.success(request, "O jogador foi removido com sucesso!")
                 print("O jogador foi cadastrado no sistema com sucesso!")
                 return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
@@ -2633,8 +2659,18 @@ def allowed_pages(user):
         allowed = False
     return allowed
 
+def verificar_foto(url_name):
+    print("url: ", url_name)
+    list = ['person.png','team.png']
+    url = url_name.split('/')
+    delete_photo = url[len(url) - 1]
+    print("foto a deletar: ", delete_photo)
+    if delete_photo in list:
+        return False
+    return True
+
 def type_file(request, rest, file, text):
-    ext = os.path.splitext(file.name)[1].lower()
+    ext = os.path.splitext(file.name)[1].lower().strip()
     print(file, " : ", ext)
     if ext not in rest:
         print("erro")
