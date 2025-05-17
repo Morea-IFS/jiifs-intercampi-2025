@@ -1,49 +1,767 @@
-    {% load static %}
-    <!DOCTYPE html>
-    <html lang="pt-BR">
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JIFS ADMIN</title>
-        <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-        <link rel="stylesheet" href="{% static 'css/termos.css' %}">
-        <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIFS ADMIN</title>
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/termos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar-layout.css' %}">
+</head>
 
-    <body>
-        <main>
-            <div class="all">
-                <div>
-                    <div class="theme-mode-button" id="theme-toggle">
-                        <i class="fas fa-sun" id="theme-icon"></i>
-                    </div>
+<body class="light-mode">
+    <main>
+        <div class="all">
+            <div class="container">
+                <h1 class="title">Termos de Uso</h1>
+
+                <div class="content">
+                    <p>Leia atentamente os termos de uso antes de utilizar o sistema.</p>
                 </div>
-                <div class="container">
-                    <h1 class="title">Termos de Uso</h1>
-                    <div class="content">
-                        <p>Leia atentamente os termos de uso antes de utilizar o sistema.</p>
-                    </div>
-                    <div class="terms-content">
-                        <p><em>Última atualização: 19 de março de 2025</em></p>
-                        <p>Eu, {{user.username}}, gestor do campus, declaro que aceitamos participar do JIFS, respeitando e seguindo o regulamento geral e o regulamento específico da competição.</p>
-                    </div>
-                    <form method="post" class="form-checkbox">
-                        {% csrf_token %}
-                        <label class="label-checkbox">
-                            <input class="checkbox" type="checkbox" name="accept" id="accept" required>
-                            <p>Aceitar os Termos de Uso</p>
-                        </label>
-                        <div style="display: flex; justify-content: center; gap: 2em; margin-top: 3em;">
-                            <a href="{% url 'boss_data' %}" class="button-accept" style="text-align: center; text-decoration: none;">Voltar</a>
-                            <button type="submit" class="button-accept">Aceitar</button>
+
+                <div class="terms-content">
+                    <p><em>Última atualização: 19 de março de 2025</em></p>
+                    <p>
+                        Eu, {{ termo.name }}, chefe de delegação do campus {{ technician.get_campus_display }},
+                        declaro que aceito participar dos Jogos Intercampi do Instituto Federal de Sergipe – JIFS 2025,
+                        respeitando e seguindo o regulamento geral e específico da competição.
+                    </p>
+                </div>
+
+                <div class="terms-buttons">
+                    <button id="openTermsBtn" class="button-accept" type="button">
+                        <i class="fas fa-book"></i>
+                        <span>Visualizar Regulamento</span>
+                    </button>
+                    <a href="{% static 'docs/regulamento_jifs_2025.pdf' %}" class="button-accept" download>
+                        <i class="fas fa-download"></i>
+                        <span>Baixar Regulamento</span>
+                    </a>
+                </div>
+
+                <div id="termsModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" id="closeModalBtn">
+                            <i class="fas fa-times"></i>
+                        </span>
+
+                        <div class="modal-header">
+                            <h2 class="modal-title">REGULAMENTO GERAL DOS JIFS 2025</h2>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </main>
-        <script src="{% static 'js/script.js' %}"></script>
-    </body>
 
-    </html>
+                        <div class="modal-body">
+
+                            <h2>REITORIA E COMISSÕES</h2>
+                            <p><strong>Reitora</strong><br>Ruth Sales Gama</p>
+
+                            <p><strong>Pró-Reitoria de Pesquisa, Extensão e Pós-graduação – PROPEX</strong><br>José
+                                Osman
+                                dos Santos</p>
+
+                            <p><strong>Diretoria de Extensão e Articulação com a Sociedade – DIREX</strong><br>Otacílio
+                                Joaquim Rodrigues Cerqueira</p>
+
+                            <p><strong>Coordenação de Promoção de Esporte e Lazer – COPEL</strong><br>Fábio Luís Santos
+                                Nunes</p>
+
+                            <h3>Comissão técnica</h3>
+                            <ul>
+                                <li>Fábio Luís Santos Nunes</li>
+                                <li>André Luiz de Melo</li>
+                                <li>Michel Habib Monteiro Kyrillos</li>
+                                <li>Ayrton Moraes Ramos</li>
+                                <li>Marcos Antônio Rodrigues França</li>
+                                <li>Maria Heloisa de Melo Cardoso</li>
+                                <li>José Oswaldo Sampaio de Mendonça</li>
+                                <li>Aldemir Smith Menezes</li>
+                                <li>Karielly Mayara de Moura Leal</li>
+                                <li>José Wilton de Gois Santos</li>
+                            </ul>
+
+                            <h3>Comissão Disciplinar</h3>
+                            <ul>
+                                <li>Fábio Luís Santos Nunes</li>
+                                <li>Elber Ribeiro Gama</li>
+                                <li>Sanderson Soares da Silva</li>
+                            </ul>
+
+                            <h2>REGULAMENTO GERAL</h2>
+                            <h3>DAS DISPOSIÇÕES PRELIMINARES</h3>
+
+                            <p><strong>Art.1º</strong> - Os JOGOS INTERCAMPI do Instituto Federal de Sergipe - JIFS, é
+                                promovido pela Pró Reitoria de Pesquisa, Extensão e Pós-graduação - PROPEX, através
+                                Diretoria de Extensão e Articulação com a Sociedade - DIREX, e da Coordenação de
+                                Promoção de
+                                Esporte e Lazer - COPEL.</p>
+
+                            <p><strong>Art.2º</strong> - Este regulamento, com base nos princípios das diretrizes
+                                educacionais, visa normatizar o desenvolvimento e realização do JIFS 2025, de forma
+                                harmônica e disciplinada no Instituto Federal de Sergipe.</p>
+
+                            <h3>DOS PRINCÍPIOS</h3>
+
+                            <p><strong>Art.3º</strong> - Os JIFS 2025, alicerçados na Política Federal de Educação,
+                                baseiam-se nos seguintes princípios:</p>
+                            <p><strong>§1°- da democracia:</strong> Assegurando ao estudante acesso à prática esportiva,
+                                preconizado pelo Art. 217 da Constituição Federal de 1988.</p>
+                            <p><strong>§2°- do conhecimento:</strong> Propiciando a prática do esporte e do lazer de
+                                forma
+                                consciente e participativa.</p>
+                            <p><strong>§3°- da educação:</strong> Atuando de forma integral, considerando as habilidades
+                                e
+                                capacidades, os valores sócio-culturais, os aspectos afetivos e cognitivos dos
+                                educandos.
+                            </p>
+                            <p><strong>§4°- do respeito à cidadania:</strong> Estimulando o entendimento e aplicação das
+                                regras esportivas, o respeito aos adversários e a valorização do companheirismo.</p>
+                            <p><strong>§5°- da humanização:</strong> Proporcionando ao estudante vivenciar o prazer, a
+                                socialização e o respeito às diferenças, provocado pelo lúdico esportivo e valorizando-o
+                                como sujeito de toda ação.</p>
+
+                            <h3>DOS OBJETIVOS</h3>
+
+                            <p><strong>Art.4º</strong> - Os JIFS 2025, têm como objetivo:</p>
+                            <p><strong>§1°</strong> Oportunizar a prática de esporte com ênfase na colaboração, na
+                                cooperação e nos valores morais e sociais entre todos os participantes.</p>
+                            <p><strong>§2°</strong> Proporcionar a integração entre discentes, docentes e técnicos
+                                administrativos do Instituto Federal de Sergipe e a sociedade em geral.</p>
+                            <p><strong>§3°</strong> Vivenciar a pluralidade cultural em suas diversas e diferentes
+                                manifestações.</p>
+                            <p><strong>§4°</strong> Socializar respeitando a identidade, a individualidade e o coletivo.
+                            </p>
+                            <p><strong>§5°</strong> Estimular a prática do esporte como meio para melhoria do bem-estar
+                                físico e mental, qualidades essenciais para a saúde.</p>
+                            <p><strong>§6°</strong> Fortalecer a política de Educação Física e Lazer no IFS e na Rede
+                                Federal.</p>
+
+                            <h3>DA ORGANIZAÇÃO DOS JOGOS</h3>
+
+                            <p><strong>Art.5º</strong> - Os JIF SERGIPE 2025, serão realizados na cidade de Aracaju,
+                                entre
+                                os dias 28 de julho a 01 de agosto, em praças esportivas a definir.</p>
+
+                            <p><strong>Art.6º</strong> - O quantitativo máximo de estudantes/atletas, que podem
+                                participar
+                                do JIFS 2025, por campus.</p>
+
+                            <div class="modalidades">
+                                <div class="modalidade-section">
+                                    <h4>MODALIDADES INDIVIDUAIS</h4>
+                                    <table>
+                                        <tr>
+                                            <th>Modalidades</th>
+                                            <th>Masculino</th>
+                                            <th>Feminino</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Tênis de Mesa (Individual)</td>
+                                            <td>3</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Xadrez (Individual)</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>100 m</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Salto em distância</td>
+                                            <td>3</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Arremesso de peso</td>
+                                            <td>3</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lançamento de dardo</td>
+                                            <td>3</td>
+                                            <td>3</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="modalidade-section">
+                                    <h4>MODALIDADES COLETIVAS</h4>
+                                    <table>
+                                        <tr>
+                                            <th>Modalidades</th>
+                                            <th>Masculino</th>
+                                            <th>Feminino</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Futsal</td>
+                                            <td>12</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Voleibol</td>
+                                            <td>12</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Handebol</td>
+                                            <td>12</td>
+                                            <td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vôlei sentado</td>
+                                            <td colspan="2">MISTO (12)</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <p><strong>Art.7º</strong> - A solenidade de abertura dos JIFS 2025 estará a cargo da
+                                Comissão
+                                de Cerimonial, sendo que a mesma, juntamente com a comissão organizadora geral,
+                                determinará
+                                o dia, o horário e o local que ocorrerá, sendo obrigatória a participação da Instituição
+                                no
+                                desfile.</p>
+
+                            <p><strong>Art.8º</strong> - Constituirão os JIFS 2025 as seguintes comissões instituídas
+                                através de portarias de autoridades competentes:</p>
+                            <ol type="I">
+                                <li>Comissão de Honra;</li>
+                                <li>Comissão Geral Organizadora;</li>
+                                <li>Comissão Técnica Esportiva;</li>
+                                <li>Comissão Disciplinar;</li>
+                                <li>Comissão de Saúde;</li>
+                                <li>Administração/ Secretaria;</li>
+                                <li>Comissão de Comunicação e Cerimonial;</li>
+                                <li>Comissão de Transporte</li>
+                            </ol>
+
+                            <p><strong>Art.9º</strong> - FINALIDADE DAS COMISSÕES</p>
+                            <p>As comissões, dentro de suas atribuições, serão responsáveis por fazer cumprir as normas
+                                previstas neste regulamento.</p>
+
+                            <h4>I - COMISSÃO DE HONRA</h4>
+                            <p>A comissão de honra dos JIFS 2025 será formada pelos Pró-Reitores e Diretores Gerais dos
+                                campi participantes, sendo presidida pelo(a) Reitor(a) do Instituto Federal de Sergipe.
+                            </p>
+
+                            <h4>II - COMISSÃO GERAL ORGANIZADORA</h4>
+                            <p>A comissão geral organizadora será presidida pelo coordenador da Coordenadoria de
+                                Promoção
+                                Esportiva e Lazer - COPEL, professor Fábio Luís Santos Nunes, do Campus Lagarto, e terá
+                                a
+                                função de responder pela execução geral dos Jogos Intercampi do Instituto Federal de
+                                Sergipe
+                                - JIFS.</p>
+
+                            <p>Compete à comissão geral organizadora:</p>
+                            <ul>
+                                <li>Organizar, supervisionar e dirigir os jogos;</li>
+                                <li>Fazer cumprir o regulamento dos jogos;</li>
+                                <li>Coordenar os trabalhos das demais comissões;</li>
+                                <li>Buscar e promover a realização de contatos para levantar recursos para a realização
+                                    do
+                                    evento;</li>
+                                <li>Oficializar, através da PROPEX, contatos com as entidades educacionais, federações
+                                    desportivas, clubes esportivos, empresas da iniciativa pública e privada, órgãos
+                                    oficiais e imprensa em geral com vistas à viabilização do evento;</li>
+                                <li>Designar as autoridades responsáveis pela execução das competições (árbitros,
+                                    mesários e
+                                    demais auxiliares);</li>
+                                <li>Providenciar a aquisição de premiações;</li>
+                                <li>Elaborar e divulgar o relatório final.</li>
+                            </ul>
+
+                            <h4>III – COMISSÃO TÉCNICA ESPORTIVA</h4>
+                            <p>A comissão técnica esportiva fará a gerência da competição e será composta pelos
+                                coordenadores de modalidades.</p>
+
+                            <p>Compete à comissão técnica esportiva:</p>
+                            <ul>
+                                <li>Elaborar o sistema de disputa dos torneios a serem desenvolvidos nos jogos e as
+                                    tabelas
+                                    das diversas modalidades em disputa;</li>
+                                <li>Planejar e realizar a reunião técnica com os representantes de cada delegação;</li>
+                                <li>Providenciar, em conjunto com a comissão geral organizadora, os materiais e
+                                    instalações
+                                    necessários para a realização das competições;</li>
+                                <li>Tomar conhecimento das ocorrências verificadas nos locais de competição, a fim de
+                                    solucioná-las;</li>
+                                <li>Fornecer subsídios à assistência médica para elaboração de um cronograma de
+                                    atendimento
+                                    e acompanhamento;</li>
+                                <li>Emitir informações diárias sobre o andamento e resultado das competições para a
+                                    elaboração dos boletins informativos oficiais;</li>
+                                <li>Receber os recursos e encaminhá-los à comissão disciplinar em conjunto com a
+                                    secretaria
+                                    dos jogos;</li>
+                                <li>Receber, classificar, divulgar e arquivar documentos referentes a parte técnica;
+                                </li>
+                                <li>Resolver, no que se refere à parte técnica, os casos omissos;</li>
+                                <li>Elaborar os relatórios das modalidades e final e encaminhar à comissão geral
+                                    organizadora.</li>
+                            </ul>
+
+                            <h4>IV - COMISSÃO DISCIPLINAR</h4>
+                            <p>A comissão disciplinar será presidida pelo professor Elber Ribeiro Gama do Campus
+                                Aracaju,
+                                sendo sua composição formada pelos professores Fábio Luis Santos Nunes e Sanderson
+                                Soares da
+                                Silva, sendo suplente o professor Marcos Antônio Rodrigues França.</p>
+
+                            <p>Compete à comissão disciplinar:</p>
+                            <ul>
+                                <li>Apreciar, julgar e encaminhar as infrações administrativas, disciplinares e
+                                    técnicas,
+                                    quando relacionadas e cometidas durante o transcorrer dos jogos;</li>
+                                <li>Reunir-se, quando houver apelação, ou quando solicitada pela comissão geral
+                                    organizadora;</li>
+                                <li>Julgar questões pertinentes às normas regulamentares e disciplinares ou a princípios
+                                    de
+                                    ética desportiva, dentro ou fora das competições;</li>
+                                <li>Elaborar o relatório final e encaminhar à comissão geral organizadora.</li>
+                            </ul>
+
+                            <h4>V - COMISSÃO DE SAÚDE</h4>
+                            <p>A comissão de saúde será presidida por um profissional da área de saúde escolar do IFS,
+                                tendo
+                                um membro do JIFS como integrante para acompanhamento.</p>
+
+                            <p>Compete à comissão de saúde:</p>
+                            <ul>
+                                <li>Fornecer atendimento de saúde a todos participantes do evento durante a realização
+                                    das
+                                    partidas, com postos fixos;</li>
+                                <li>Organizar e orientar os profissionais de saúde que trabalharão no evento, quanto ao
+                                    formato de atendimento e o que deve ser realizado caso seja utilizado;</li>
+                                <li>Fazer cumprir os protocolos de saúde do estado, do município e da Instituição sede,
+                                    durante toda a competição;</li>
+                                <li>Elaborar protocolos próprios baseados nos protocolos Estadual, municipal e do IFS;
+                                </li>
+                                <li>Organizar as equipes de atendimento nos locais de competições;</li>
+                                <li>Organizar as escalas e atendimento no centro de atendimento;</li>
+                                <li><strong>A Comissão Organizadora não se responsabilizará pelo tratamento médico de
+                                        acidentes de qualquer natureza, ocorridos com os participantes antes, durante e
+                                        após
+                                        o JIFS.</strong></li>
+                            </ul>
+
+                            <h4>VI — ADMINISTRAÇÃO/SECRETARIA</h4>
+                            <p>A Administração/Secretaria será coordenada pela PROPEX/DIREX/COPEL.</p>
+
+                            <p>Compete à comissão de administração/secretaria:</p>
+                            <ul>
+                                <li>Coordenar os processos de licitação, aquisição de itens e tomada de preços para a
+                                    realização do JIF SERGIPE;</li>
+                                <li>Garantir o padrão de qualidade nas aquisições relativas ao evento, mantendo a
+                                    referência
+                                    desejada;</li>
+                                <li>Realizar o credenciamento dos estudantes/atletas inscritos nos jogos;</li>
+                                <li>Encarregar-se da homologação das inscrições das delegações participantes;</li>
+                                <li>Elaborar e distribuir os boletins diários;</li>
+                                <li>Receber os recursos e encaminhá-los à comissão disciplinar;</li>
+                                <li>Elaborar e apresentar o relatório final.</li>
+                            </ul>
+
+                            <h4>VII – COMISSÃO DE COMUNICAÇÃO E CERIMONIAL</h4>
+                            <p>A comissão de comunicação e cerimonial será coordenada pela PROPEX/DIREX/COPEL, auxiliada
+                                pela comissão geral organizadora e pela comissão de administração/secretaria.</p>
+
+                            <p>Compete à comissão de comunicação e cerimonial:</p>
+                            <ul>
+                                <li>Elaborar projeto e executar as ações para a área de comunicação e marketing do
+                                    evento;
+                                </li>
+                                <li>Obter o apoio das mídias locais, objetivando a divulgação dos jogos;</li>
+                                <li>Difundir os programas, resultados das competições e as notas que se fizerem
+                                    necessárias
+                                    ao bom andamento dos jogos, tornando-os do conhecimento público;</li>
+                                <li>Providenciar a recepção às delegações no cerimonial de abertura;</li>
+                                <li>Organizar e dirigir a solenidade de abertura dos jogos, constando de:
+                                    <ol type="i">
+                                        <li>Concentração e desfile dos participantes;</li>
+                                        <li>Hasteamento das bandeiras;</li>
+                                        <li>Execução do Hino Nacional Brasileiro;</li>
+                                        <li>Acondimento do fogo simbólico;</li>
+                                        <li>Declaração de abertura;</li>
+                                        <li>Juramento do atleta;</li>
+                                        <li>Recepção aos convidados nas solenidades;</li>
+                                        <li>Manter a articulação entre comunicação e o cerimonial;</li>
+                                    </ol>
+                                </li>
+                                <li>Organizar e realizar as premiações;</li>
+                                <li>Outras atividades correlatas;</li>
+                                <li>Elaborar o relatório final e encaminhar à comissão geral organizadora, com imagens
+                                    e/ou
+                                    reportagens alusivas à cobertura do evento.</li>
+                            </ul>
+
+                            <h4>VIII – COMISSÃO DE TRANSPORTE</h4>
+                            <p>A comissão de Transporte será coordenada pela PROPEX/DIREX</p>
+
+                            <p><strong>Compete à comissão de transporte</strong></p>
+                            <ul>
+                                <li>Estar em permanente contato com os chefes de delegação dos campi para colaborar com
+                                    questões de transporte;</li>
+                                <li>Colaborar com a logística do translado dos estudantes atletas na cidade em que os
+                                    jogos
+                                    irão ocorrer.</li>
+                            </ul>
+
+                            <h3>DAS INSCRIÇÕES E DOS PARTICIPANTES</h3>
+
+                            <p><strong>Art.10º</strong> - Cada campus pertencente ao Instituto Federal de Sergipe
+                                receberá
+                                e-mail com ENDEREÇO ELETRÔNICO DO SISTEMA DE INSCRIÇÃO DOS JOGOS, LOGIN, SENHA e modelo
+                                de
+                                DECLARAÇÃO DE INDICAÇÃO DE CHEFE DE DELEGAÇÃO.</p>
+
+                            <p><strong>§1º</strong> O Login e Senha enviados deverão ser repassados ao CHEFE DE
+                                DELEGAÇÃO,
+                                que será nomeado pelo Diretor Geral do Campus;</p>
+
+                            <p><strong>§2º</strong> A nomeação do CHEFE DE DELEGAÇÃO ocorrerá através de assinatura do
+                                Diretor Geral da DECLARAÇÃO DE INDICAÇÃO DE CHEFE DE DELEGAÇÃO (disponibilizado no
+                                sistema
+                                de inscrição dos jogos);</p>
+
+                            <p><strong>§3º</strong> O chefe de delegação deverá ser um professor de Educação Física do
+                                campus e será o representante legal de sua unidade durante os JIFS.</p>
+
+                            <p><strong>§4º</strong> Caso não haja professor de Educação Física no campus, como exceção,
+                                poderá ser designado outro servidor com SIAPE para ser chefe de delegação.</p>
+
+                            <p><strong>§5º</strong> Os(as) representantes legais também terão a prerrogativa de
+                                responder
+                                por sua delegação, frente à problemas disciplinares, organizacionais, questões de ordem
+                                técnica, entre outros, antes, durante e depois dos JIFS 2025;</p>
+
+                            <p><strong>§6º</strong> Somente poderão participar dos JIF SERGIPE 2025, os servidores com
+                                matrícula SIAPE e voluntários cadastrados no SISTEMA DE INSCRIÇÃO DOS JOGOS;</p>
+
+                            <p><strong>§7º</strong> O técnico de uma modalidade coletiva deve obrigatoriamente ser um
+                                professor/profissional de Educação Física com SIAPE.</p>
+
+                            <p><strong>§8º</strong> Excepcionalmente, na modalidade de xadrez e tênis de mesa, não é
+                                exigido
+                                que o responsável técnico seja professor de Educação Física. Este poderá ser um membro
+                                da
+                                delegação, com matrícula SIAPE;</p>
+
+                            <p><strong>§9º</strong> Caso exista coincidências de horário entre modalidades, qualquer
+                                professor/profissional de Educação Física da Instituição, cadastrado na competição,
+                                poderá
+                                substituir o professor titular da modalidade.</p>
+
+                            <p><strong>Art.11º</strong> - Terão direito à inscrição nos JIFS 2025 os estudantes
+                                matriculados
+                                em cursos presenciais do Instituto Federal de Sergipe, frequentando regularmente os
+                                cursos:
+                                técnicos integrado, concomitante e subsequente, ensino superior.</p>
+
+                            <p><strong>Parágrafo único</strong> Fica vedada a participação de alunos do EJA, EAD e FIC
+                            </p>
+
+                            <p><strong>Art. 12º</strong> - São campi pertencentes ao Instituto Federal de Sergipe</p>
+
+                            <table>
+                                <tr>
+                                    <th colspan="2">Campi aptos a participar do JIF SERGIPE 2025</th>
+                                </tr>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Campus Aracaju</td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Campus Estância</td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Campus Glória</td>
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>Campus Itabaiana</td>
+                                </tr>
+                                <tr>
+                                    <td>5.</td>
+                                    <td>Campus Lagarto</td>
+                                </tr>
+                                <tr>
+                                    <td>6.</td>
+                                    <td>Campus Poço Redondo</td>
+                                </tr>
+                                <tr>
+                                    <td>7.</td>
+                                    <td>Campus Propriá</td>
+                                </tr>
+                                <tr>
+                                    <td>8.</td>
+                                    <td>Campus São Cristóvão</td>
+                                </tr>
+                                <tr>
+                                    <td>9.</td>
+                                    <td>Campus Socorro</td>
+                                </tr>
+                                <tr>
+                                    <td>10.</td>
+                                    <td>Campus Tobias Barreto</td>
+                                </tr>
+                            </table>
+
+                            <p><strong>Art.13º</strong> - Os documentos exigidos para inscrição serão os seguintes:
+                                DECLARAÇÃO DE INDICAÇÃO DE CHEFE DE DELEGAÇÃO assinado pelo Diretor Geral do Campus,
+                                número
+                                do CPF do estudante, boletim escolar do estudante, fotografia do estudante e RG frente e
+                                verso (ou documento equivalente com previsão legal) do estudante. Todos os documentos
+                                deverão ser inseridos no SISTEMA DE INSCRIÇÃO DOS JOGOS</p>
+
+                            <p><strong>§1º</strong> Só será permitida a participação de estudantes/atletas com
+                                <strong>até
+                                    19 anos</strong> completados no ano da competição (nascidos a partir do ano de
+                                2006).
+                            </p>
+
+                            <p><strong>§2º</strong> Não é responsabilidade da organização a coincidência de horários de
+                                competições, seja ela coletiva ou individual, em decorrência da participação dos(as)
+                                estudantes/atletas em mais de uma modalidade.</p>
+
+                            <p><strong>§3º</strong> A declaração/autorização dos pais e ou responsáveis para menores de
+                                idade (ANEXO I) e o Termo de responsabilidade para maiores de idade (ANEXO II) para
+                                participação do estudante/atleta nas atividades esportivas serão disponibilizado no
+                                SISTEMA
+                                DE INSCRIÇÃO DOS JOGOS</p>
+
+                            <p><strong>§4º</strong> Termo de autorização para hospedagem (ANEXO III) e Termo de
+                                Responsabilidade e normas disciplinares para visitas técnicas (ANEXO IV) serão
+                                disponibilizados no SISTEMA DE INSCRIÇÃO DOS JOGOS</p>
+
+                            <p><strong>Art.14º</strong> - Cronograma oficial:</p>
+
+                            <table>
+                                <tr>
+                                    <th>ATIVIDADE</th>
+                                    <th>DATA</th>
+                                </tr>
+                                <tr>
+                                    <td>Período inscrições do JIFS 2025</td>
+                                    <td>19/05/2025 a 13/06/2025</td>
+                                </tr>
+                                <tr>
+                                    <td>Divulgação dos resultados das inscrições</td>
+                                    <td>17/06/2025</td>
+                                </tr>
+                                <tr>
+                                    <td>Congresso técnico e sorteio dos grupamentos das modalidades do JIFS 2025</td>
+                                    <td>15/07/2025</td>
+                                </tr>
+                                <tr>
+                                    <td>Abertura do JIFS 2025</td>
+                                    <td>28/07/2025</td>
+                                </tr>
+                                <tr>
+                                    <td>Período de competição</td>
+                                    <td>28/07/2025 e 01/08/025</td>
+                                </tr>
+                            </table>
+
+                            <p><strong>Art.15º</strong> - O crachá, disponibilizado no SISTEMA DE INSCRIÇÃO DOS JOGOS,
+                                será
+                                o documento oficial da competição e deverá ser apresentado para todas as atividades dos
+                                JIFS
+                                2025.</p>
+
+                            <p><strong>§1º</strong> A impressão do crachá será de responsabilidade de cada campus
+                                participante dos JIFS 2025.</p>
+
+                            <p><strong>§2º</strong> Em caso de perda do crachá será responsabilidade do chefe de
+                                delegação
+                                do campus providenciar outro crachá, e este deverá se dirigir à secretaria para nova
+                                homologação.</p>
+
+                            <h3>DOS CAMPEONATOS</h3>
+
+                            <p><strong>Art.16º</strong> - As disputas serão realizadas em estrita obediência às regras
+                                vigentes nas federações internacionais à data da realização dos JIFS, salvo as
+                                adaptações
+                                previstas neste regulamento.</p>
+
+                            <p><strong>Art.17º</strong> - Formato da competição</p>
+
+                            <p><strong>a. COM 3 ATÉ 5 PARTICIPANTES</strong> - rodízio simples, sem haver o jogo de
+                                confirmação para se conhecer o campeão.</p>
+
+                            <p><strong>§1º</strong> Esta forma de disputa não se aplica ao Tênis de Mesa, Xadrez e
+                                Atletismo.</p>
+
+                            <p><strong>b. COM 06 OU 08 PARTICIPANTES</strong> - 02 chaves com o mesmo número de
+                                participantes jogarão em rodízio simples na chave, classificando-se os 02 primeiros de
+                                cada
+                                chave, para o cruzamento olímpico.</p>
+
+                            <p><strong>c. COM 07 PARTICIPANTES</strong> - 02 chaves, sendo que a chave A terá 03 equipes
+                                e a
+                                chave B, 04 equipes. Jogarão em rodízio simples na chave, classificando-se os 02
+                                primeiros
+                                de cada chave, para o cruzamento olímpico.</p>
+
+                            <p><strong>d. COM 09 PARTICIPANTES</strong> – 03 chaves, com o mesmo número de
+                                participantes,
+                                jogarão em rodízio simples na chave, classificando-se o primeiro colocado de cada chave
+                                e o
+                                melhor índice técnico entre os 2º colocados, para o cruzamento olímpico. Não podendo
+                                repetir
+                                um jogo da fase classificatória.</p>
+
+                            <p><strong>e. COM 10 PARTICIPANTES</strong> - 03 chaves, sendo que a chave A e chave B terão
+                                03
+                                equipes e a chave C, 04 equipes. Jogarão em rodízio simples na chave, classificando-se o
+                                primeiro de cada chave e o melhor índice técnico entre os 2º colocados, para o
+                                cruzamento
+                                olímpico. Não podendo repetir um jogo da fase classificatória.</p>
+
+                            <h3>DOS PRÊMIOS</h3>
+
+                            <p><strong>Art.18º</strong> - Serão conferidos troféus e medalhas (estudantes/atletas e
+                                técnico)
+                                para 1º, 2º e 3º lugares de acordo com a característica de cada modalidade. No momento
+                                da
+                                premiação, os participantes deverão estar com uniforme de competição ou com vestimentas
+                                de
+                                identificação do seu campus.</p>
+
+                            <h3>DAS PENALIDADES</h3>
+
+                            <p><strong>Art.19º</strong> - Um estudante/atleta, técnico ou dirigente expulso (ou punição
+                                correspondente) será punido conforme as regras oficiais de cada modalidade, podendo ter
+                                punição maior, conforme julgamento da comissão disciplinar dos JIFS.</p>
+
+                            <p><strong>Paragrafo Único</strong> - As legislações utilizadas pela comissão disciplinar
+                                para
+                                fins de deliberação são os seguintes:</p>
+                            <ul>
+                                <li>Código Nacional de Organização da Justiça e Disciplina Desportiva</li>
+                                <li>Regulamento da competição</li>
+                                <li>Código de Ética Desportivo Código de Conduta Ética</li>
+                                <li>Código de Disciplina COJIF</li>
+                                <li>Lei 8112/90</li>
+                                <li>Estatuto da Criança e Adolescente</li>
+                            </ul>
+
+                            <h3>DAS DISPOSIÇÕES GERAIS</h3>
+
+                            <p><strong>Art.20º</strong> - Quando coincidirem cores de uniformes, o coordenador da
+                                modalidade
+                                deverá reunir os treinadores das equipes, para que, em comum acordo, aconteça a troca de
+                                uniforme de uma das equipes. Para tanto, é recomendado que cada equipe leve para a
+                                competição, 2 jogos de camisas, sendo um claro e outro escuro.</p>
+
+                            <p><strong>§1º</strong> Quando porventura as equipes não possuírem uniformes reservas,
+                                poderá o
+                                coordenador da modalidade permitir a utilização de coletes.</p>
+
+                            <p><strong>§2º</strong> Poderá única e exclusivamente a critério do coordenador da
+                                modalidade,
+                                participar de uma partida, o(a) estudante/atleta em não uniformidade (detalhes de
+                                tonalidade
+                                de cor, frisos e tarjas, diferenças de tamanhos de mangas e modelos de golas e tecidos)
+                                com
+                                o restante da equipe desde que esta não ponha em risco os(as)estudantes/atletas da sua
+                                própria equipe ou da equipe adversária, nem interfira na atuação do árbitro e registro
+                                de
+                                mesa.</p>
+
+                            <p><strong>§3º</strong> Será permitido a todos os integrantes das comissões técnicas, a
+                                utilização de bermudas durante todo o período de competição, no entanto, sendo
+                                obrigatório,
+                                o uso de tênis e meia.
+                            </p>
+                            <p><strong>Art.21º</strong> - A equipe ou estudante/atleta que não comparecer ao local de
+                                competição no horário determinado pela tabela oficial, será considerada perdedora e
+                                deverá a sua ausência ser comunicada à comissão disciplinar onde será apreciada e
+                                julgada por essa comissão.</p>
+
+                            <p><strong>PARÁGRAFO ÚNICO</strong> - A tolerância de horário para ser aplicado o WO é de 10
+                                minutos após o horário determinado pela tabela.</p>
+
+                            <p><strong>Art.22º</strong> - Qualquer irregularidade na competição poderá ser denunciada
+                                mediante documento formal, em formulário on-line específico, que será disponibilizado em
+                                link, no momento oportuno, lavrado pelo chefe de delegação e/ou professor de Educação
+                                Física.</p>
+
+                            <p><strong>PARÁGRAFO ÚNICO</strong> - O campus terá o prazo de até 2 horas após o término do
+                                jogo, caso modalidades coletivas e 15 minutos caso modalidades individuais, para
+                                registrar o seu protesto, cabendo-lhe o ônus da prova.</p>
+
+                            <p><strong>Art.23º</strong> - Em nenhuma hipótese, uma competição será paralisada ou
+                                alterada em decorrência de recursos interpostos ao poder judicante e disciplinador.</p>
+
+                            <p><strong>Art.24º</strong> - As Instituições participantes dos Jogos Intercampi 2025
+                                deverão conhecer as regras oficiais de cada modalidade, regulamento da competição,
+                                código de ética desportiva, código nacional de organização da justiça e disciplina
+                                desportiva, código de disciplina COJIF, submetendo-se, assim, sem reserva alguma, a
+                                todas as conseqüências advindas das normas estabelecidas nestes documentos legais. Não
+                                será permitida a recusa de qualquer autoridade escalada para dirigir as competições.</p>
+
+                            <p><strong>Art.25º</strong> - Os casos omissos no presente regulamento serão analisados pela
+                                comissão técnica esportiva, com anuência da comissão geral organizadora.</p>
+
+                            <h3>ANEXOS</h3>
+                            <p>
+                                <strong>Os anexos do regulamento estão disponíveis no site para download para o acesso
+                                    do site é necessário
+                                    aceitar os termos de uso.</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário de aceitação -->
+                <form method="post" class="form-checkbox">
+                    {% csrf_token %}
+                    <label class="label-checkbox">
+                        <input class="checkbox" type="checkbox" name="accept" id="accept" required>
+                        <p>Declaro que li e concordo com o Regulamento Geral dos JIFS 2025</p>
+                    </label>
+                    <div style="display: flex; justify-content: center; gap: 2em; margin-top: 3em;">
+                        <a href="{% url 'boss_data' %}" class="button-accept"
+                            style="text-align: center; text-decoration: none;">Voltar</a>
+                        <button type="submit" class="button-accept">Aceitar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        const openBtn = document.getElementById("openTermsBtn");
+        const modal = document.getElementById("termsModal");
+        const closeBtn = document.getElementById("closeModalBtn");
+
+        openBtn.onclick = () => {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+    </script>
+</body>
+
+</html>

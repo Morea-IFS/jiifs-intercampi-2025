@@ -1200,6 +1200,7 @@ def boss_data(request):
 @login_required(login_url="login")
 def terms_use(request):
     try:
+        technician = Technician.objects.get(user=request.user)
         termo = Terms_Use.objects.get(usuario=request.user)
         if not termo.document:
             return redirect('upload_document')
@@ -1225,7 +1226,7 @@ def terms_use(request):
 
             return redirect('Home')
 
-    return render(request, 'terms_use.html')
+    return render(request, 'terms_use.html' , {'termo': termo, 'technician': technician,})
 
 @login_required(login_url="login")  
 def settings(request):

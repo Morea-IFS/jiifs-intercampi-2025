@@ -18,7 +18,7 @@
     --box-shadow-custom: rgba(43, 43, 77, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.light-mode-colors{
+.light-mode-colors {
     --global-color-white: #f1f1f1;
     --global-primary-color: #009700;
     --global-secondary-color: #010101;
@@ -28,7 +28,7 @@
     --box-shadow-custom: rgba(43, 43, 77, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.light-mode-g{
+.light-mode-g {
     --global-color-white: #f1f1f1;
     --global-primary-color: #9000f6;
     --global-secondary-color: #010101;
@@ -46,11 +46,6 @@
     --global-fourth-color: #333333;
     --global-fifth-color: #0077cc;
     --box-shadow-custom: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-
-}
-
-label, .title {
-    text-align: center;
 }
 
 .all {
@@ -58,6 +53,7 @@ label, .title {
     justify-content: center;
     min-height: 100dvh;
     background-color: var(--global-third-color);
+    text-align: justify;
 }
 
 .container {
@@ -72,10 +68,14 @@ label, .title {
     box-shadow: var(--box-shadow-custom);
 }
 
+label,
+.title {
+    text-align: center;
+}
+
 .title {
     font-size: 2.5em;
     color: var(--global-primary-color);
-    text-align: center;
     margin-block: 1em 0;
 }
 
@@ -89,33 +89,41 @@ label, .title {
 .terms-content {
     display: flex;
     flex-direction: column;
-    height: 17em;
+    justify-content: center;
+    height: 15em;
     padding: 2em;
-    background-color: #fff;
+    background-color: var(--global-color-white);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    border-left: 4px solid var(--global-primary-color);
 }
 
 .terms-content p {
+    text-align: justify;
     margin: 0.5em;
 }
 
 .form-checkbox {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     margin: 1em;
 }
 
 .label-checkbox {
     display: flex;
+    align-items: center;
     margin: 1em;
+    cursor: pointer;
 }
 
 .checkbox {
     margin-right: 1em;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
 
 .button-accept {
@@ -125,27 +133,226 @@ label, .title {
     border: none;
     border-radius: 1em;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
 
 .button-accept:hover {
     background-color: var(--global-fifth-color);
 }
 
+.terms-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-top: 2em;
+    flex-wrap: wrap;
+}
+
+.terms-buttons button, .terms-buttons a {
+    text-align: center;
+    width: 300px !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    margin: 2% auto;
+    padding: 2em;
+    background-color: var(--global-color-white);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow-custom);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid var(--global-third-color);
+}
+
+.modal-title {
+    text-align: center;
+    color: var(--global-primary-color);
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: var(--global-fifth-color);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    line-height: 1.6;
+}
+
+.modal-body h2 {
+    color: var(--global-primary-color);
+    font-size: 1.3em;
+    margin: 1.5em 0 0.5em;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--global-third-color);
+}
+
+.modal-body h3 {
+    color: var(--global-fifth-color);
+    font-size: 1.1em;
+    margin-top: 1.2em;
+}
+
+.modal-body p {
+    margin-bottom: 0.8em;
+}
+
+.modal-body ul,
+.modal-body ol {
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+}
+
+.modal-body li {
+    margin-bottom: 0.5em;
+}
+
+.modal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.9em;
+}
+
+.modal-body table,
+.modal-body th,
+.modal-body td {
+    border: 1px solid var(--global-third-color);
+}
+
+.modal-body th,
+.modal-body td {
+    padding: 8px;
+    text-align: left;
+}
+
+.modal-body th {
+    background-color: var(--global-fourth-color);
+    color: var(--global-color-white);
+}
+
+.modal-footer {
+    margin-top: 1em;
+    padding-top: 1em;
+    text-align: center;
+    border-top: 1px solid var(--global-third-color);
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 5px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 90%;
+        margin: 20px auto;
     }
 
     .title {
         font-size: 2em;
+        margin-top: 2em;
     }
 
     .content {
         flex-direction: column;
+        padding: 1em;
+        gap: 1em;
     }
 
     .terms-content {
         height: 20em;
+        padding: 1.5em;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5em;
+        margin: 5% auto;
+    }
+
+    .modal-header {
+        padding-top: 1.5em;
+    }
+
+    .close-btn {
+        top: 10px;
+        right: 15px;
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+        margin-top: 2.5em;
+    }
+
+    .button-accept {
+        padding: 0.8em 1.5em;
+        font-size: 0.9rem;
+    }
+
+    .modal-header {
+        padding-top: 2em;
+    }
+
+    .close-btn {
+        top: 5px;
+        right: 10px;
     }
 }
