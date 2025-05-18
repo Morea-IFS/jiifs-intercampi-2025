@@ -13,7 +13,7 @@
 <div class="all-block">
     <section class="block1">
         <div class="title">
-            <h1>EDITAR MEMBRO DA EQUIPE</h1>
+            <h1>EDITAR MEMBRO DA COMISSÃO TÉCNICA</h1>
         </div>
         <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -38,7 +38,7 @@
                         {% endfor %}
                     </select>
                     <select id="user_admin" name="user">
-                        <option selected disabled>Selecione o usuario admin</option>
+                        <option selected disabled>Selecione o usuário admin</option>
                         {% for i in users %}
                         <option value="{{i.id}}" {% if voluntary.admin == i %} selected {% endif %}>{{i}}</option>
                         {% endfor %}

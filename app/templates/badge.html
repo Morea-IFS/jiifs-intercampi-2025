@@ -28,8 +28,8 @@
                                 {% endif %}
                                 <option value="all_technician">Todos os técnicos de modalidade esportiva</option>
                                 <option value="all_organization">Todos do apoio</option>
-                                <option value="all_voluntary">Todos os voluntarios</option>
-                                <option value="all_trainee">Todos os estagiarios</option>
+                                <option value="all_voluntary">Todos os voluntários</option>
+                                <option value="all_trainee">Todos os estagiários</option>
                                 <option value="all_head">Chefe de delegação</option>
                             </optgroup>
                             <optgroup label="Times">
@@ -48,13 +48,21 @@
         <section class="all-table">
             <table id="search-table" style="min-width: 40vw;">
                 <tr class="hidden">
+                    <th>ID</th>
                     <th>NOME</th>
+                    {% if user.is_staff %}
+                    <th>USER</th>
+                    {% endif %}
                     <th>ARQUIVO</th>
-                    <th><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir TODOS os crachás?" name="badge_all_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></th>
+                    <th>DELETAR</th>
                 </tr>
                 {% for i in badge %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ i.name }}</td>
+                    {% if user.is_staff %}
+                    <td>{{ i.user }}</td>
+                    {% endif %}
                     <td>
                         <a href="{{ i.file.url }}" download="{{ i.file.name }}">
                             <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
