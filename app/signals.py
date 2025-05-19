@@ -282,8 +282,22 @@ def validate_team_sport(instance):
                 else:
                     team_sport.status = False
                     team_sport.save()
-            case _:
+            case 4 :
                 if players_numbers >= 1 and players_numbers <= 4:
+                    team_sport.status = True
+                    team_sport.save()
+                else:
+                    team_sport.status = False
+                    team_sport.save()
+            case 6 :
+                if players_numbers >= 1 and players_numbers <= 2:
+                    team_sport.status = True
+                    team_sport.save()
+                else:
+                    team_sport.status = False
+                    team_sport.save()
+            case _:
+                if players_numbers >= 1 and players_numbers <= 3:
                     team_sport.status = True
                     team_sport.save()
                 else:
