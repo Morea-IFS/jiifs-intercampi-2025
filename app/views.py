@@ -2563,8 +2563,18 @@ def players_team(request, team_name, team_sexo, sport_name):
                     messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
                     print("O seu campus atingiu o limite de atletas nessa modalidade!")
                     return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
-            else:
+            elif team_sport.sport == 4:
                 if number_players >= 4:
+                    messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
+                    print("O seu campus atingiu o limite de atletas nessa modalidade!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            elif team_sport.sport == 6:
+                if number_players >= 2:
+                    messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
+                    print("O seu campus atingiu o limite de atletas nessa modalidade!")
+                    return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            else:
+                if number_players >= 3:
                     messages.error(request, "O seu campus atingiu o limite de atletas nessa modalidade!")
                     print("O seu campus atingiu o limite de atletas nessa modalidade!")
                     return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
