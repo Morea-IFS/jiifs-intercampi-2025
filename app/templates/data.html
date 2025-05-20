@@ -27,7 +27,7 @@
         }
     </style>
     <div style="display: flex; justify-content: center; padding: 20px;">
-        <h1 style="color: white;">GERAR <span style="color: #7bff00;">RELATÓRIOS{% if user.is_staff %} E BOLETINS{% endif %}</span></h1>
+        <h1 style="color: var(--global-header-color);">GERAR <span style="color: #7bff00;">RELATÓRIOS{% if user.is_staff %} E BOLETINS{% endif %}</span></h1>
     </div>
     <form method="post" class="grid-container">{% csrf_token %}
         
@@ -202,6 +202,7 @@
     </div>
     <ul class="notifications"></ul>
     <script src="{% static 'js/messages.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
     {% if messages %}
     {% for message in messages %}
         <script>

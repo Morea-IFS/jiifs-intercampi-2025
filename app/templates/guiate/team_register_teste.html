@@ -13,7 +13,7 @@
 </head>
 <body>
     <div style="display: flex; justify-content: center; padding: 20px;">
-        <h1 style="color: white; text-align: center;">ESCOLHA A MODALIDADE DO CAMPUS <span style="color: #7bff00;">{{technician.get_campus_display|upper}}</span></h1>
+        <h1 style="color: var(--global-header-color); text-align: center;">ESCOLHA A MODALIDADE DO CAMPUS <span style="color: #7bff00;">{{technician.get_campus_display|upper}}</span></h1>
     </div>
     <div class="grid-container">
         <!-- Lista completa de esportes -->
@@ -76,5 +76,6 @@
             {% endif  %}
         </button>
     </div>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
