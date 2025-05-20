@@ -66,10 +66,10 @@ class Type_Banner(models.IntegerChoices):
     empty = 1, "Nenhum"
 
 class Type_service(models.IntegerChoices):
-    voluntary = 0, "Voluntario"
+    voluntary = 0, "Voluntário"
     technician = 1, "Técnico de modalidade esportiva"
     organization = 2, "Apoio"
-    trainee = 3, "Estagiario"
+    trainee = 3, "Estagiário"
     head_delegation = 4,"Chefe de delegação"
 
 class Settings_access(models.Model):
