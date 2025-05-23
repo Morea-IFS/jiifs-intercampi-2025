@@ -109,7 +109,7 @@
                 <td style="text-align: center;">{{ qnt_voluntary_2}}</td>
             </tr>
             <tr>
-                <td>QUANTIDADE DE ESTÁGIARIO: </td>
+                <td>QUANTIDADE DE ESTAGIÁRIOS: </td>
                 <td style="text-align: center;">{{ qnt_voluntary_3}}</td>
             </tr>
             <tr>
@@ -143,11 +143,11 @@
                 <td style="text-align: center;">{{ qnt_v_2 }}</td>
             </tr>
             <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
-                <td>ESTÁGIARIOS DO CAMPUS {{campus | upper}}: </td>
+                <td>ESTAGIÁRIOS DO CAMPUS {{campus | upper}}: </td>
                 <td style="text-align: center;">{{ qnt_v_3 }}</td>
             </tr>
             <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
-                <td>CHEFE(S) DE DELEGAÇÃO DO CAMPUS {{campus | upper}}: </td>
+                <td>CHEFE DE DELEGAÇÃO DO CAMPUS {{campus | upper}}: </td>
                 <td style="text-align: center;">{{ qnt_v_4 }}</td>
             </tr>
             {% endfor %}
