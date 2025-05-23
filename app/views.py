@@ -2294,6 +2294,24 @@ def generator_data(request):
                 cont['teams'] = teams
                 cont['infor'] = "campus x modalidade x atletas"
 
+            elif 'all_match' in request.POST:
+                name_html = 'data-base-match'
+                name_pdf = 'partidas_jifs'
+                matchs = Match.objects.all().prefetch_related('teams__team')
+                sport = Sport_types.choices
+                context = [
+                    {
+                        'match': match,
+                        'sport':sport,
+                        'times': list(match.teams.all()),
+                    }
+                    for match in matchs
+                ]
+                if len(matchs) == 0:
+                    messages.error(request, "Não há nenhuma partida programada.")
+                    return redirect('data')
+                cont['context'] = context
+
             elif 'all_eqp' in request.POST:
                 name_html = 'data-base-eqp'
                 name_pdf = 'dados_equipe_jifs'
