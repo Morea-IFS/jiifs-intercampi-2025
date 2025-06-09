@@ -34,10 +34,8 @@
                         <th>FOTO</th>
                         <th>BOLETIN</th>
                         <th>RG</th>
-                        {% if user.is_staff %}
-                        <th>EDITAR</th>
-                        {% endif %}
                         {% if allowed %}
+                        <th>EDITAR</th>
                         <th>REMOVER</th>
                         {% endif %}
                     </tr>
@@ -62,14 +60,12 @@
                                 <img style="width: 1.5em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
                             </a>
                         </td>
-                        {% if user.is_staff %}
+                        {% if allowed %}
                         <td>
-                            <a href="{% url 'player_edit' i.player.id %}">
+                            <a href="{% url 'team_player_edit' i.player.id team_sport.id %}">
                                 <img src="{% static 'images/icon-edit.svg' %}">
                             </a>
                         </td>
-                        {% endif %}
-                        {% if allowed %}
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}

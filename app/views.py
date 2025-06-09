@@ -317,7 +317,7 @@ def player_edit(request, id):
             if photo:
                 print("photo")
                 status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la em um desses tipos.')
-                if status:
+                if not status:
                     print("status")
                     status_photo = verificar_foto(str(player.photo))
                     if status_photo:
@@ -332,7 +332,45 @@ def player_edit(request, id):
     except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('manage')
 
+@time_restriction("team_manage")
+@login_required(login_url="login")
+@terms_accept_required
+def team_players_edit(request, id, team):
+    try:
+        team_sport = Team_sport.objects.get(id=team)
+        campus = Campus_types.choices
+        player = get_object_or_404(Player, id=id)
+        if request.method == 'GET':
+            return render(request, 'team_players_edit.html', {'player': player, 'campus': campus, 'team_sport': team_sport})            
+        else:
+            print(request.FILES)
 
+            player.name = request.POST.get('name')
+            player.sexo = request.POST.get('sexo')
+            player.registration = request.POST.get('registration')
+            player.cpf = request.POST.get('cpf')
+            photo = request.FILES.get('photo')
+            print("verifica:")
+            if photo:
+                print("photo")
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la em um desses tipos.')
+                print(status)
+                if not status:
+                    print("status")
+                    status_photo = verificar_foto(str(player.photo))
+                    if status_photo:
+                        player.photo.delete()
+                    else: print("an?")
+                    player.photo = photo
+                else: print("nop")
+            campus_id = request.POST.get('campus')
+            if campus_id:
+                player.campus = campus_id
+            player.save()
+            messages.success(request, "Os dados do atleta foram atualizados com sucesso!")
+            return redirect('team_players_manage', team_sport.id)
+    except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+    return redirect('team_manage')
 
 @login_required(login_url="login")
 @terms_accept_required
@@ -2620,7 +2658,7 @@ def players_team(request, team_name, team_sexo, sport_name):
 @terms_accept_required
 def players_list(request, team_name, team_sexo, sport_name):
     try:
-        print("aaaaaaaaaaaaa")
+        
         sport_team = {label: value for value, label in Sport_types.choices}
         sexo_team = {label: value for value, label in Sexo_types.choices}
         sport = sport_team[sport_name]
@@ -2628,7 +2666,7 @@ def players_list(request, team_name, team_sexo, sport_name):
         team_sport = Team_sport.objects.get(team__name=team_name, sexo=sexo, sport=sport)
         players = Player_team_sport.objects.filter(team_sport=team_sport)
         if request.method == "GET":
-            return render(request, 'guiate/players_list.html', {'team_sport':team_sport, 'players':players})
+            return render(request, 'guiate/players_list.html', {'team_sport':team_sport, 'players':players, 'allowed': allowed_pages(request.user)})
         else:
             if 'player_delete' in request.POST:
                 player_id = request.POST.get("player_delete")
@@ -2663,6 +2701,46 @@ def players_list(request, team_name, team_sexo, sport_name):
     except Exception as e:
         messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
     return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+
+@time_restriction("team_manage")
+@login_required(login_url="login")
+@terms_accept_required
+def player_list_edit(request, team_name, id, team_sexo, sport_name):
+    try:
+        campus = Campus_types.choices
+        player = get_object_or_404(Player, id=id)
+        sport_team = {label: value for value, label in Sport_types.choices}
+        sexo_team = {label: value for value, label in Sexo_types.choices}
+        sport = sport_team[sport_name]
+        sexo = sexo_team[team_sexo]
+        team_sport = Team_sport.objects.get(team__name=team_name, sexo=sexo, sport=sport)
+        if request.method == 'GET':
+            return render(request, 'guiate/player_list_edit.html', {'player': player, 'campus': campus, 'team_sport': team_sport})            
+        else:
+            print(request.FILES)
+            player.name = request.POST.get('name')
+            player.sexo = request.POST.get('sexo')
+            player.registration = request.POST.get('registration')
+            player.cpf = request.POST.get('cpf')
+            photo = request.FILES.get('photo')
+            print("verifica:")
+            if photo:
+                print("photo")
+                status = type_file(request, ['.png','.jpg','.jpeg'], photo, 'A photo anexada não é do tipo png, jpg ou jpeg, considere converte-la em um desses tipos.')
+                if not status:
+                    print("status")
+                    status_photo = verificar_foto(str(player.photo))
+                    if status_photo:
+                        player.photo.delete()
+                    player.photo = photo
+            campus_id = request.POST.get('campus')
+            if campus_id:
+                player.campus = campus_id
+            player.save()
+            messages.success(request, "Os dados do atleta foram atualizados com sucesso!")
+            return redirect('guiate_players_list', team_sport.team.name, team_sport.get_sexo_display(), team_sport.get_sport_display())
+    except Exception as e: messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
+    return redirect('manage')
 
 @login_required(login_url="login")
 @terms_accept_required 

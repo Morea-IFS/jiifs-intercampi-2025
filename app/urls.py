@@ -17,6 +17,7 @@ urlpatterns = [
     path('manage/team', views.team_manage, name = "team_manage"),
     path('edit/team/<int:id>', views.team_edit, name = "team_edit"),
     path('manage/player/team/<int:id>', views.team_players_manage, name = "team_players_manage"),
+    path('edit/player/<int:id>/team/<int:team>', views.team_players_edit, name = "team_player_edit"),
     path('manage/match', views.matches_manage, name = "matches_manage"),
     path('edit/match/<int:id>', views.matches_edit, name = "matches_edit"),
     path('add/player/team/<int:id>', views.add_player_team, name = "add_player_team"),
@@ -60,6 +61,7 @@ urlpatterns = [
     path('team/<str:sport_name>', views.team_sexo, name="guiate_team"),
     path('players/<str:team_name>/<str:team_sexo>/<str:sport_name>', views.players_team, name="guiate_players_team"),
     path('players/<str:team_name>/list/<str:team_sexo>/<str:sport_name>/', views.players_list, name="guiate_players_list"),
+    path('players/<str:team_name>/edit/<int:id>/<str:team_sexo>/<str:sport_name>/', views.player_list_edit, name = "player_list_edit"),
 
     path('dashboard', views.dashboard, name="dashboard"),
 
