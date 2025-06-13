@@ -32,7 +32,7 @@
                                 <th>FOTO</th>
                                 <th>BOLETIM</th>
                                 <th>RG</th>
-                                {% if user.is_staff %}
+                                {% if allowed %}
                                 <th>EDITAR</th>
                                 {% endif %}
                                 <th>DELETAR</th>
@@ -50,9 +50,9 @@
                                 <td>{% if i.player.photo %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 <td>{% if i.player.bulletin %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
                                 <td>{% if i.player.rg %} <img src="{% static 'images/icon-true.svg' %}"> {% else %} <img src="{% static 'images/icon-false.svg' %}"> {% endif %}</td>
-                                {% if user.is_staff %}
+                                {% if allowed %}
                                 <td>
-                                    <a href="{% url 'player_edit' i.player.id %}">
+                                    <a href="{% url 'player_list_edit' team_sport.team.name i.player.id team_sport.get_sexo_display team_sport.get_sport_display %}">
                                         <img src="{% static 'images/icon-edit.svg' %}">
                                     </a>
                                 </td>

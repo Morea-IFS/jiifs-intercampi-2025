@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>JIFS ADMIN</title>
+{% endblock head %}
+
+{% block navbar %}
+
+{% endblock navbar %}
+
+{% block content %}
+<div class="all-block">
+    <section class="block1">
+        <div class="title">
+            <h1>EDITAR JOGADOR DO CAMPUS <span style="color: #0051ff;">{{player.get_campus_display|upper}}</span></h1>
+        </div>
+        <div>
+            <form id="function_validate_form" class="block-inputs" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="block-inputs-form">
+                    <div>
+                        <input type="text" autocomplete="on" autocorrect="on" name="name" {% if player.name %} placeholder="{{ player.name }}" {% else %} placeholder="Nome do jogador*" {% endif %} value="{{ player.name }}" required />
+                        
+                        <input type="text" autocomplete="on" autocorrect="on" name="registration" {% if player.registration %} placeholder="{{ player.registration }}" value="{{ player.registration }}" {% else %} placeholder="Matrícula" {% endif %} required>
+
+                        <input type="text" autocomplete="on" autocorrect="on" name="cpf" {% if player.cpf %} placeholder="{{ player.cpf }}" value="{{ player.cpf }}" {% else %} placeholder="Cpf" {% endif %} required>
+
+                        <select id="sexos" name="sexo">
+                            <option {% if player_disable %} selected disabled {% endif %} value="2"> Selecione o sexo
+                            </option>
+                            <option {% if player.sexo == 0 %} selected {% endif %} value="0">Masculino
+                            </option>
+                            <option {% if player.sexo == 1 %} selected {% endif %} value="1">Feminino</option>
+                        </select>
+                        {% if user.is_staff %}
+                        <select name="campus" required>
+                            <option selected disabled>Selecione o campus</option required>
+                            {% for value, name in campus %}
+                            <option value="{{value}}" {% if player.campus == value %} selected {% endif %}>{{name}}</option>
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                        <label for="fotos" id="label-foto" class="custom-file-button">{% if player.photo %} Trocar imagem {% else %} Adicione uma imagem {% endif %}</label>
+                        <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" />
+                    </div>
+                    <div>
+                        <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">
+                            CONFIRMAR
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
+            <a href="{% url 'team_players_manage' team_sport.id %}" style="color: #ffffff; font-size: 25px;">VOLTAR</a>
+        </button>
+    </section>
+</div>
+{% endblock content %}
