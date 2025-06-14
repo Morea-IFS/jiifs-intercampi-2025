@@ -117,6 +117,22 @@
                 <td style="text-align: center;">{{ qnt_voluntary_4}}</td>
             </tr>
 
+            {% for name_sport, qnt_team_sport in sports_f %}
+            <tr style="background-color: #cdcdcd;">
+                <td>{{name_sport | upper}} FEMININO</td>
+                <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+
+            {% endfor %}
+
+            {% for name_sport, qnt_team_sport in sports_m %}
+            <tr>
+                <td>{{name_sport | upper}} MASCULINO</td>
+                <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+
+            {% endfor %}
+
             {% for campus, players_total, players_fem, players_masc, qnt_v_0, qnt_v_1, qnt_v_2, qnt_v_3, qnt_v_4 in campi %}
             <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
                 <td>ATLETAS DO CAMPUS {{campus | upper}}: </td>

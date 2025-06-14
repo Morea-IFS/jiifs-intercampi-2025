@@ -2292,6 +2292,18 @@ def generator_data(request):
                 cont['qnt_voluntary_2'] = Voluntary.objects.filter(type_voluntary=2).count()
                 cont['qnt_voluntary_3'] = Voluntary.objects.filter(type_voluntary=3).count()
                 cont['qnt_voluntary_4'] = Voluntary.objects.filter(type_voluntary=4).count()
+                sports = Sport_types.choices
+                cont['sports_f'] = []
+                cont['sports_m'] = []
+                
+                for i in sports:
+                    qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
+                    qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
+                    name_sport = Sport_types(i[0]).label
+                    cont['sports_f'].append([name_sport, qnt_team_sport_f])
+                    cont['sports_m'].append([name_sport, qnt_team_sport_m])
+
+
                 for i in range(10):
                     cont[f'qnt_campus_{i}'] = Player.objects.filter(campus=i).count()
 
