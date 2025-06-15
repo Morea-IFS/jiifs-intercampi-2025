@@ -9,8 +9,8 @@ class Settings_accessAdmin(admin.ModelAdmin):
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('id','name','sexo','campus','registration','date_nasc','bulletin','photo')
-    search_fields = ('id','name','sexo','campus','registration','date_nasc','bulletin','photo')
+    list_display = ('id','name','sexo','campus','registration','date_nasc','bulletin','photo','cpf')
+    search_fields = ('id','name','sexo','campus','registration','date_nasc','bulletin','photo','cpf')
 
 @admin.register(Badge)
 class BadgevAdmin(admin.ModelAdmin):

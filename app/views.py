@@ -2292,6 +2292,18 @@ def generator_data(request):
                 cont['qnt_voluntary_2'] = Voluntary.objects.filter(type_voluntary=2).count()
                 cont['qnt_voluntary_3'] = Voluntary.objects.filter(type_voluntary=3).count()
                 cont['qnt_voluntary_4'] = Voluntary.objects.filter(type_voluntary=4).count()
+                sports = Sport_types.choices
+                cont['sports_f'] = []
+                cont['sports_m'] = []
+                
+                for i in sports:
+                    qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
+                    qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
+                    name_sport = Sport_types(i[0]).label
+                    cont['sports_f'].append([name_sport, qnt_team_sport_f])
+                    cont['sports_m'].append([name_sport, qnt_team_sport_m])
+
+
                 for i in range(10):
                     cont[f'qnt_campus_{i}'] = Player.objects.filter(campus=i).count()
 
@@ -2331,6 +2343,23 @@ def generator_data(request):
                     return redirect('data')
                 cont['teams'] = teams
                 cont['infor'] = "campus x modalidade x atletas"
+
+            elif 'all_sports_n' in request.POST:
+                name_html = 'data-base-sports'
+                name_pdf = 'dados_campus_modalidades'
+                sports = Sport_types.choices
+                cont['sports'] = []
+                
+                for i in sports:
+                    name_sport = Sport_types(i[0]).label
+                    team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0)
+                    team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1)
+                    
+                    name_m = f'{name_sport} Masculino'
+                    name_f = f'{name_sport} Feminino'
+                    
+                    cont['sports'].append([name_m, team_sport_m])
+                    cont['sports'].append([name_f, team_sport_f])
 
             elif 'all_match' in request.POST:
                 name_html = 'data-base-match'
