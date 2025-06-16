@@ -2431,7 +2431,7 @@ def generator_data(request):
 
                 name_html = 'data-base-campus-individual'
                 name_pdf = f'atletas_{campus_name}'
-                players = Player_team_sport.objects.filter(team_sport__team__campus=campus_id).order_by('player__campus','-player__sexo')
+                players = Player.objects.filter(campus=campus_id).order_by('campus','-sexo')
                 if len(players) == 0:
                     messages.error(request, "Não há atletas cadastrados.")
                     return redirect('data')

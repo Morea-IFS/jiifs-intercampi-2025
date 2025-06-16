@@ -77,12 +77,12 @@
         <tbody>
             {% for i in players %}
             <tr>
-                <td>{{ i.player.name|upper }}</td>
-                <td>{{ i.player.cpf|slice:":3" }}.{{ i.player.cpf|slice:"3:6" }}.{{ i.player.cpf|slice:"6:9" }}-{{ i.player.cpf|slice:"9:" }}</td>
-                <td>{{ i.player.registration|upper }}</td>
-                <td>{{ i.player.get_campus_display | truncatechars:10 }}</td>
-                <td>{% if i.player.sexo == 0 %} M {% elif i.player.sexo == 1 %} F {% else %} - {% endif %}</td>
-                <td>{{ i.player.date_nasc|date:"d/m/Y" }}</td>
+                <td>{{ i.name|upper }}</td>
+                <td>{{ i.cpf|slice:":3" }}.{{ i.cpf|slice:"3:6" }}.{{ i.cpf|slice:"6:9" }}-{{ i.cpf|slice:"9:" }}</td>
+                <td>{{ i.registration|upper }}</td>
+                <td>{{ i.get_campus_display | truncatechars:10 }}</td>
+                <td>{% if i.sexo == 0 %} M {% elif i.sexo == 1 %} F {% else %} - {% endif %}</td>
+                <td>{{ i.date_nasc|date:"d/m/Y" }}</td>
             </tr>
             {% endfor %}
         </tbody>
