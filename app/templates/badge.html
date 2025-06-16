@@ -45,43 +45,45 @@
             </div>
         </form>
         <br><br><br>
-        <section class="all-table">
-            <table id="search-table" style="min-width: 40vw;">
-                <tr class="hidden">
-                    <th>ID</th>
-                    <th>NOME</th>
-                    {% if user.is_staff %}
-                    <th>USER</th>
-                    {% endif %}
-                    <th>ARQUIVO</th>
-                    <th>DELETAR</th>
-                </tr>
-                {% for i in badge %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ i.name }}</td>
-                    {% if user.is_staff %}
-                    <td>{{ i.user }}</td>
-                    {% endif %}
-                    <td>
-                        <a href="{{ i.file.url }}" download="{{ i.file.name }}">
-                            <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
-                        </a>
-                    </td>
-                    <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir este crachá?" name="badge_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
-                </tr>
-                {% empty %}
-                <style>
-                    .hidden {
-                        display: none;
-                    }
-                </style>
-                {% endfor %}
-            </table>
+        <div class="all-manage">
+            <section class="all-table">
+                <table id="search-table">
+                    <tr class="hidden">
+                        <th>ID</th>
+                        <th>NOME</th>
+                        {% if user.is_staff %}
+                        <th>USER</th>
+                        {% endif %}
+                        <th>ARQUIVO</th>
+                        <th>DELETAR</th>
+                    </tr>
+                    {% for i in badge %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.name }}</td>
+                        {% if user.is_staff %}
+                        <td>{{ i.user }}</td>
+                        {% endif %}
+                        <td>
+                            <a href="{{ i.file.url }}" download="{{ i.file.name }}">
+                                <img style="width: 2em;" src="{% static 'images/download-solid.svg' %}" alt="Download">
+                            </a>
+                        </td>
+                        <td><form method="POST" action="">{% csrf_token %}<button data-confirm="Você realmente deseja excluir este crachá?" name="badge_delete" value="{{i.id}}" style="background-color: transparent; border: none;"><img src="{% static 'images/icon-trash.svg' %}"></button></form></td>
+                    </tr>
+                    {% empty %}
+                    <style>
+                        .hidden {
+                            display: none;
+                        }
+                    </style>
+                    {% endfor %}
+                </table>
+            </section>
             <button class="side-bar-buttons-items2 custom-buttons-sport-nav" style="background-color: var(--global-seventh-color);">
                 <a href="{% url 'manage' %}">VOLTAR</a>
             </button>
-        </section>
+        </div>
     </section>
 </div>
 {% endblock content %}
