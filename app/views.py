@@ -323,6 +323,14 @@ def player_edit(request, id):
                     if status_photo:
                         player.photo.delete()
                     player.photo = photo
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('player_edit', player.id) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('player_edit', player.id)
             campus_id = request.POST.get('campus')
             if campus_id:
                 player.campus = campus_id
@@ -362,7 +370,15 @@ def team_players_edit(request, id, team):
                         player.photo.delete()
                     else: print("an?")
                     player.photo = photo
-                else: print("nop")
+                else: return redirect('team_player_edit', player.id, team_sport.id)
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('team_player_edit', player.id, team_sport.id) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('team_player_edit', player.id, team_sport.id)
             campus_id = request.POST.get('campus')
             if campus_id:
                 player.campus = campus_id
@@ -2295,13 +2311,19 @@ def generator_data(request):
                 sports = Sport_types.choices
                 cont['sports_f'] = []
                 cont['sports_m'] = []
+                cont['sports_mist'] = []
                 
                 for i in sports:
-                    qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
-                    qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
-                    name_sport = Sport_types(i[0]).label
-                    cont['sports_f'].append([name_sport, qnt_team_sport_f])
-                    cont['sports_m'].append([name_sport, qnt_team_sport_m])
+                    if i[0] == 2:
+                        qnt_team_sport_m = Team_sport.objects.filter(sport=i[0]).count()
+                        name_sport = Sport_types(i[0]).label
+                        cont['sports_mist'].append([name_sport, qnt_team_sport_m])
+                    else:
+                        qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
+                        qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
+                        name_sport = Sport_types(i[0]).label
+                        cont['sports_f'].append([name_sport, qnt_team_sport_f])
+                        cont['sports_m'].append([name_sport, qnt_team_sport_m])
 
 
                 for i in range(10):
@@ -2352,14 +2374,20 @@ def generator_data(request):
                 
                 for i in sports:
                     name_sport = Sport_types(i[0]).label
-                    team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0)
-                    team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1)
+                    if i[0] == 2:
+                        team_sport_m = Team_sport.objects.filter(sport=i[0])
+                        name_m = f'{name_sport} Misto'
+                        
+                        cont['sports'].append([name_m, team_sport_m])
+                    else:
+                        team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0)
+                        team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1)
                     
-                    name_m = f'{name_sport} Masculino'
-                    name_f = f'{name_sport} Feminino'
-                    
-                    cont['sports'].append([name_m, team_sport_m])
-                    cont['sports'].append([name_f, team_sport_f])
+                        name_m = f'{name_sport} Masculino'
+                        name_f = f'{name_sport} Feminino'
+                        
+                        cont['sports'].append([name_m, team_sport_m])
+                        cont['sports'].append([name_f, team_sport_f])
 
             elif 'all_match' in request.POST:
                 name_html = 'data-base-match'
@@ -2431,7 +2459,7 @@ def generator_data(request):
 
                 name_html = 'data-base-campus-individual'
                 name_pdf = f'atletas_{campus_name}'
-                players = Player_team_sport.objects.filter(team_sport__team__campus=campus_id).order_by('player__campus','-player__sexo')
+                players = Player.objects.filter(campus=campus_id).order_by('campus','-sexo')
                 if len(players) == 0:
                     messages.error(request, "Não há atletas cadastrados.")
                     return redirect('data')
@@ -2763,6 +2791,14 @@ def player_list_edit(request, team_name, id, team_sexo, sport_name):
                         player.photo.delete()
                     player.photo = photo
             campus_id = request.POST.get('campus')
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('player_list_edit', team_sport.team.name, player.id, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('player_list_edit', team_sport.team.name, player.id, team_sport.get_sexo_display(), team_sport.get_sport_display())
             if campus_id:
                 player.campus = campus_id
             player.save()

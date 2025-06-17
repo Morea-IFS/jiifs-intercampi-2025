@@ -20,12 +20,13 @@
                 {% csrf_token %}
                 <div class="block-inputs-form">
                     <div>
+                        <label for="name">Nome do jogador</label>
                         <input type="text" autocomplete="on" autocorrect="on" name="name" {% if player.name %} placeholder="{{ player.name }}" {% else %} placeholder="Nome do jogador*" {% endif %} value="{{ player.name }}" required />
-                        
+                        <label for="name">Matrícula</label>
                         <input type="text" autocomplete="on" autocorrect="on" name="registration" {% if player.registration %} placeholder="{{ player.registration }}" value="{{ player.registration }}" {% else %} placeholder="Matrícula" {% endif %} required>
-
+                        <label for="name">CPF</label>
                         <input type="text" autocomplete="on" autocorrect="on" name="cpf" {% if player.cpf %} placeholder="{{ player.cpf }}" value="{{ player.cpf }}" {% else %} placeholder="Cpf" {% endif %} required>
-
+                        <label for="name">Sexo</label>
                         <select id="sexos" name="sexo">
                             <option {% if player_disable %} selected disabled {% endif %} value="2"> Selecione o sexo
                             </option>
@@ -34,6 +35,7 @@
                             <option {% if player.sexo == 1 %} selected {% endif %} value="1">Feminino</option>
                         </select>
                         {% if user.is_staff %}
+                        <label for="name">Campus</label>
                         <select name="campus" required>
                             <option selected disabled>Selecione o campus</option required>
                             {% for value, name in campus %}
@@ -41,8 +43,15 @@
                             {% endfor %}
                         </select>
                         {% endif %}
-                        <label for="fotos" id="label-foto" class="custom-file-button">{% if player.photo %} Trocar imagem {% else %} Adicione uma imagem {% endif %}</label>
-                        <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()" />
+                        <label for="Boletin">Boletim</label>
+                        <label for="bulletin" id="label-bulletin" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar um novo {% else %} e anexe o {% endif %}  boletim escolar</label>
+                        <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoBELabel()">
+                        <label for="Fotografia">Fotografia</label>
+                        <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar uma nova  {% else %} e anexe uma {% endif %}fotografia </label>
+                        <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
+                        <label for="Rg">RG</label>
+                        <label for="general-register" id="label-general-register" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar um novo {% else %} e anexe o{% endif %} RG</label>
+                        <input type="file" name="rg" id="general-register" required onchange="trocarTextoRGLabel()">
                     </div>
                     <div>
                         <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">

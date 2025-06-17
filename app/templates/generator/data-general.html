@@ -132,6 +132,14 @@
             </tr>
 
             {% endfor %}
+            
+            {% for name_sport, qnt_team_sport in sports_mist %}
+            <tr style="background-color: #cdcdcd;">
+                <td>{{name_sport | upper}} MISTO</td>
+                <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+
+            {% endfor %}
 
             {% for campus, players_total, players_fem, players_masc, qnt_v_0, qnt_v_1, qnt_v_2, qnt_v_3, qnt_v_4 in campi %}
             <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
