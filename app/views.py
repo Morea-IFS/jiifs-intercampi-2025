@@ -2311,13 +2311,19 @@ def generator_data(request):
                 sports = Sport_types.choices
                 cont['sports_f'] = []
                 cont['sports_m'] = []
+                cont['sports_mist'] = []
                 
                 for i in sports:
-                    qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
-                    qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
-                    name_sport = Sport_types(i[0]).label
-                    cont['sports_f'].append([name_sport, qnt_team_sport_f])
-                    cont['sports_m'].append([name_sport, qnt_team_sport_m])
+                    if i[0] == 2:
+                        qnt_team_sport_m = Team_sport.objects.filter(sport=i[0]).count()
+                        name_sport = Sport_types(i[0]).label
+                        cont['sports_mist'].append([name_sport, qnt_team_sport_m])
+                    else:
+                        qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
+                        qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
+                        name_sport = Sport_types(i[0]).label
+                        cont['sports_f'].append([name_sport, qnt_team_sport_f])
+                        cont['sports_m'].append([name_sport, qnt_team_sport_m])
 
 
                 for i in range(10):
@@ -2368,14 +2374,20 @@ def generator_data(request):
                 
                 for i in sports:
                     name_sport = Sport_types(i[0]).label
-                    team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0)
-                    team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1)
+                    if i[0] == 2:
+                        team_sport_m = Team_sport.objects.filter(sport=i[0])
+                        name_m = f'{name_sport} Misto'
+                        
+                        cont['sports'].append([name_m, team_sport_m])
+                    else:
+                        team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0)
+                        team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1)
                     
-                    name_m = f'{name_sport} Masculino'
-                    name_f = f'{name_sport} Feminino'
-                    
-                    cont['sports'].append([name_m, team_sport_m])
-                    cont['sports'].append([name_f, team_sport_f])
+                        name_m = f'{name_sport} Masculino'
+                        name_f = f'{name_sport} Feminino'
+                        
+                        cont['sports'].append([name_m, team_sport_m])
+                        cont['sports'].append([name_f, team_sport_f])
 
             elif 'all_match' in request.POST:
                 name_html = 'data-base-match'
