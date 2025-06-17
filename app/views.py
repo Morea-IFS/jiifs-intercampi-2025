@@ -323,6 +323,14 @@ def player_edit(request, id):
                     if status_photo:
                         player.photo.delete()
                     player.photo = photo
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('player_edit', player.id) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('player_edit', player.id)
             campus_id = request.POST.get('campus')
             if campus_id:
                 player.campus = campus_id
@@ -362,7 +370,15 @@ def team_players_edit(request, id, team):
                         player.photo.delete()
                     else: print("an?")
                     player.photo = photo
-                else: print("nop")
+                else: return redirect('team_player_edit', player.id, team_sport.id)
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('team_player_edit', player.id, team_sport.id) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('team_player_edit', player.id, team_sport.id)
             campus_id = request.POST.get('campus')
             if campus_id:
                 player.campus = campus_id
@@ -2763,6 +2779,14 @@ def player_list_edit(request, team_name, id, team_sexo, sport_name):
                         player.photo.delete()
                     player.photo = photo
             campus_id = request.POST.get('campus')
+            bulletin = request.FILES.get('bulletin')
+            if bulletin: 
+                status = type_file(request, ['.pdf'], bulletin, 'O boletim escolar anexado não é do tipo pdf, que é o tipo aceito.')
+                if status: return redirect('player_list_edit', team_sport.team.name, player.id, team_sport.get_sexo_display(), team_sport.get_sport_display()) 
+            rg = request.FILES.get('rg')
+            if rg: 
+                status = type_file(request, ['.png','.jpg','.jpeg','.pdf','docx'], rg, 'O RG anexado não faz parte dos tipos aceito, os tipos são png, jpg, jpeg, pdf ou docs.')
+                if status: return redirect('player_list_edit', team_sport.team.name, player.id, team_sport.get_sexo_display(), team_sport.get_sport_display())
             if campus_id:
                 player.campus = campus_id
             player.save()
