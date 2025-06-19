@@ -45,13 +45,13 @@
                         {% endif %}
                         <label for="Boletin">Boletim</label>
                         <label for="bulletin" id="label-bulletin" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar um novo {% else %} e anexe o {% endif %}  boletim escolar</label>
-                        <input type="file" name="bulletin" id="bulletin" accept=".pdf" required onchange="trocarTextoBELabel()">
+                        <input type="file" name="bulletin" id="bulletin" accept=".pdf" onchange="trocarTextoBELabel()">
                         <label for="Fotografia">Fotografia</label>
                         <label for="fotos" id="label-foto" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar uma nova  {% else %} e anexe uma {% endif %}fotografia </label>
-                        <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" required onchange="trocarTextoLabel()">
+                        <input type="file" name="photo" id="fotos" accept=".jpg, .jpeg, .png" onchange="trocarTextoLabel()">
                         <label for="Rg">RG</label>
                         <label for="general-register" id="label-general-register" class="custom-file-button">Clique aqui {% if player.photo %} caso queira anexar um novo {% else %} e anexe o{% endif %} RG</label>
-                        <input type="file" name="rg" id="general-register" required onchange="trocarTextoRGLabel()">
+                        <input type="file" name="rg" id="general-register" onchange="trocarTextoRGLabel()">
                     </div>
                     <div>
                         <button type="submit" class="side-bar-buttons-items2 custom-buttons-sport-nav">
