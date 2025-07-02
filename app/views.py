@@ -2518,8 +2518,8 @@ def generator_data(request):
             html_string = render_to_string(f'generator/{name_html}.html', cont)
 
             response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = f'inline; filename="{name_pdf}.pdf"'
-            # response['Content-Disposition'] = f'attachment; filename="{name_pdf}.pdf"'
+            # response['Content-Disposition'] = f'inline; filename="{name_pdf}.pdf"'
+            response['Content-Disposition'] = f'attachment; filename="{name_pdf}.pdf"'
 
             HTML(string=html_string).write_pdf(response)
 
