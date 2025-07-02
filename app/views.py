@@ -2320,14 +2320,17 @@ def generator_data(request):
                 for i in sports:
                     if i[0] == 2:
                         qnt_team_sport_m = Team_sport.objects.filter(sport=i[0]).count()
+                        qnt_players_m = Player_team_sport.objects.filter(team_sport__sport=i[0]).count()
                         name_sport = Sport_types(i[0]).label
-                        cont['sports_mist'].append([name_sport, qnt_team_sport_m])
+                        cont['sports_mist'].append([name_sport, qnt_team_sport_m, qnt_players_m])
                     else:
                         qnt_team_sport_m = Team_sport.objects.filter(sport=i[0], sexo=0).count()
+                        qnt_players_m = Player_team_sport.objects.filter(team_sport__sport=i[0], team_sport__sexo=0).count()
                         qnt_team_sport_f = Team_sport.objects.filter(sport=i[0], sexo=1).count()
+                        qnt_players_f = Player_team_sport.objects.filter(team_sport__sport=i[0], team_sport__sexo=1).count()
                         name_sport = Sport_types(i[0]).label
-                        cont['sports_f'].append([name_sport, qnt_team_sport_f])
-                        cont['sports_m'].append([name_sport, qnt_team_sport_m])
+                        cont['sports_f'].append([name_sport, qnt_team_sport_f, qnt_players_f])
+                        cont['sports_m'].append([name_sport, qnt_team_sport_m, qnt_players_m])
 
 
                 for i in range(10):

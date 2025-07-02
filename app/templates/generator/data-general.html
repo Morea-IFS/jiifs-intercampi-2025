@@ -117,26 +117,38 @@
                 <td style="text-align: center;">{{ qnt_voluntary_4}}</td>
             </tr>
 
-            {% for name_sport, qnt_team_sport in sports_f %}
-            <tr style="background-color: #cdcdcd;">
-                <td>{{name_sport | upper}} FEMININO</td>
+            {% for name_sport, qnt_team_sport, qnt_players in sports_f %}
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_b);"{% else %}style="background-color: var(--teste_a);"{% endif %}>
+                <td>MODALIDADE {{name_sport | upper}} FEMININO</td>
                 <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_b);"{% else %}style="background-color: var(--teste_a);"{% endif %}>
+                <td>QUANTIDADE DE ATLETAS</td>
+                <td style="text-align: center;">{{ qnt_players }}</td>
             </tr>
 
             {% endfor %}
 
-            {% for name_sport, qnt_team_sport in sports_m %}
-            <tr>
-                <td>{{name_sport | upper}} MASCULINO</td>
+            {% for name_sport, qnt_team_sport, qnt_players in sports_m %}
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>MODALIDADE {{name_sport | upper}} MASCULINO</td>
                 <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                <td>QUANTIDADE DE ATLETAS</td>
+                <td style="text-align: center;">{{ qnt_players }}</td>
             </tr>
 
             {% endfor %}
             
-            {% for name_sport, qnt_team_sport in sports_mist %}
-            <tr style="background-color: #cdcdcd;">
-                <td>{{name_sport | upper}} MISTO</td>
+            {% for name_sport, qnt_team_sport, qnt_players in sports_mist %}
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_b);"{% else %}style="background-color: var(--teste_a);"{% endif %}>
+                <td>MODALIDADE {{name_sport | upper}} MISTO</td>
                 <td style="text-align: center;">{{ qnt_team_sport }}</td>
+            </tr>
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_b);"{% else %}style="background-color: var(--teste_a);"{% endif %}>
+                <td>QUANTIDADE DE ATLETAS</td>
+                <td style="text-align: center;">{{ qnt_players }}</td>
             </tr>
 
             {% endfor %}
