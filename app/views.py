@@ -2272,7 +2272,6 @@ def generator_certificate(request):
 @login_required(login_url="login")
 @terms_accept_required
 def generator_data(request):
-    try:
         user = User.objects.get(id=request.user.id)
         if request.method == "GET":
             if request.user.is_staff: 
@@ -2351,7 +2350,21 @@ def generator_data(request):
                     qnt_voluntary_2 = Voluntary.objects.filter(type_voluntary=2, campus=i[0]).count()
                     qnt_voluntary_3 = Voluntary.objects.filter(type_voluntary=3, campus=i[0]).count()
                     qnt_voluntary_4 = Voluntary.objects.filter(type_voluntary=4, campus=i[0]).count()
-                    cont['campi'].append([campus_name, players_total, players_fem, players_masc,qnt_voluntary_0,qnt_voluntary_1,qnt_voluntary_2,qnt_voluntary_3,qnt_voluntary_4])
+                    
+                    campi_modalidades = []
+                    sports = Sport_types.choices
+                    for j in sports:
+                        name = f'{campus_name} {Sport_types(j[0]).label}'
+                        if j[0] == 2: 
+                            c_players_m = Player_team_sport.objects.filter(team_sport__sport=j[0], team_sport__team__campus=i[0]).count()
+                            c_players_f = 0
+                            campi_modalidades.append([j[0], name, c_players_f, c_players_m])
+                        else:       
+                            c_players_m = Player_team_sport.objects.filter(team_sport__sport=int(j[0]), team_sport__sexo=0, team_sport__team__campus=int(i[0])).count()
+                            c_players_f = Player_team_sport.objects.filter(team_sport__sport=int(j[0]), team_sport__sexo=1, team_sport__team__campus=int(i[0])).count()
+                            campi_modalidades.append([j[0], name, c_players_f, c_players_m])
+
+                    cont['campi'].append([campus_name, players_total, players_fem, players_masc,qnt_voluntary_0,qnt_voluntary_1,qnt_voluntary_2,qnt_voluntary_3,qnt_voluntary_4, campi_modalidades])
         
             elif 'enrollment' in request.POST:
                 name_html = 'data-base-enrollment'
@@ -2511,9 +2524,6 @@ def generator_data(request):
             HTML(string=html_string).write_pdf(response)
 
             return response
-    except Exception as e:
-        messages.error(request, f'Um erro inesperado aconteceu: {str(e)}')
-    return redirect('data')
 
 @time_restriction("team_manage")
 @login_required(login_url="login")

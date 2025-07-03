@@ -153,7 +153,11 @@
 
             {% endfor %}
 
-            {% for campus, players_total, players_fem, players_masc, qnt_v_0, qnt_v_1, qnt_v_2, qnt_v_3, qnt_v_4 in campi %}
+            {% for campus, players_total, players_fem, players_masc, qnt_v_0, qnt_v_1, qnt_v_2, qnt_v_3, qnt_v_4, campi_modalidades in campi %}
+            <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}></tr>
+                <td></td>
+                <td style="text-align: center;"></td>
+            </tr>
             <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
                 <td>ATLETAS DO CAMPUS {{campus | upper}}: </td>
                 <td style="text-align: center;">{{ players_total }}</td>
@@ -186,6 +190,29 @@
                 <td>CHEFE DE DELEGAÇÃO DO CAMPUS {{campus | upper}}: </td>
                 <td style="text-align: center;">{{ qnt_v_4 }}</td>
             </tr>
+            {% for id, name, players_f, players_m in campi_modalidades %}
+            {% if id != 2 %}
+                {% if players_f != 0 %}
+                <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                    <td>{{name | upper}} FEMININO</td>
+                    <td style="text-align: center;">{{ players_f }}</td>
+                </tr>
+                {% endif %}
+                {% if players_m != 0 %}
+                <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                    <td>{{name | upper}} MASCULINO</td>
+                    <td style="text-align: center;">{{ players_m }}</td>
+                </tr>
+                {% endif %}
+            {% else %}
+            {% if players_m != 0 %}
+                <tr {% if forloop.counter|divisibleby:2 %}style="background-color: var(--teste_a);"{% else %}style="background-color: var(--teste_b);"{% endif %}>
+                    <td>{{name | upper}} MISTO</td>
+                    <td style="text-align: center;">{{ players_m }}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
             {% endfor %}
 
         </tbody>
