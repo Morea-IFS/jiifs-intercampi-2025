@@ -145,6 +145,7 @@ class Badge(models.Model):
 class Attachments(models.Model):
     name = models.CharField(max_length=100, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    public = models.BooleanField(default=False)
     file = models.FileField(upload_to='attachments/', blank=True)
 
     def __str__(self):    

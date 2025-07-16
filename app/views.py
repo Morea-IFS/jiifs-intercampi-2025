@@ -269,6 +269,10 @@ def attachments(request):
     attachments = Attachments.objects.all()
     return render(request, 'attachments.html', {'attachments': attachments})
 
+def attachments_public(request):
+    attachments = Attachments.objects.filter(public=True)
+    return render(request, 'attachments_public.html', {'attachments': attachments})
+
 @login_required(login_url="login")
 @terms_accept_required
 def player_manage(request):

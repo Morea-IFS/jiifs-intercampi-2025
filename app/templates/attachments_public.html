@@ -1,0 +1,138 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/morea-sports.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/public/about_us.css' %}" />
+    <title>JIFS - BOLETINS</title>
+</head>
+<body>
+    <div class="modal-mobile mobile"></div>
+    <header>
+        <nav>
+            <img
+                class="logo-jiifs"
+                src="{% static 'images/logo-morea-sports.svg' %}"
+                alt="JIIFS"
+            />
+            <ul>
+                <li class="item-close mobile">
+                    <img
+                        class="icon-close mobile"
+                        src="{% static 'images/icon-close.svg' %}"
+                        alt="Menu"
+                    />
+                </li>
+                <li><a href="#" class="about-us-link">JIFS 2025</a></li>
+            </ul>
+            <img
+                class="icon-burguer"
+                src="{% static 'images/icon-burguer.svg' %}"
+                alt="Menu"
+            />
+        </nav>
+    </header>
+
+    <style>
+        .about-container-attachments {
+            width: 80vw;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            background-color: transparent;
+            padding: 20px;
+        }
+
+        .about-attachments {
+            width: 25em;
+            min-height: 5em;
+            background-color: #2e2f2e;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 20px 70px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            font-weight: 600;
+            text-align: left;
+            color: #00A3FF;
+            transition: transform 0.2s ease;
+        }
+
+        .about-attachments:hover {
+            transform: scale(1.02);
+        }
+
+        .about-attachments div {
+            width: 100%;
+            text-align: left;
+            font-size: 1.1em;
+            margin-right: 5px;
+        }
+
+        .about-attachments a {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: #00A3FF;
+            font-size: 2.5em;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .about-attachments a:hover {
+            color: #00d9ff;
+        }
+
+        .about-attachments p {
+            margin: 0;
+        }
+        html {
+        height: 100%;
+        }
+
+        main {
+            min-height: calc(100vh - 192px); /* Ajusta a altura mínima para empurrar o footer */
+        }
+
+    </style>
+
+    <main>
+        <section class="about-container-attachments">
+            {% for i in attachments %}
+            <div class="about-attachments">
+                <div>
+                    <p>{{ i.name }}</p>
+                </div>
+                <a href="{{ i.file.url }}" download="{{ i.file.name }}">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <footer>
+        <img
+            src="{% static 'images/logo-ifs-white.png' %}"
+            alt=""
+            class="logo-ifs"
+        />
+        <img
+            src="{% static 'images/logo-jiifs-2025.jpg' %}"
+            alt=""
+            style="filter: brightness(80);"
+            class="logo-jifs"
+        />
+    </footer>
+
+    <script src="{% static 'js/about_us.js' %}"></script>
+</body>
+</html>
