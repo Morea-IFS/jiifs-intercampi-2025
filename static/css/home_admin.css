@@ -89,6 +89,7 @@ span.stroke-morea {
     color: var(--blue-links);
     font-size:20px;
     transition: .3s ease-in-out;
+    text-align: center;
 }
 .link-morea-or-lattes:hover{
     color: var(--green-title-time-or-set);
